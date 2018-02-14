@@ -1,0 +1,14 @@
+{
+  "public": {},
+  "private": {
+    "mailService": "",
+    "facebook": {
+      "appId": "",
+      "secret": ""
+    },
+    "google": {
+      "clientId": "",
+      "secret": ""
+    }
+  }
+}

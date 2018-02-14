@@ -1,0 +1,118 @@
+{
+  "name": "cards",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "production": "meteor --settings .settings/prod.json",
+    "start": "meteor --settings .settings/dev.json",
+    "lint": "eslint .",
+    "pretest": "npm run lint --silent",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.38",
+    "antd": "^3.1.4",
+    "autoprefixer": "^7.2.5",
+    "bcrypt": "^1.0.3",
+    "core-js": "^2.5.3",
+    "history": "^4.7.2",
+    "indexof": "0.0.1",
+    "meteor-node-stubs": "^0.3.2",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-helmet": "^5.2.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-s-alert": "^1.4.1",
+    "react-stripe-elements": "^1.4.1",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "babel-plugin-import": "^1.6.3",
+    "babel-plugin-react-require": "^3.0.0",
+    "babel-root-slash-import": "^1.1.0",
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-meteor": "^4.1.6",
+    "eslint-plugin-react": "^7.6.0"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 7,
+      "sourceType": "module"
+    },
+    "plugins": [
+      "meteor"
+    ],
+    "extends": [
+      "airbnb",
+      "plugin:meteor/recommended"
+    ],
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "rules": {
+      "react/jsx-filename-extension": "off",
+      "react/forbid-prop-types": "off",
+      "react/no-array-index-key": "off",
+      "react/no-danger": "off",
+      "jsx-a11y/href-no-hash": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "jsx-a11y/label-has-for": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "import/no-extraneous-dependencies": "off",
+      "import/extensions": "off",
+      "react/jsx-indent": [
+        3,
+        "spaces"
+      ],
+      "meteor/eventmap-params": [
+        2,
+        {
+          "eventParamName": "event",
+          "templateInstanceParamName": "instance"
+        }
+      ],
+      "meteor/template-names": [
+        0
+      ],
+      "import/no-unresolved": [
+        2,
+        {
+          "ignore": [
+            "^meteor/"
+          ]
+        }
+      ],
+      "no-underscore-dangle": [
+        "error",
+        {
+          "allow": [
+            "_id"
+          ]
+        }
+      ]
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "browsers": [
+          "last 7 versions"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    "react-require",
+    "babel-root-slash-import"
+  ]
+}

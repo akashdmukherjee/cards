@@ -1,0 +1,48 @@
+.account-form {
+  margin: 50px auto;
+  max-width: 400px;
+  width: 95%;
+  padding: 40px;
+  background-color: #fff;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05), 0 15px 30px -10px rgba(0,0,0,0.3);
+  border-radius: 5px;
+}
+
+.account-form-title {
+  font-family: @font-headers;
+  font-size: 32px;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.accounts-form-button {
+  display: block;
+  width: 100%;
+  height: 46px;
+  margin-top: 10px;
+
+  &.facebook {
+    background-color: #3B5998;
+    border-color: #3B5998;
+
+    &:hover {
+      background-color: darken(#3B5998, 5%);
+    }
+  }
+
+  &.google {
+    background-color: #c2372d;
+    border-color: #c2372d;
+
+    &:hover {
+      background-color: darken(#c2372d, 5%);
+    }
+  }
+}
+
+.ant-form-item-with-help {
+  margin-bottom: 5px;
+}

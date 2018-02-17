@@ -1,0 +1,26 @@
+.header {
+  background-color: #fff;
+  box-shadow: -1px 4px 18px -3px rgba(0, 0, 0, 0.07);
+}
+
+.header-nav {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 16px;
+  font-weight: 300;
+  text-transform: uppercase;
+
+  a {
+    color: lighten(@color-main-dark, 50%);
+    display: inline-block;
+    margin-left: 10px;
+    transition: color .3s;
+    text-decoration: none;
+
+    &:hover, &:focus, &:active {
+      color: lighten(@color-main-dark, 10%);
+    }
+  }
+}

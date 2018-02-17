@@ -2,13 +2,11 @@
   "public": {},
   "private": {
     "mailService": "",
-    "facebook": {
-      "appId": "",
-      "secret": ""
+    "adminUser": {
+      "username": "admin",
+      "email": "testemail@testdomaainn.com",
+      "password": "123456"
     },
-    "google": {
-      "clientId": "",
-      "secret": ""
-    }
+    "mongodb": "mongodb://cards_admin:Bh6XBqZrHqJ9oExzXo2y@ds139138.mlab.com:39138/akash_cards"
   }
 }

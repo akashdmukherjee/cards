@@ -5,11 +5,11 @@
 @import 'settings.import.less';
 @import 'global.import.less';
 
-// vendors
+// Vendors
 @import 'vendors/s-alert-default.import.less';
 @import 'vendors/s-alert-slide.import.less';
 
-// here we can import styles for components which we are using
+// Here we can import styles for components which we are using
 // this is better than importing all antd.less from antd/dist
 
 @import '{}/node_modules/antd/lib/button/style/index.less';
@@ -18,9 +18,15 @@
 @import '{}/node_modules/antd/lib/form/style/index.less';
 @import '{}/node_modules/antd/lib/input/style/index.less';
 
-// custom less files from the project
+// Custom less files from the project
 
-@import '../imports/ui/pages/home/styles.less';
+// Layouts
+@import '../imports/ui/layouts/landing-page-layout/styles.less';
+
+// Components
 @import '../imports/ui/components/spinner/styles.less';
+@import '../imports/ui/components/header/styles.less';
 
+// Pages
+@import '../imports/ui/pages/home/styles.less';
 @import '../imports/ui/pages/signin/styles.less';

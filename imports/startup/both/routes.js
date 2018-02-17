@@ -5,9 +5,8 @@ import MainLayout from '../../ui/layouts/main-layout';
 import LandingPageLayout from '../../ui/layouts/landing-page-layout';
 import AdminPanelLayout from '../../ui/layouts/admin-panel-layout';
 import Home from '../../ui/pages/home';
-import AdminPanel from '../../ui/pages/admin-panel';
+import AdminPanel from '../../ui/containers/admin-container';
 import SignIn from '../../ui/containers/signin-container';
-import SignUp from '../../ui/containers/signup-container';
 import ForgotPass from '../../ui/containers/forgot-pass-container';
 import ResetPass from '../../ui/containers/reset-pass-container';
 import NotFound from '../../ui/pages/not-found';
@@ -47,7 +46,6 @@ export default (
     <Switch>
       <LandingPageRoute exact path="/" component={Home} />
       <LandingPageRoute exact path="/signin" component={SignIn} />
-      <LandingPageRoute exact path="/signup" component={SignUp} />
       <LandingPageRoute exact path="/forgot-password" component={ForgotPass} />
       <LandingPageRoute exact path="/reset-password/:token" component={ResetPass} />
       <AdminPanelRoute exact path="/admin" component={AdminPanel} />

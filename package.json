@@ -110,7 +110,7 @@
     "plugins": {
       "autoprefixer": {
         "browsers": [
-          "last 7 versions"
+          "last 2 versions"
         ]
       }
     }

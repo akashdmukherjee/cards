@@ -13,8 +13,6 @@ const FormItem = Form.Item;
 const SignIn = ({
   form: { getFieldDecorator, validateFields },
   handleLogin,
-  requestLoginFacebook,
-  requestLoginGoogle,
   history,
 }) => {
   const handleSubmit = (e) => {
@@ -27,20 +25,6 @@ const SignIn = ({
           } else { history.push('/'); }
         });
       }
-    });
-  };
-  const handleLoginWithGoogle = () => {
-    requestLoginGoogle((error) => {
-      if (error) {
-        Alert.error(error.message);
-      } else { history.push('/'); }
-    });
-  };
-  const handleLoginWithFacebook = () => {
-    requestLoginFacebook((error) => {
-      if (error) {
-        Alert.error(error.message);
-      } else { history.push('/'); }
     });
   };
   return (
@@ -74,12 +58,6 @@ const SignIn = ({
               <Button type="primary" htmlType="submit" className="accounts-form-button">
                 Sign In
               </Button>
-              <Button type="primary" htmlType="button" className="accounts-form-button google" onClick={handleLoginWithGoogle}>
-                Login with Google
-              </Button>
-              <Button type="primary" htmlType="button" className="accounts-form-button facebook" onClick={handleLoginWithFacebook}>
-                Login with Facebook
-              </Button>
             </FormItem>
           </Form>
         </div>
@@ -91,8 +69,6 @@ const SignIn = ({
 SignIn.propTypes = {
   form: PropTypes.object.isRequired,
   handleLogin: PropTypes.func.isRequired,
-  requestLoginGoogle: PropTypes.func.isRequired,
-  requestLoginFacebook: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };
 

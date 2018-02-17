@@ -2,8 +2,7 @@
 node_modules
 npm-debug.log
 .idea
-.settings/prod.json
-.settings/dev.json
 build
 local
 production.settings.json
+development.settings.json

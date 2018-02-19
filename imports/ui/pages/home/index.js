@@ -1,13 +1,15 @@
 import React from 'react';
-import Button from 'antd/lib/button';
+import Card from 'antd/lib/card';
 import MetaTags from '../../components/meta-tags';
 import metaData from './meta.json';
 
 const Home = () => (
-  <div>
+  <div className="home-page">
     <MetaTags meta={metaData} />
     <div className="container">
-      Home Page <Button>Test</Button>
+      <Card title="Home Page">
+        Nothing here for now!
+      </Card>
     </div>
   </div>
 );

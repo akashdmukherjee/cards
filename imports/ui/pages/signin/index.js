@@ -22,7 +22,7 @@ const SignIn = ({
         handleLogin(values, (error) => {
           if (error) {
             Alert.error(error.message);
-          } else { history.push('/'); }
+          } else { history.push('/admin'); }
         });
       }
     });

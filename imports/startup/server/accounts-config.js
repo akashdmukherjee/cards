@@ -13,7 +13,7 @@ Accounts.emailTemplates.resetPassword.text = (user, url) => (
 );
 
 // Create admin account
-const admin = Meteor.settings.private.adminUser;
+const admin = Meteor.settings.adminUser;
 const userExists = Accounts.findUserByEmail(admin.email);
 if (!userExists) {
   Accounts.createUser(admin);

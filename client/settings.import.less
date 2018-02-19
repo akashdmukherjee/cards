@@ -6,6 +6,7 @@
 
 @color-main-background: #f5f5f5;
 @color-main-dark: #000;
+@color-main-contrast: #001529;
 
 // Ant Design settings overwrites
 
@@ -13,3 +14,35 @@
 @control-padding-horizontal: 15px;
 @input-height-base: 46px;
 @font-family: @font-main;
+
+// Layout
+@layout-body-background      : @color-main-background;
+@layout-header-background    : #fff;
+@layout-footer-background    : @layout-body-background;
+@layout-header-height        : 64px;
+@layout-header-padding       : 0 24px;
+@layout-footer-padding       : 24px 50px;
+@layout-sider-background     : @color-main-contrast;
+@layout-trigger-height       : 48px;
+@layout-trigger-background   : @color-main-contrast;
+@layout-trigger-color        : #fff;
+@layout-zero-trigger-width   : 36px;
+@layout-zero-trigger-height  : 42px;
+
+// Menu
+// ---
+@menu-inline-toplevel-item-height: 40px;
+@menu-item-height: 40px;
+@menu-collapsed-width: 80px;
+@menu-bg: @component-background;
+@menu-item-color: @text-color;
+@menu-highlight-color: @primary-color;
+@menu-item-active-bg: @item-active-bg;
+@menu-item-group-title-color: @text-color-secondary;
+// dark theme
+@menu-dark-color: @text-color-secondary-dark;
+@menu-dark-bg: @layout-sider-background ;
+@menu-dark-arrow-color: #000;
+@menu-dark-submenu-bg: #000c17;
+@menu-dark-highlight-color: #fff;
+@menu-dark-item-selected-bg: @primary-color;

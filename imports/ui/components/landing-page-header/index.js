@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { bool, object, func } from 'prop-types';
 
-const Header = ({ isLogging, user, requestLogout }) => {
+const LandingPageHeader = ({ isLogging, user, requestLogout }) => {
   const loggedIn = () => !isLogging && user && user._id;
   return (
     <header className="header">
@@ -15,10 +15,10 @@ const Header = ({ isLogging, user, requestLogout }) => {
   );
 };
 
-Header.propTypes = {
+LandingPageHeader.propTypes = {
   isLogging: bool.isRequired,
   user: object.isRequired,
   requestLogout: func.isRequired,
 };
 
-export default Header;
+export default LandingPageHeader;

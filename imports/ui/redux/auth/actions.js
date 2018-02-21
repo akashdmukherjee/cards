@@ -22,35 +22,6 @@ export function requestLogin(values, cb) {
   });
 }
 
-export function requestLoginGoogle(cb) {
-  return dispatch => Meteor.loginWithGoogle({
-    requestPermissions: [
-      'https://www.googleapis.com/auth/userinfo.profile',
-      'https://www.googleapis.com/auth/userinfo.email',
-    ],
-  }, (error) => {
-    if (!error) {
-      if (cb && typeof cb === 'function') cb();
-      return dispatch(receiveLogin({ isLogging: false, data: Meteor.user() }));
-    }
-    if (cb && typeof cb === 'function') cb(error);
-    return error;
-  });
-}
-
-export function requestLoginFacebook(cb) {
-  return dispatch => Meteor.loginWithFacebook({
-    requestPermissions: ['public_profile, email'],
-  }, (error) => {
-    if (!error) {
-      if (cb && typeof cb === 'function') cb();
-      return dispatch(receiveLogin({ isLogging: false, data: Meteor.user() }));
-    }
-    if (cb && typeof cb === 'function') cb(error);
-    return error;
-  });
-}
-
 export function receiveLogout() {
   return {
     type: RECEIVE_LOGOUT,
@@ -70,33 +41,6 @@ export function registerUser(values, cb) {
       if (cb && typeof cb === 'function') cb(error);
       return error;
     });
-  });
-}
-
-export function registerUserGoogle(cb) {
-  return () => Meteor.loginWithGoogle({
-    requestPermissions: [
-      'https://www.googleapis.com/auth/userinfo.profile',
-      'https://www.googleapis.com/auth/userinfo.email',
-    ],
-  }, (error) => {
-    if (!error) {
-      if (cb && typeof cb === 'function') cb();
-    }
-    if (cb && typeof cb === 'function') cb(error);
-    return error;
-  });
-}
-
-export function registerUserFacebook(cb) {
-  return () => Meteor.loginWithFacebook({
-    requestPermissions: ['public_profile, email'],
-  }, (error) => {
-    if (!error) {
-      if (cb && typeof cb === 'function') cb();
-    }
-    if (cb && typeof cb === 'function') cb(error);
-    return error;
   });
 }
 

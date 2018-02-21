@@ -8,7 +8,7 @@ import {
   requestLogin,
   requestLoginGoogle,
   requestLoginFacebook,
-} from '../../api/redux/actions';
+} from '../../ui/redux/auth/actions';
 import SignIn from '../pages/signin';
 import Spinner from '../components/spinner';
 

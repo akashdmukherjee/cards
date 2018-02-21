@@ -8,8 +8,8 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
 import routes from '../both/routes';
-import mainReducer from '../../api/redux/reducers';
-import { receiveLogin } from '../../api/redux/actions';
+import mainReducer from '../../ui/redux/main-reducer';
+import { receiveLogin } from '../../ui/redux/auth/actions';
 
 const preloadedState = window.__PRELOADED_STATE__; // eslint-disable-line
 delete window.__PRELOADED_STATE__; // eslint-disable-line

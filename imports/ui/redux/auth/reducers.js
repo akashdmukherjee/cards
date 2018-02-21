@@ -1,8 +1,7 @@
-import { combineReducers } from 'redux';
-
+/* eslint-disable import/prefer-default-export */
 import { RECEIVE_LOGIN, RECEIVE_LOGOUT } from './actions';
 
-const loginReducer = (state = {}, action) => {
+export const loginReducer = (state = {}, action) => {
   switch (action.type) {
     case RECEIVE_LOGIN:
       return Object.assign({}, state, action.data);
@@ -12,9 +11,3 @@ const loginReducer = (state = {}, action) => {
       return state;
   }
 };
-
-const mainReducer = combineReducers({
-  loginReducer,
-});
-
-export default mainReducer;

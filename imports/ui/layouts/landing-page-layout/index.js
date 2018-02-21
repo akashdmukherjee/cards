@@ -4,7 +4,7 @@ import { element, oneOfType, arrayOf, object, func, bool } from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Alert from 'react-s-alert';
-import { requestLogout } from '../../../api/redux/actions';
+import { requestLogout } from '../../../ui/redux/auth/actions';
 import LandingPageHeader from '../../components/landing-page-header';
 
 const LandingPageLayout = ({

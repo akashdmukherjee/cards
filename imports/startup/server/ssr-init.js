@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import routes from '../both/routes';
-import mainReducer from '../../api/redux/reducers';
+import mainReducer from '../../ui/redux/main-reducer';
 
 onPageLoad((sink) => {
   const context = {};

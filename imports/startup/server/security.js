@@ -1,27 +1,30 @@
 import { Meteor } from 'meteor/meteor';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
+import { Entity } from '../../api/entity/collection';
 
 // Deny client side ingerention
 // We deny all because sChat uses only Methods calls
 // read more about it here: http://guide.meteor.com/security.html#allow-deny
 
 Meteor.users.deny({
-  insert() {
-    return true;
-  },
-  update() {
-    return true;
-  },
-  remove() {
-    return true;
-  },
+  insert() { return true; },
+  update() { return true; },
+  remove() { return true; },
+});
+
+Entity.deny({
+  insert() { return true; },
+  update() { return true; },
+  remove() { return true; },
 });
 
 // We limit DDP calls here
 // http://docs.meteor.com/#/full/ddpratelimiter
 
 // all Method names TODO
-const METHODS_NAMES = [];
+const METHODS_NAMES = [
+  'emailVerification',
+];
 
 // Only allow 5 list operations per connection per 2 seconds
 DDPRateLimiter.addRule({

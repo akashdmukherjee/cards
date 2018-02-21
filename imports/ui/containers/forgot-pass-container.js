@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { forgotPass } from '../../api/redux/actions';
+import { forgotPass } from '../../ui/redux/auth/actions';
 import ForgotPass from '../pages/forgot-pass';
 import Spinner from '../components/spinner';
 

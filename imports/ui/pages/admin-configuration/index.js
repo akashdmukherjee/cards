@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Alert from 'react-s-alert';
 import Card from 'antd/lib/card';
 import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
@@ -9,21 +8,17 @@ import Button from 'antd/lib/button';
 
 const FormItem = Form.Item;
 
-const AdminConfiguration = ({ form: { getFieldDecorator, validateFields } }) => {
+const AdminConfiguration = ({
+  form: { getFieldDecorator, validateFields },
+  entity,
+  requestEntityEdit,
+  isLoading,
+}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    validateFields((err) => { // values
+    validateFields((err, values) => {
       if (!err) {
-        // console.log('values: ', values);
-        // handleChangeConfiguration(values, (error) => {
-        //   if (error) {
-        //     Alert.error(error.message);
-        //   } else {
-        //     Alert.success('Saved!');
-        //   }
-        // });
-      } else {
-        Alert.error(err);
+        requestEntityEdit(values);
       }
     });
   };
@@ -36,15 +31,17 @@ const AdminConfiguration = ({ form: { getFieldDecorator, validateFields } }) => 
         <FormItem>
           {getFieldDecorator('name', {
             rules: [{ required: true, message: 'Please input the name for entity!' }],
+            initialValue: entity.name,
           })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Name" />)}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('action', {
+          {getFieldDecorator('actionName', {
             rules: [{ required: true, message: 'Please input the name for action!' }],
+            initialValue: entity.actionName,
           })(<Input prefix={<Icon type="like-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Action" />)}
         </FormItem>
         <FormItem className="admin-layout-form-actions">
-          <Button type="primary" htmlType="submit" className="admin-layout-form-button">
+          <Button loading={isLoading} type="primary" htmlType="submit" className="admin-layout-form-button">
             Save
           </Button>
         </FormItem>
@@ -55,6 +52,13 @@ const AdminConfiguration = ({ form: { getFieldDecorator, validateFields } }) => 
 
 AdminConfiguration.propTypes = {
   form: PropTypes.object.isRequired,
+  entity: PropTypes.object.isRequired,
+  requestEntityEdit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+};
+
+AdminConfiguration.defaultProps = {
+  isLoading: false,
 };
 
 export default Form.create()(AdminConfiguration);

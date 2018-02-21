@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { Redirect, Switch, Route, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AdminCMS from '../pages/admin-cms';
-import AdminConfiguration from '../pages/admin-configuration';
+import AdminConfiguration from './admin-config-container';
 import Spinner from '../components/spinner';
 
-const RegisterContainer = ({
+const AdminContainer = ({
   isLogging,
   user,
   match,
@@ -23,13 +23,13 @@ const RegisterContainer = ({
   );
 };
 
-RegisterContainer.propTypes = {
+AdminContainer.propTypes = {
   isLogging: PropTypes.bool,
   user: PropTypes.object,
   match: PropTypes.object,
 };
 
-RegisterContainer.defaultProps = {
+AdminContainer.defaultProps = {
   isLogging: false,
   user: {},
   match: {},
@@ -40,4 +40,4 @@ const mapStateToProps = state => ({
   user: state.loginReducer.data,
 });
 
-export default connect(mapStateToProps)(withRouter(RegisterContainer));
+export default connect(mapStateToProps)(withRouter(AdminContainer));

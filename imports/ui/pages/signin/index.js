@@ -48,11 +48,8 @@ const SignIn = ({
             </FormItem>
             <FormItem>
               <div>
-                <div className="float-left">
-                  <Link className="login-form-forgot" to="/forgot-password">Forgot password</Link>
-                </div>
                 <div className="float-right">
-                  Or <Link to="/signup">sign up now!</Link>
+                  <Link className="login-form-forgot" to="/forgot-password">Forgot password?</Link>
                 </div>
               </div>
               <Button type="primary" htmlType="submit" className="accounts-form-button">

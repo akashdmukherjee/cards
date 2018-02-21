@@ -28,7 +28,8 @@
     "react-s-alert": "^1.4.1",
     "react-stripe-elements": "^1.4.1",
     "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "simpl-schema": "^1.4.2"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

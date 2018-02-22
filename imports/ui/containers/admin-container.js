@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Switch, Route, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import AdminCMS from '../pages/admin-cms';
+import AdminCMSList from './admin-cms-list-container';
 import AdminConfiguration from './admin-config-container';
+import AdminCMSAdd from './admin-cms-add-container';
 import Spinner from '../components/spinner';
 
 const AdminContainer = ({
@@ -17,7 +18,8 @@ const AdminContainer = ({
   return (
     <Switch>
       <Redirect from={match.url} exact to={`${match.url}/cms`} />
-      <Route path={`${match.url}/cms`} exact component={AdminCMS} />
+      <Route path={`${match.url}/cms`} exact component={AdminCMSList} />
+      <Route path={`${match.url}/cms/add`} exact component={AdminCMSAdd} />
       <Route path={`${match.url}/configuration`} exact component={AdminConfiguration} />
     </Switch>
   );

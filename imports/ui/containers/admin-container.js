@@ -7,6 +7,7 @@ import AdminCMSList from './admin-cms-list-container';
 import AdminConfiguration from './admin-config-container';
 import AdminCMSAdd from './admin-cms-add-container';
 import Spinner from '../components/spinner';
+import NotFound from '../pages/not-found';
 
 const AdminContainer = ({
   isLogging,
@@ -21,6 +22,7 @@ const AdminContainer = ({
       <Route path={`${match.url}/cms`} exact component={AdminCMSList} />
       <Route path={`${match.url}/cms/add`} exact component={AdminCMSAdd} />
       <Route path={`${match.url}/configuration`} exact component={AdminConfiguration} />
+      <Route component={NotFound} />
     </Switch>
   );
 };

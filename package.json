@@ -29,7 +29,9 @@
     "react-stripe-elements": "^1.4.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "simpl-schema": "^1.4.2"
+    "shortid": "^2.2.8",
+    "simpl-schema": "^1.4.2",
+    "slugify": "^1.2.9"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

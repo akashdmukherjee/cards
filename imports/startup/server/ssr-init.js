@@ -9,13 +9,19 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import routes from '../both/routes';
 import mainReducer from '../../ui/redux/main-reducer';
+import { CMS } from '../../api/cms/collection';
 
 onPageLoad((sink) => {
   const context = {};
+  const cmsListInitial = CMS.find().fetch();
+  const cmsInitial = CMS.findOne({ slug: sink.request.url.path.replace('/page/', '') });
 
   const store = createStore(
     mainReducer,
-    { loginReducer: { isLogging: false, data: {} } },
+    {
+      cmsListReducer: { isLoading: false, data: cmsListInitial },
+      cmsReducer: { isLoading: false, data: cmsInitial },
+    },
     applyMiddleware(thunk),
   );
 

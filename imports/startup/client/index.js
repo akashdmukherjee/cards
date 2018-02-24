@@ -16,7 +16,7 @@ delete window.__PRELOADED_STATE__; // eslint-disable-line
 
 const store = createStore(
   mainReducer,
-  { loginReducer: { isLogging: false, data: {} } },
+  preloadedState,
   applyMiddleware(thunk),
 );
 

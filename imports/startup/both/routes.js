@@ -4,7 +4,9 @@ import { oneOfType, element, arrayOf, func } from 'prop-types';
 import MainLayout from '../../ui/layouts/main-layout';
 import LandingPageLayout from '../../ui/layouts/landing-page-layout';
 import AdminPanelLayout from '../../ui/layouts/admin-panel-layout';
-import Home from '../../ui/pages/home';
+import PageLayout from '../../ui/layouts/page-layout';
+import Home from '../../ui/containers/home-container';
+import CommonPage from '../../ui/containers/common-page-container';
 import AdminContainer from '../../ui/containers/admin-container';
 import SignIn from '../../ui/containers/signin-container';
 import ForgotPass from '../../ui/containers/forgot-pass-container';
@@ -41,6 +43,21 @@ AdminPanelRoute.propTypes = {
   component: oneOfType([arrayOf(element), element, func]).isRequired,
 };
 
+const PageRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={matchProps => (
+      <PageLayout>
+        <Component {...matchProps} />
+      </PageLayout>
+    )}
+  />
+);
+
+PageRoute.propTypes = {
+  component: oneOfType([arrayOf(element), element, func]).isRequired,
+};
+
 export default (
   <MainLayout>
     <Switch>
@@ -49,6 +66,7 @@ export default (
       <LandingPageRoute exact path="/forgot-password" component={ForgotPass} />
       <LandingPageRoute exact path="/reset-password/:token" component={ResetPass} />
       <AdminPanelRoute path="/admin" component={AdminContainer} />
+      <PageRoute exact path="/page/:slug" component={CommonPage} />
       <Route component={NotFound} />
     </Switch>
   </MainLayout>

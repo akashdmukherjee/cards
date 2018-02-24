@@ -4,16 +4,14 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
-import AdminCMSList from '../pages/admin-cms-list';
-import Spinner from '../components/spinner';
-import { requestCMSListGet, requestCMSDelete } from '../redux/cms/actions';
+import Home from '../pages/home';
+import { requestCMSListGet } from '../redux/cms/actions';
 
-class AdminCMSListContainer extends React.Component {
+class HomeContainer extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
     cmsList: PropTypes.array,
     requestCMSListGet: PropTypes.func.isRequired,
-    requestCMSDelete: PropTypes.func.isRequired,
   }
   static defaultProps = {
     isLoading: false,
@@ -30,11 +28,9 @@ class AdminCMSListContainer extends React.Component {
     const {
       isLoading,
       cmsList,
-      requestCMSDelete,
     } = this.props;
-    if (isLoading) return <Spinner />;
     return (
-      <AdminCMSList cmsList={cmsList} requestCMSDelete={requestCMSDelete} />
+      <Home cmsList={cmsList} loading={isLoading} />
     );
   }
 }
@@ -46,7 +42,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestCMSListGet,
-  requestCMSDelete,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminCMSListContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

@@ -3,7 +3,6 @@ import React from 'react';
 import { element, oneOfType, arrayOf, object, func, bool } from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Alert from 'react-s-alert';
 import { requestLogout } from '../../../ui/redux/auth/actions';
 import LandingPageHeader from '../../components/landing-page-header';
 
@@ -16,15 +15,19 @@ const LandingPageLayout = ({
   <div>
     <LandingPageHeader isLogging={isLogging} user={user} requestLogout={requestLogout} />
     {children}
-    <Alert position="top-right" stack effect="slide" />
   </div>
 );
 
 LandingPageLayout.propTypes = {
   children: oneOfType([arrayOf(element), object]).isRequired,
-  user: object.isRequired,
+  user: object,
   requestLogout: func.isRequired,
-  isLogging: bool.isRequired,
+  isLogging: bool,
+};
+
+LandingPageLayout.defaultProps = {
+  isLogging: false,
+  user: {},
 };
 
 const mapStateToProps = state => ({

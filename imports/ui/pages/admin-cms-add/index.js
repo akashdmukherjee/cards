@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import Alert from 'react-s-alert';
 import Card from 'antd/lib/card';
 import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
@@ -19,8 +20,11 @@ const AdminCMSAdd = ({
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        requestCMSAdd(values);
-        history.push('/admin/cms');
+        requestCMSAdd(values, (error) => {
+          if (error) {
+            Alert.error(error.message);
+          } else { history.push('/admin/cms'); }
+        });
       }
     });
   };
@@ -34,6 +38,11 @@ const AdminCMSAdd = ({
           {getFieldDecorator('title', {
             rules: [{ required: true, message: 'Please input the title!' }],
           })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Title" />)}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('description', {
+            rules: [{ required: true, message: 'Please input short description!' }],
+          })(<TextArea autosize={{ minRows: 6, maxRows: 10 }} placeholder="Description" />)}
         </FormItem>
         <FormItem>
           {getFieldDecorator('header', {})(<TextArea autosize={{ minRows: 6, maxRows: 10 }} placeholder="Header" />)}

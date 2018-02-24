@@ -7,6 +7,8 @@ export const CMS = new Mongo.Collection('CMS'); // eslint-disable-line
 CMS.schema = new SimpleSchema({
   header: { type: String, optional: true },
   title: { type: String },
+  slug: { type: String },
+  description: { type: String },
   // image: { type: String },
   contents: { type: String },
   footer: { type: String, optional: true },

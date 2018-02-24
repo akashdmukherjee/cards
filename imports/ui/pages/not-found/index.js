@@ -1,13 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 const NotFound = () => (
-  <div className="offer">
-    <div className="landing-subpage-lead">
-      <div className="container">
-        <div className="landing-subpage-header">404: The page was not Found</div>
-      </div>
-    </div>
-  </div>
+  <Fragment>404: The page was not Found</Fragment>
 );
 
 export default NotFound;

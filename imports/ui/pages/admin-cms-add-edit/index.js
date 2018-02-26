@@ -43,7 +43,7 @@ const AdminCMSAddEdit = ({
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        if (page && Object.keys(page).length) {
+        if (slug) {
           const extendedValues = { slug, ...values };
           requestCMSEdit(extendedValues, errorCallback);
         } else {
@@ -62,29 +62,29 @@ const AdminCMSAddEdit = ({
         <FormItem label="Title">
           {getFieldDecorator('title', {
             rules: [{ required: true, message: 'Please input the title!' }],
-            ...(page && Object.keys(page).length ? { initialValue: page.title } : {}),
+            ...(slug ? { initialValue: page.title } : {}),
           })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Title" />)}
         </FormItem>
         <FormItem label="Short description">
           {getFieldDecorator('description', {
             rules: [{ required: true, message: 'Please input short description!' }],
-            ...(page && Object.keys(page).length ? { initialValue: page.description } : {}),
+            ...(slug ? { initialValue: page.description } : {}),
           })(<TextArea autosize={{ minRows: 6, maxRows: 10 }} placeholder="Description" />)}
         </FormItem>
         <FormItem label="Code to be placed in the <head /> tag (usually styles).">
           {getFieldDecorator('header', {
-            ...(page && Object.keys(page).length ? { initialValue: page.header } : {}),
+            ...(slug ? { initialValue: page.header } : {}),
           })(<CodeMirror options={{ placeholder: '<style>...</style>', ...codeMirrorOptions }} />)}
         </FormItem>
         <FormItem label="Code to be placed in the <body /> tag">
           {getFieldDecorator('contents', {
             rules: [{ required: true, message: 'Please input page contents!' }],
-            ...(page && Object.keys(page).length ? { initialValue: page.contents } : {}),
+            ...(slug ? { initialValue: page.contents } : {}),
           })(<CodeMirror options={{ placeholder: '<div>...</div>', ...codeMirrorOptions }} />)}
         </FormItem>
         <FormItem label="Code to be placed at the end of the <body /> tag (usually scripts).">
           {getFieldDecorator('footer', {
-            ...(page && Object.keys(page).length ? { initialValue: page.footer } : {}),
+            ...(slug ? { initialValue: page.footer } : {}),
           })(<CodeMirror options={{ placeholder: '<script>...</script>', ...codeMirrorOptions }} />)}
         </FormItem>
         <FormItem className="admin-layout-form-actions">

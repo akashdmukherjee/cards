@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
 import Home from '../pages/home';
+import Spinner from '../components/spinner';
 import { requestCMSListGet } from '../redux/cms/actions';
 
 class HomeContainer extends React.Component {
@@ -29,6 +30,7 @@ class HomeContainer extends React.Component {
       isLoading,
       cmsList,
     } = this.props;
+    if (isLoading) return <Spinner />;
     return (
       <Home cmsList={cmsList} loading={isLoading} />
     );

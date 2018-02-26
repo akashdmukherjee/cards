@@ -5,7 +5,7 @@ import { Redirect, Switch, Route, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AdminCMSList from './admin-cms-list-container';
 import AdminConfiguration from './admin-config-container';
-import AdminCMSAdd from './admin-cms-add-container';
+import AdminCMSAddEdit from './admin-cms-add-edit-container';
 import Spinner from '../components/spinner';
 import NotFound from '../pages/not-found';
 
@@ -20,7 +20,8 @@ const AdminContainer = ({
     <Switch>
       <Redirect from={match.url} exact to={`${match.url}/cms`} />
       <Route path={`${match.url}/cms`} exact component={AdminCMSList} />
-      <Route path={`${match.url}/cms/add`} exact component={AdminCMSAdd} />
+      <Route path={`${match.url}/cms/add`} exact component={AdminCMSAddEdit} />
+      <Route path={`${match.url}/cms/edit/:slug`} exact component={AdminCMSAddEdit} />
       <Route path={`${match.url}/configuration`} exact component={AdminConfiguration} />
       <Route component={NotFound} />
     </Switch>

@@ -10,7 +10,7 @@ Meteor.methods({
     return CMS.findOne({ slug });
   },
   'cms.methods.getList': () => {
-    if (Meteor.userId()) { return CMS.find().fetch(); }
+    if (Meteor.userId()) { return CMS.find({}).fetch().reverse(); }
     return null;
   },
   'cms.methods.add': (title, description, header, contents, footer) => {
@@ -29,6 +29,28 @@ Meteor.methods({
         contents,
         footer,
       });
+    }
+  },
+  'cms.methods.edit': (slug, title, description, header, contents, footer) => {
+    check(title, String);
+    check(description, String);
+    check(contents, String);
+    check(slug, String);
+    check(header, Match.Maybe(String));
+    check(footer, Match.Maybe(String));
+    if (Meteor.userId()) {
+      CMS.update(
+        { slug },
+        {
+          $set: {
+            title,
+            description,
+            header,
+            contents,
+            footer,
+          },
+        },
+      );
     }
   },
   'cms.methods.delete': (id) => {

@@ -73,6 +73,25 @@ export function requestCMSAdd(values, cb) {
   };
 }
 
+export function requestCMSEdit(values, cb) {
+  Meteor.call(
+    'cms.methods.edit',
+    values.slug,
+    values.title,
+    values.description,
+    values.header,
+    values.contents,
+    values.footer,
+    (error) => {
+      if (!error) {
+        if (cb && typeof cb === 'function') cb();
+      }
+      if (cb && typeof cb === 'function') cb(error);
+      return error;
+    },
+  );
+}
+
 export function requestCMSDelete(id, cb) {
   return (dispatch) => {
     Meteor.call(

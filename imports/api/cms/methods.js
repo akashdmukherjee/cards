@@ -9,10 +9,7 @@ Meteor.methods({
     check(slug, String);
     return CMS.findOne({ slug });
   },
-  'cms.methods.getList': () => {
-    if (Meteor.userId()) { return CMS.find({}).fetch().reverse(); }
-    return null;
-  },
+  'cms.methods.getList': () => CMS.find({}).fetch().reverse(),
   'cms.methods.add': (title, description, header, contents, footer) => {
     check(title, String);
     check(description, String);

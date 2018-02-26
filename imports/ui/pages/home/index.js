@@ -12,7 +12,7 @@ const Home = ({ cmsList, loading }) => (
     <div className="container">
       <List
         grid={{ gutter: 16, column: 4 }}
-        dataSource={cmsList}
+        dataSource={cmsList || []}
         loading={loading}
         renderItem={item => (
           <List.Item>

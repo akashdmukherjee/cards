@@ -13,6 +13,8 @@ CMS.schema = new SimpleSchema({
   // image: { type: String },
   contents: { type: String },
   footer: { type: String, optional: true },
+  tags: { type: Array },
+  'tags.$': { type: String },
 }, { check });
 
 CMS.attachSchema(CMS.schema);

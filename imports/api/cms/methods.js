@@ -10,12 +10,13 @@ Meteor.methods({
     return CMS.findOne({ slug });
   },
   'cms.methods.getList': () => CMS.find({}).fetch().reverse(),
-  'cms.methods.add': (title, description, header, contents, footer) => {
+  'cms.methods.add': (title, description, header, contents, footer, tags) => {
     check(title, String);
     check(description, String);
     check(contents, String);
     check(header, Match.Maybe(String));
     check(footer, Match.Maybe(String));
+    check(tags, Array);
     if (Meteor.userId()) {
       const slug = `${slugify(title, { remove: /[$*_+~.()'"!\-:@]/g, lower: true })}-${shortid()}`;
       CMS.insert({
@@ -25,16 +26,18 @@ Meteor.methods({
         header,
         contents,
         footer,
+        tags,
       });
     }
   },
-  'cms.methods.edit': (slug, title, description, header, contents, footer) => {
+  'cms.methods.edit': (slug, title, description, header, contents, footer, tags) => {
     check(title, String);
     check(description, String);
     check(contents, String);
     check(slug, String);
     check(header, Match.Maybe(String));
     check(footer, Match.Maybe(String));
+    check(tags, Array);
     if (Meteor.userId()) {
       CMS.update(
         { slug },
@@ -45,6 +48,7 @@ Meteor.methods({
             header,
             contents,
             footer,
+            tags,
           },
         },
       );

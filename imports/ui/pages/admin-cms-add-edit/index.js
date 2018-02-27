@@ -7,6 +7,7 @@ import Card from 'antd/lib/card';
 import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
 import Input, { TextArea } from 'antd/lib/input';
+import Select, { Option } from 'antd/lib/select';
 import Button from 'antd/lib/button';
 
 if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
@@ -33,6 +34,8 @@ const AdminCMSAddEdit = ({
   history,
   page,
   slug,
+  requestTagsAdd,
+  tags,
 }) => {
   const errorCallback = (error) => {
     if (error) {
@@ -42,7 +45,13 @@ const AdminCMSAddEdit = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     validateFields((err, values) => {
+      const onlyUniq = (value, index, self) => self.indexOf(value) === index;
+      const dbTagsNames = tags.map(tag => tag.name);
+      const allTags = dbTagsNames.concat(values.tags);
+      const allUniqTags = allTags.filter(onlyUniq);
+      const alllNewTags = allUniqTags.filter(tag => dbTagsNames.indexOf(tag) === -1);
       if (!err) {
+        requestTagsAdd(alllNewTags);
         if (slug) {
           const extendedValues = { slug, ...values };
           requestCMSEdit(extendedValues, errorCallback);
@@ -53,6 +62,9 @@ const AdminCMSAddEdit = ({
       return null;
     });
   };
+  const tagsOptions = () => tags.map(tag => (
+    <Option key={tag.name}>{tag.name}</Option>
+  ));
   return (
     <Card title="CMS Add New Item">
       <Form onSubmit={handleSubmit} className="admin-layout-form">
@@ -87,6 +99,11 @@ const AdminCMSAddEdit = ({
             ...(slug ? { initialValue: page.footer } : {}),
           })(<CodeMirror options={{ placeholder: '<script>...</script>', ...codeMirrorOptions }} />)}
         </FormItem>
+        <FormItem label="Tags">
+          {getFieldDecorator('tags', {
+            ...(slug ? { initialValue: page.tags } : {}),
+          })(<Select mode="tags" placeholder="Tags">{tagsOptions()}</Select>)}
+        </FormItem>
         <FormItem className="admin-layout-form-actions">
           <Button loading={isLoading} type="primary" htmlType="submit" className="admin-layout-form-button">
             Save
@@ -105,11 +122,14 @@ AdminCMSAddEdit.propTypes = {
   history: PropTypes.object.isRequired,
   page: PropTypes.object,
   slug: PropTypes.string,
+  requestTagsAdd: PropTypes.func.isRequired,
+  tags: PropTypes.array,
 };
 
 AdminCMSAddEdit.defaultProps = {
   isLoading: false,
   page: {},
+  tags: [],
   slug: '',
 };
 

@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 
 export const RECEIVE_CMS_LIST_GET = 'RECEIVE_CMS_LIST_GET';
 export const RECEIVE_CMS_GET = 'RECEIVE_CMS_GET';
-export const RECEIVE_CMS_ADD = 'RECEIVE_CMS_ADD';
 
 export function receiveCMSGet(data) {
   return {
@@ -62,6 +61,7 @@ export function requestCMSAdd(values, cb) {
       values.header,
       values.contents,
       values.footer,
+      values.tags,
       (error) => {
         if (!error) {
           if (cb && typeof cb === 'function') cb();
@@ -82,6 +82,7 @@ export function requestCMSEdit(values, cb) {
     values.header,
     values.contents,
     values.footer,
+    values.tags,
     (error) => {
       if (!error) {
         if (cb && typeof cb === 'function') cb();

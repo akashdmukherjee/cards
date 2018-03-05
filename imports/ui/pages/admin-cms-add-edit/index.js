@@ -9,6 +9,7 @@ import Icon from 'antd/lib/icon';
 import Input, { TextArea } from 'antd/lib/input';
 import Select, { Option } from 'antd/lib/select';
 import Button from 'antd/lib/button';
+import UploadImage from '../../components/upload-image';
 
 if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
   import('codemirror/mode/htmlmixed/htmlmixed');
@@ -26,111 +27,127 @@ const codeMirrorOptions = {
   mode: 'htmlmixed',
 };
 
-const AdminCMSAddEdit = ({
-  form: { getFieldDecorator, validateFields },
-  requestCMSAdd,
-  requestCMSEdit,
-  isLoading,
-  history,
-  page,
-  slug,
-  requestTagsAdd,
-  tags,
-}) => {
-  const errorCallback = (error) => {
+class AdminCMSAddEdit extends React.Component {
+  static propTypes = {
+    form: PropTypes.object.isRequired,
+    requestCMSAdd: PropTypes.func.isRequired,
+    requestCMSEdit: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
+    history: PropTypes.object.isRequired,
+    page: PropTypes.object,
+    slug: PropTypes.string,
+    requestTagsAdd: PropTypes.func.isRequired,
+    tags: PropTypes.array,
+  }
+  static defaultProps = {
+    isLoading: false,
+    page: {},
+    tags: [],
+    slug: '',
+  }
+  state = {
+    imageFileData: this.props.page.image || null,
+  }
+  getFileData = (fileData) => {
+    this.setState({ imageFileData: fileData });
+  }
+  errorCallback = (error) => {
     if (error) {
       Alert.error(error.message);
-    } else { history.push('/admin/cms'); }
-  };
-  const handleSubmit = (e) => {
+    } else { this.props.history.push('/admin/cms'); }
+  }
+  handleSubmit = (e) => {
     e.preventDefault();
-    validateFields((err, values) => {
+    this.props.form.validateFields((err, values) => {
       const onlyUniq = (value, index, self) => self.indexOf(value) === index;
-      const dbTagsNames = tags.map(tag => tag.name);
+      const dbTagsNames = this.props.tags.map(tag => tag.name);
       const allTags = dbTagsNames.concat(values.tags);
       const allUniqTags = allTags.filter(onlyUniq);
       const alllNewTags = allUniqTags.filter(tag => dbTagsNames.indexOf(tag) === -1);
       if (!err) {
-        requestTagsAdd(alllNewTags);
-        if (slug) {
+        this.props.requestTagsAdd(alllNewTags);
+        if (this.props.slug) {
+          const { slug } = this.props;
           const extendedValues = { slug, ...values };
-          requestCMSEdit(extendedValues, errorCallback);
+          this.props.requestCMSEdit(
+            { image: this.state.imageFileData, ...extendedValues },
+            this.errorCallback,
+          );
         } else {
-          requestCMSAdd(values, errorCallback);
+          this.props.requestCMSAdd(
+            { image: this.state.imageFileData, ...values },
+            this.errorCallback,
+          );
         }
       }
       return null;
     });
-  };
-  const tagsOptions = () => tags.map(tag => (
+  }
+  tagsOptions = () => this.props.tags.map(tag => (
     <Option key={tag.name}>{tag.name}</Option>
-  ));
-  return (
-    <Card title="CMS Add New Item">
-      <Form onSubmit={handleSubmit} className="admin-layout-form">
-        <div className="admin-layout-form-title">
-          Item contents
-        </div>
-        <FormItem label="Title">
-          {getFieldDecorator('title', {
-            rules: [{ required: true, message: 'Please input the title!' }],
-            ...(slug ? { initialValue: page.title } : {}),
-          })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Title" />)}
-        </FormItem>
-        <FormItem label="Short description">
-          {getFieldDecorator('description', {
-            rules: [{ required: true, message: 'Please input short description!' }],
-            ...(slug ? { initialValue: page.description } : {}),
-          })(<TextArea autosize={{ minRows: 6, maxRows: 10 }} placeholder="Description" />)}
-        </FormItem>
-        <FormItem label="Code to be placed in the <head /> tag (usually styles).">
-          {getFieldDecorator('header', {
-            ...(slug ? { initialValue: page.header } : {}),
-          })(<CodeMirror options={{ placeholder: '<style>...</style>', ...codeMirrorOptions }} />)}
-        </FormItem>
-        <FormItem label="Code to be placed in the <body /> tag">
-          {getFieldDecorator('contents', {
-            rules: [{ required: true, message: 'Please input page contents!' }],
-            ...(slug ? { initialValue: page.contents } : {}),
-          })(<CodeMirror options={{ placeholder: '<div>...</div>', ...codeMirrorOptions }} />)}
-        </FormItem>
-        <FormItem label="Code to be placed at the end of the <body /> tag (usually scripts).">
-          {getFieldDecorator('footer', {
-            ...(slug ? { initialValue: page.footer } : {}),
-          })(<CodeMirror options={{ placeholder: '<script>...</script>', ...codeMirrorOptions }} />)}
-        </FormItem>
-        <FormItem label="Tags">
-          {getFieldDecorator('tags', {
-            ...(slug ? { initialValue: page.tags } : {}),
-          })(<Select mode="tags" placeholder="Tags">{tagsOptions()}</Select>)}
-        </FormItem>
-        <FormItem className="admin-layout-form-actions">
-          <Button loading={isLoading} type="primary" htmlType="submit" className="admin-layout-form-button">
-            Save
-          </Button>
-        </FormItem>
-      </Form>
-    </Card>
-  );
-};
-
-AdminCMSAddEdit.propTypes = {
-  form: PropTypes.object.isRequired,
-  requestCMSAdd: PropTypes.func.isRequired,
-  requestCMSEdit: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
-  history: PropTypes.object.isRequired,
-  page: PropTypes.object,
-  slug: PropTypes.string,
-  requestTagsAdd: PropTypes.func.isRequired,
-  tags: PropTypes.array,
-};
-
-AdminCMSAddEdit.defaultProps = {
-  isLoading: false,
-  page: {},
-  tags: [],
-  slug: '',
-};
+  ))
+  render() {
+    const {
+      form: { getFieldDecorator },
+      isLoading,
+      page,
+      slug,
+    } = this.props;
+    return (
+      <Card title="CMS Add New Item">
+        <Form onSubmit={this.handleSubmit} className="admin-layout-form">
+          <div className="admin-layout-form-title">
+            Item contents
+          </div>
+          <FormItem label="Image (click and choose or drop an image)">
+            <UploadImage
+              initialImageData={slug ? page.image : null}
+              getFileData={this.getFileData}
+              imageTransform="w_700,c_limit"
+            />
+          </FormItem>
+          <FormItem label="Title">
+            {getFieldDecorator('title', {
+              rules: [{ required: true, message: 'Please input the title!' }],
+              ...(slug ? { initialValue: page.title } : {}),
+            })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Title" />)}
+          </FormItem>
+          <FormItem label="Short description">
+            {getFieldDecorator('description', {
+              rules: [{ required: true, message: 'Please input short description!' }],
+              ...(slug ? { initialValue: page.description } : {}),
+            })(<TextArea autosize={{ minRows: 6, maxRows: 10 }} placeholder="Description" />)}
+          </FormItem>
+          <FormItem label="Code to be placed in the <head /> tag (usually styles).">
+            {getFieldDecorator('header', {
+              ...(slug ? { initialValue: page.header } : {}),
+            })(<CodeMirror options={{ placeholder: '<style>...</style>', ...codeMirrorOptions }} />)}
+          </FormItem>
+          <FormItem label="Code to be placed in the <body /> tag">
+            {getFieldDecorator('contents', {
+              rules: [{ required: true, message: 'Please input page contents!' }],
+              ...(slug ? { initialValue: page.contents } : {}),
+            })(<CodeMirror options={{ placeholder: '<div>...</div>', ...codeMirrorOptions }} />)}
+          </FormItem>
+          <FormItem label="Code to be placed at the end of the <body /> tag (usually scripts).">
+            {getFieldDecorator('footer', {
+              ...(slug ? { initialValue: page.footer } : {}),
+            })(<CodeMirror options={{ placeholder: '<script>...</script>', ...codeMirrorOptions }} />)}
+          </FormItem>
+          <FormItem label="Tags">
+            {getFieldDecorator('tags', {
+              ...(slug ? { initialValue: page.tags } : {}),
+            })(<Select mode="tags" placeholder="Tags">{this.tagsOptions()}</Select>)}
+          </FormItem>
+          <FormItem className="admin-layout-form-actions">
+            <Button loading={isLoading} type="primary" htmlType="submit" className="admin-layout-form-button">
+              Save
+            </Button>
+          </FormItem>
+        </Form>
+      </Card>
+    );
+  }
+}
 
 export default Form.create()(withRouter(AdminCMSAddEdit));

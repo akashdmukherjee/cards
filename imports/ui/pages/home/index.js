@@ -5,6 +5,7 @@ import List from 'antd/lib/list';
 import Button from 'antd/lib/button';
 import Tag from 'antd/lib/tag';
 import MetaTags from '../../components/meta-tags';
+import imageUrlHelper from '../../utils/image-url-helper';
 import metaData from './meta.json';
 
 const Home = ({ cmsList, loading }) => (
@@ -18,6 +19,19 @@ const Home = ({ cmsList, loading }) => (
         renderItem={item => (
           <List.Item>
             <Card title={item.title}>
+              {item.image && (
+                <div className="home-page-item-image-container">
+                  <img
+                    src={imageUrlHelper(
+                      item.image.version,
+                      item.image.publicId,
+                      item.image.format,
+                      'w_300,c_limit',
+                    )}
+                    alt={item.title}
+                  />
+                </div>
+              )}
               <div>{item.description}</div>
               <div>{item.tags.map(tag => <Tag key={tag}>{tag}</Tag>)}</div>
               <Button type="primary" href={`/page/${item.slug}`}>Go to page!</Button>

@@ -56,6 +56,7 @@ export function requestCMSAdd(values, cb) {
   return () => {
     Meteor.call(
       'cms.methods.add',
+      values.image,
       values.title,
       values.description,
       values.header,
@@ -77,6 +78,7 @@ export function requestCMSEdit(values, cb) {
   Meteor.call(
     'cms.methods.edit',
     values.slug,
+    values.image,
     values.title,
     values.description,
     values.header,

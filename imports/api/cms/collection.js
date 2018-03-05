@@ -10,10 +10,13 @@ CMS.schema = new SimpleSchema({
   title: { type: String },
   slug: { type: String },
   description: { type: String },
-  // image: { type: String },
+  image: { type: Object },
+  'image.version': { type: String },
+  'image.publicId': { type: String },
+  'image.format': { type: String },
   contents: { type: String },
   footer: { type: String, optional: true },
-  tags: { type: Array },
+  tags: { type: Array, optional: true },
   'tags.$': { type: String },
 }, { check });
 

@@ -8,8 +8,7 @@ const LandingPageHeader = ({ isLogging, user, requestLogout }) => {
     <header className="header">
       <nav className="container header-nav">
         <Link to="/">Home</Link>
-        {!loggedIn() ? <Link to="/signin">Sign In</Link> : null}
-        {loggedIn() ? (<><Link to="/admin">Admin</Link><a href="#" onClick={requestLogout}>Sign Out</a></>) : null}
+        {loggedIn() ? <a href="#" onClick={requestLogout}>Sign Out</a> : null}
       </nav>
     </header>
   );

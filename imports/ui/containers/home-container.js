@@ -7,19 +7,30 @@ import Alert from 'react-s-alert';
 import Home from '../pages/home';
 import Spinner from '../components/spinner';
 import { requestCMSListGet } from '../redux/cms/actions';
+import { requestTagsGet } from '../redux/tags/actions';
 
 class HomeContainer extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
+    isLoadingTags: PropTypes.bool,
     cmsList: PropTypes.array,
     requestCMSListGet: PropTypes.func.isRequired,
+    requestTagsGet: PropTypes.func.isRequired,
+    tagsList: PropTypes.array,
   }
   static defaultProps = {
     isLoading: false,
+    isLoadingTags: false,
     cmsList: [],
+    tagsList: [],
   }
   componentDidMount() {
     this.props.requestCMSListGet((error) => {
+      if (error) {
+        Alert.error(error.message);
+      }
+    });
+    this.props.requestTagsGet((error) => {
       if (error) {
         Alert.error(error.message);
       }
@@ -29,10 +40,12 @@ class HomeContainer extends React.Component {
     const {
       isLoading,
       cmsList,
+      tagsList,
+      isLoadingTags,
     } = this.props;
-    if (isLoading) return <Spinner />;
+    if (isLoading || isLoadingTags) return <Spinner />;
     return (
-      <Home cmsList={cmsList} loading={isLoading} />
+      <Home cmsList={cmsList} tagsList={tagsList} />
     );
   }
 }
@@ -40,10 +53,13 @@ class HomeContainer extends React.Component {
 const mapStateToProps = state => ({
   isLoading: state.cmsListReducer.isLoading,
   cmsList: state.cmsListReducer.data,
+  isLoadingTags: state.tagsReducer.isLoading,
+  tagsList: state.tagsReducer.data,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestCMSListGet,
+  requestTagsGet,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

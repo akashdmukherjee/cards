@@ -10,17 +10,20 @@ import { Helmet } from 'react-helmet';
 import routes from '../both/routes';
 import mainReducer from '../../ui/redux/main-reducer';
 import { CMS } from '../../api/cms/collection';
+import { Tags } from '../../api/tags/collection';
 
 onPageLoad((sink) => {
   const context = {};
   const cmsListInitial = CMS.find().fetch();
   const cmsInitial = CMS.findOne({ slug: sink.request.url.path.replace('/page/', '') });
+  const tagsInitial = Tags.find().fetch();
 
   const store = createStore(
     mainReducer,
     {
       cmsListReducer: { isLoading: false, data: cmsListInitial },
       cmsReducer: { isLoading: false, data: cmsInitial },
+      tagsReducer: { isLoading: false, data: tagsInitial },
     },
     applyMiddleware(thunk),
   );

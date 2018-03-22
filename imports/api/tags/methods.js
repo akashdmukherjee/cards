@@ -10,10 +10,5 @@ Meteor.methods({
       tags.forEach(tag => Tags.insert({ name: tag }));
     }
   },
-  'tags.methods.get': () => {
-    if (Meteor.userId()) {
-      return Tags.find().fetch();
-    }
-    return null;
-  },
+  'tags.methods.get': () => Tags.find().fetch(),
 });

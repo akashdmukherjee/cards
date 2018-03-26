@@ -8,8 +8,10 @@ import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
 import Input, { TextArea } from 'antd/lib/input';
 import Select, { Option } from 'antd/lib/select';
+import { Button as RadioButton, Group as RadioGroup } from 'antd/lib/radio';
 import Button from 'antd/lib/button';
 import UploadImage from '../../components/upload-image';
+import Video from '../../components/video';
 
 if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
   import('codemirror/mode/htmlmixed/htmlmixed');
@@ -47,9 +49,14 @@ class AdminCMSAddEdit extends React.Component {
   }
   state = {
     imageFileData: this.props.page.image || null,
+    videoUrl: this.props.page.video || null,
+    postType: this.props.page.type || 'text',
   }
   getFileData = (fileData) => {
     this.setState({ imageFileData: fileData });
+  }
+  getVideoUrl = (videoUrl) => {
+    this.setState({ videoUrl });
   }
   errorCallback = (error) => {
     if (error) {
@@ -70,12 +77,12 @@ class AdminCMSAddEdit extends React.Component {
           const { slug } = this.props;
           const extendedValues = { slug, ...values };
           this.props.requestCMSEdit(
-            { image: this.state.imageFileData, ...extendedValues },
+            { image: this.state.imageFileData, video: this.state.videoUrl, ...extendedValues },
             this.errorCallback,
           );
         } else {
           this.props.requestCMSAdd(
-            { image: this.state.imageFileData, ...values },
+            { image: this.state.imageFileData, video: this.state.videoUrl, ...values },
             this.errorCallback,
           );
         }
@@ -86,6 +93,11 @@ class AdminCMSAddEdit extends React.Component {
   tagsOptions = () => this.props.tags.map(tag => (
     <Option key={tag.name}>{tag.name}</Option>
   ))
+  handlePostTypeChange = (e) => {
+    this.setState({
+      postType: e.target.value,
+    });
+  }
   render() {
     const {
       form: { getFieldDecorator },
@@ -99,13 +111,31 @@ class AdminCMSAddEdit extends React.Component {
           <div className="admin-layout-form-title">
             Item contents
           </div>
-          <FormItem label="Image (click and choose or drop an image)">
-            <UploadImage
-              initialImageData={slug ? page.image : null}
-              getFileData={this.getFileData}
-              imageTransform="w_700,c_limit"
-            />
+          <FormItem label="Post type">
+            {getFieldDecorator('type', {
+              ...(slug ? { initialValue: page.type } : { initialValue: 'text' }),
+            })(
+              <RadioGroup onChange={this.handlePostTypeChange}>
+                <RadioButton value="text">Text</RadioButton>
+                <RadioButton value="image">Image</RadioButton>
+                <RadioButton value="video">Video</RadioButton>
+              </RadioGroup>,
+            )}
           </FormItem>
+          {this.state.postType === 'image' ? (
+            <FormItem label="Image (click and choose or drop an image)">
+              <UploadImage
+                initialImageData={slug ? page.image : null}
+                getFileData={this.getFileData}
+                imageTransform="w_700,c_limit"
+              />
+            </FormItem>
+          ) : null}
+          {this.state.postType === 'video' ? (
+            <FormItem label="Video">
+              <Video videoUrl={this.state.videoUrl} getVideoUrl={this.getVideoUrl} />
+            </FormItem>
+          ) : null}
           <FormItem label="Title">
             {getFieldDecorator('title', {
               rules: [{ required: true, message: 'Please input the title!' }],

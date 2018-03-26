@@ -10,14 +10,16 @@ CMS.schema = new SimpleSchema({
   title: { type: String },
   slug: { type: String },
   description: { type: String },
-  image: { type: Object },
+  image: { type: Object, optional: true },
   'image.version': { type: String },
   'image.publicId': { type: String },
   'image.format': { type: String },
+  video: { type: String, optional: true },
   contents: { type: String },
   footer: { type: String, optional: true },
   tags: { type: Array, optional: true },
   'tags.$': { type: String },
+  type: { type: String },
 }, { check });
 
 CMS.attachSchema(CMS.schema);

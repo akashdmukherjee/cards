@@ -11,7 +11,17 @@ Meteor.methods({
     return CMS.findOne({ slug });
   },
   'cms.methods.getList': () => CMS.find({}).fetch().reverse(),
-  'cms.methods.add': (image, title, description, header, contents, footer, tags) => {
+  'cms.methods.add': (
+    image,
+    title,
+    description,
+    header,
+    contents,
+    footer,
+    tags,
+    video,
+    type,
+  ) => {
     check(image, Match.Maybe(Object));
     check(title, String);
     check(description, String);
@@ -19,6 +29,8 @@ Meteor.methods({
     check(header, Match.Maybe(String));
     check(footer, Match.Maybe(String));
     check(tags, Match.Maybe(Array));
+    check(video, Match.Maybe(String));
+    check(type, String);
     if (Meteor.userId()) {
       const slug = `${slugify(title, { remove: /[$*_+~.()'"!\-:@]/g, lower: true })}-${shortid()}`;
       CMS.insert({
@@ -30,10 +42,23 @@ Meteor.methods({
         contents,
         footer,
         tags,
+        video,
+        type,
       });
     }
   },
-  'cms.methods.edit': (slug, image, title, description, header, contents, footer, tags) => {
+  'cms.methods.edit': (
+    slug,
+    image,
+    title,
+    description,
+    header,
+    contents,
+    footer,
+    tags,
+    video,
+    type,
+  ) => {
     check(image, Match.Maybe(Object));
     check(title, String);
     check(description, String);
@@ -42,6 +67,8 @@ Meteor.methods({
     check(header, Match.Maybe(String));
     check(footer, Match.Maybe(String));
     check(tags, Match.Maybe(Array));
+    check(video, Match.Maybe(String));
+    check(type, String);
     if (Meteor.userId()) {
       CMS.update(
         { slug },
@@ -54,6 +81,8 @@ Meteor.methods({
             contents,
             footer,
             tags,
+            video,
+            type,
           },
         },
       );

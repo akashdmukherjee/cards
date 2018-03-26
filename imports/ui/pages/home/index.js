@@ -6,6 +6,7 @@ import List from 'antd/lib/list';
 import Tag, { CheckableTag } from 'antd/lib/tag';
 import Icon from 'antd/lib/icon';
 import MetaTags from '../../components/meta-tags';
+import Video from '../../components/video';
 import imageUrlHelper from '../../utils/image-url-helper';
 import isCommonArrElem from '../../utils/is-common-arr-elem';
 import metaData from './meta.json';
@@ -112,7 +113,7 @@ class Home extends React.Component {
                   </div>
                   {item.image && (
                     <div className="home-page-item-image-container">
-                      <img
+                      {item.type === 'image' ? <img
                         src={imageUrlHelper(
                           item.image.version,
                           item.image.publicId,
@@ -120,9 +121,10 @@ class Home extends React.Component {
                           'w_400,c_limit',
                         )}
                         alt={item.title}
-                      />
+                      /> : null}
                     </div>
                   )}
+                  {item.type === 'video' ? <Video videoUrl={item.video} readOnly /> : null}
                   <div className="home-page-item-content">
                     <div className="home-page-item-title">{item.title}</div>
                     <div className="home-page-item-description">{item.description}</div>

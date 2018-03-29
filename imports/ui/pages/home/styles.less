@@ -38,6 +38,7 @@
   .clearfix;
 
   &.absolute {
+    z-index: 1;
     position: absolute;
     right: 10px;
     top: 10px;
@@ -55,9 +56,39 @@
 .home-page-item-icon {
   background-color: #f82b60;
   color: #fff;
-  font-size: 22px;
-  padding: 8px;
+  font-size: 18px;
+  padding: 7px;
   line-height: 1;
   border-radius: 5px;
   float: right;
+}
+
+.home-page-title-wrapper {
+  .clearfix;
+  margin-bottom: 20px;
+}
+
+.home-page-title {
+  float: left;
+}
+
+.home-page-search {
+  float: right;
+  border: 0;
+  padding: 10px 15px;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  outline: 0;
+}
+
+.home-page-sort {
+  padding: 10px 15px;
+  float: right;
+  border: 0;
+  background-color: #fff;
+  color: #000;
+  outline: none;
+  margin-left: 10px;
+  cursor: pointer;
 }

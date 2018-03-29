@@ -88,7 +88,11 @@ class Home extends React.Component {
       <div className="home-page">
         <MetaTags meta={metaData} />
         <div className="container">
-          <button onClick={this.handleSort}>Sort</button>
+          <div className="home-page-title-wrapper">
+            <h1 className="home-page-title">Homepage title</h1>
+            <button className="home-page-sort" onClick={this.handleSort}>Sort</button>
+            <input ref={(input) => { this.searchInput = input; }} type="text" placeholder="Search..." onChange={this.handleSearch} className="home-page-search" />
+          </div>
           {this.props.tagsList && this.props.tagsList.map(tag => (
             <CheckableTag
               key={tag._id}
@@ -98,7 +102,6 @@ class Home extends React.Component {
               {tag.name}
             </CheckableTag>
           ))}
-          <input ref={(input) => { this.searchInput = input; }} type="text" placeholder="Search..." onChange={this.handleSearch} />
           <FlipMove maintainContainerHeight easing="ease-out">
             {this.state.homeItemsList.map(item => (
               <List.Item key={item.slug} className="home-page-item">
@@ -107,11 +110,14 @@ class Home extends React.Component {
                   onClick={() => this.handleCardClick(item.slug)}
                   bodyStyle={{ padding: 0, position: 'relative' }}
                 >
-                  <div className={`home-item-name-icon ${item.image ? 'absolute' : ''}`}>
-                    <div className="home-page-item-name">Name</div>
-                    <div className="home-page-item-icon"><Icon type="picture" /></div>
+                  <div className={`home-item-name-icon ${item.image || item.video ? 'absolute' : ''}`}>
+                    <div className="home-page-item-icon">
+                      {item.type === 'image' ? <Icon type="picture" /> : null}
+                      {item.type === 'video' ? <Icon type="video-camera" /> : null}
+                      {item.type === 'text' ? <Icon type="edit" /> : null}
+                    </div>
                   </div>
-                  {item.image && (
+                  {(item.image || item.video) && (
                     <div className="home-page-item-image-container">
                       {item.type === 'image' ? <img
                         src={imageUrlHelper(
@@ -122,9 +128,9 @@ class Home extends React.Component {
                         )}
                         alt={item.title}
                       /> : null}
+                      {item.type === 'video' ? <Video videoUrl={item.video} readOnly noMargin /> : null}
                     </div>
                   )}
-                  {item.type === 'video' ? <Video videoUrl={item.video} readOnly /> : null}
                   <div className="home-page-item-content">
                     <div className="home-page-item-title">{item.title}</div>
                     <div className="home-page-item-description">{item.description}</div>

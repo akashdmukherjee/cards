@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
 import Card from 'antd/lib/card';
 import List from 'antd/lib/list';
-import Tag, { CheckableTag } from 'antd/lib/tag';
+import { CheckableTag } from 'antd/lib/tag';
 import Icon from 'antd/lib/icon';
 import MetaTags from '../../components/meta-tags';
 import Video from '../../components/video';
@@ -107,7 +107,6 @@ class Home extends React.Component {
               <List.Item key={item.slug} className="home-page-item">
                 <Card
                   hoverable
-                  onClick={() => this.handleCardClick(item.slug)}
                   bodyStyle={{ padding: 0, position: 'relative' }}
                 >
                   <div className={`home-item-name-icon ${item.image || item.video ? 'absolute' : ''}`}>
@@ -132,9 +131,24 @@ class Home extends React.Component {
                     </div>
                   )}
                   <div className="home-page-item-content">
-                    <div className="home-page-item-title">{item.title}</div>
-                    <div className="home-page-item-description">{item.description}</div>
-                    <div>{item.tags.map(tag => <Tag key={tag}>{tag}</Tag>)}</div>
+                    <div className="home-page-item-tags">
+                      {item.tags.map(tag => <span key={tag}>{tag}</span>)}
+                    </div>
+                    <div className="home-page-item-title">
+                      {item.title}
+                    </div>
+                    <div className="home-page-item-description">
+                      {item.description}
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => this.handleCardClick(item.slug)}
+                        className="home-page-item-button"
+                      >
+                        Read more
+                      </button>
+                    </div>
                   </div>
                 </Card>
               </List.Item>

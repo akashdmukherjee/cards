@@ -28,7 +28,7 @@ class Home extends React.Component {
   }
   handleCardClick = (slug) => {
     if (window) {
-      window.location = `/page/${slug}`;
+      window.location = `/post/${slug}`;
     }
   }
   handleTagSearch = (tagName) => {
@@ -132,7 +132,9 @@ class Home extends React.Component {
                   )}
                   <div className="home-page-item-content">
                     <div className="home-page-item-tags">
-                      {item.tags.map(tag => <span key={tag}>{tag}</span>)}
+                      {item.tags.map(tag => (
+                        <span className="home-page-item-tag" key={tag}>{tag}</span>
+                      ))}
                     </div>
                     <div className="home-page-item-title">
                       {item.title}

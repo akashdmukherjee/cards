@@ -15,6 +15,7 @@ CMS.schema = new SimpleSchema({
   'image.publicId': { type: String },
   'image.format': { type: String },
   video: { type: String, optional: true },
+  defaultPostView: { type: Boolean },
   contents: { type: String },
   footer: { type: String, optional: true },
   tags: { type: Array, optional: true },

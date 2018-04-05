@@ -21,6 +21,7 @@ Meteor.methods({
     tags,
     video,
     type,
+    defaultPostView,
   ) => {
     check(image, Match.Maybe(Object));
     check(title, String);
@@ -31,6 +32,7 @@ Meteor.methods({
     check(tags, Match.Maybe(Array));
     check(video, Match.Maybe(String));
     check(type, String);
+    check(defaultPostView, Boolean);
     if (Meteor.userId()) {
       const slug = `${slugify(title, { remove: /[$*_+~.()'"!\-:@]/g, lower: true })}-${shortid()}`;
       CMS.insert({
@@ -44,6 +46,7 @@ Meteor.methods({
         tags,
         video,
         type,
+        defaultPostView,
       });
     }
   },
@@ -58,6 +61,7 @@ Meteor.methods({
     tags,
     video,
     type,
+    defaultPostView,
   ) => {
     check(image, Match.Maybe(Object));
     check(title, String);
@@ -69,6 +73,7 @@ Meteor.methods({
     check(tags, Match.Maybe(Array));
     check(video, Match.Maybe(String));
     check(type, String);
+    check(defaultPostView, Boolean);
     if (Meteor.userId()) {
       CMS.update(
         { slug },
@@ -83,6 +88,7 @@ Meteor.methods({
             tags,
             video,
             type,
+            defaultPostView,
           },
         },
       );

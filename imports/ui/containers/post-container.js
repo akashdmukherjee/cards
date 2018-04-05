@@ -4,41 +4,41 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import CommonPage from '../pages/common-page';
+import PostView from '../pages/post-view';
 import Spinner from '../components/spinner';
 import { requestCMSGet } from '../redux/cms/actions';
 
-class CommonPageContainer extends React.Component {
+class PostContainer extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
-    page: PropTypes.object,
+    post: PropTypes.object,
     match: PropTypes.object,
     requestCMSGet: PropTypes.func.isRequired,
   }
   static defaultProps = {
     isLoading: false,
-    page: {},
+    post: {},
     match: {},
   }
   componentDidMount() {
     this.props.requestCMSGet(this.props.match.params.slug);
   }
   render() {
-    const { isLoading, page } = this.props;
+    const { isLoading, post } = this.props;
     if (isLoading) return <Spinner />;
     return (
-      <CommonPage page={page} />
+      <PostView post={post} />
     );
   }
 }
 
 const mapStateToProps = state => ({
   isLoading: state.cmsReducer.isLoading,
-  page: state.cmsReducer.data,
+  post: state.cmsReducer.data,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestCMSGet,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(CommonPageContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PostContainer));

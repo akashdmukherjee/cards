@@ -16,7 +16,7 @@ const AdminCMSList = ({ cmsList, history, requestCMSDelete }) => (
         <div className="admin-cms-list-title">
           {item.title}
         </div>
-        <Button className="admin-cms-list-actions" type="primary" size="small" icon="search" href={`/page/${item.slug}`}>Go to page</Button>
+        <Button className="admin-cms-list-actions" type="primary" size="small" icon="search" href={`/post/${item.slug}`}>Go to page</Button>
         <Button className="admin-cms-list-actions" type="secondary" size="small" icon="edit" onClick={() => history.push(`/admin/cms/edit/${item.slug}`)}>Edit</Button>
         <Popconfirm title="Are you sure delete this page?" placement="left" onConfirm={() => requestCMSDelete(item._id)}>
           <Button className="admin-cms-list-actions" type="danger" size="small" icon="close-circle-o">Delete</Button>

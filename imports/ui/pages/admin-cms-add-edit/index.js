@@ -10,6 +10,7 @@ import Input, { TextArea } from 'antd/lib/input';
 import Select, { Option } from 'antd/lib/select';
 import { Button as RadioButton, Group as RadioGroup } from 'antd/lib/radio';
 import Button from 'antd/lib/button';
+import Switch from 'antd/lib/switch';
 import UploadImage from '../../components/upload-image';
 import Video from '../../components/video';
 
@@ -51,6 +52,7 @@ class AdminCMSAddEdit extends React.Component {
     imageFileData: this.props.page.image || null,
     videoUrl: this.props.page.video || null,
     postType: this.props.page.type || 'text',
+    defaultPostView: this.props.page.defaultPostView || false,
   }
   getFileData = (fileData) => {
     this.setState({ imageFileData: fileData });
@@ -98,6 +100,9 @@ class AdminCMSAddEdit extends React.Component {
       postType: e.target.value,
     });
   }
+  handleSwitchDefaultView = (value) => {
+    this.setState({ defaultPostView: value });
+  }
   render() {
     const {
       form: { getFieldDecorator },
@@ -120,6 +125,16 @@ class AdminCMSAddEdit extends React.Component {
                 <RadioButton value="image">Image</RadioButton>
                 <RadioButton value="video">Video</RadioButton>
               </RadioGroup>,
+            )}
+          </FormItem>
+          <FormItem label="Default post view?">
+            {getFieldDecorator('defaultPostView', {
+              ...(slug ? { initialValue: page.defaultPostView } : { initialValue: false }),
+            })(
+              <Switch
+                defaultChecked={slug ? page.defaultPostView : false}
+                onChange={this.handleSwitchDefaultView}
+              />,
             )}
           </FormItem>
           {this.state.postType === 'image' ? (
@@ -148,22 +163,32 @@ class AdminCMSAddEdit extends React.Component {
               ...(slug ? { initialValue: page.description } : {}),
             })(<TextArea autosize={{ minRows: 6, maxRows: 10 }} placeholder="Description" />)}
           </FormItem>
-          <FormItem label="Code to be placed in the <head /> tag (usually styles).">
-            {getFieldDecorator('header', {
-              ...(slug ? { initialValue: page.header } : {}),
-            })(<CodeMirror options={{ placeholder: '<style>...</style>', ...codeMirrorOptions }} />)}
-          </FormItem>
-          <FormItem label="Code to be placed in the <body /> tag">
-            {getFieldDecorator('contents', {
-              rules: [{ required: true, message: 'Please input page contents!' }],
-              ...(slug ? { initialValue: page.contents } : {}),
-            })(<CodeMirror options={{ placeholder: '<div>...</div>', ...codeMirrorOptions }} />)}
-          </FormItem>
-          <FormItem label="Code to be placed at the end of the <body /> tag (usually scripts).">
-            {getFieldDecorator('footer', {
-              ...(slug ? { initialValue: page.footer } : {}),
-            })(<CodeMirror options={{ placeholder: '<script>...</script>', ...codeMirrorOptions }} />)}
-          </FormItem>
+          {!this.state.defaultPostView ? (
+            <FormItem label="Code to be placed in the <head /> tag (usually styles).">
+              {getFieldDecorator('header', {
+                ...(slug ? { initialValue: page.header } : {}),
+              })(<CodeMirror options={{ placeholder: '<style>...</style>', ...codeMirrorOptions }} />)}
+            </FormItem>) : null}
+          {!this.state.defaultPostView ? (
+            <FormItem label="Code to be placed in the <body /> tag">
+              {getFieldDecorator('contents', {
+                rules: [{ required: true, message: 'Please input page contents!' }],
+                ...(slug ? { initialValue: page.contents } : {}),
+              })(<CodeMirror options={{ placeholder: '<div>...</div>', ...codeMirrorOptions }} />)}
+            </FormItem>) : (
+            <FormItem label="Contents">
+              {getFieldDecorator('contents', {
+                rules: [{ required: true, message: 'Please input page contents!' }],
+                ...(slug ? { initialValue: page.contents } : {}),
+              })(<TextArea autosize={{ minRows: 12 }} placeholder="Contents" />)}
+            </FormItem>
+          )}
+          {!this.state.defaultPostView ? (
+            <FormItem label="Code to be placed at the end of the <body /> tag (usually scripts).">
+              {getFieldDecorator('footer', {
+                ...(slug ? { initialValue: page.footer } : {}),
+              })(<CodeMirror options={{ placeholder: '<script>...</script>', ...codeMirrorOptions }} />)}
+            </FormItem>) : null}
           <FormItem label="Tags">
             {getFieldDecorator('tags', {
               ...(slug ? { initialValue: page.tags } : {}),

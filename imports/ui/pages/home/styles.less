@@ -23,7 +23,7 @@
 }
 
 .home-page-item-content {
-  padding: 30px 30px 50px;
+  padding: 30px;
 }
 
 .home-page-item-title {
@@ -121,5 +121,22 @@
 
   &:hover {
     background-color: darken(@color-main-contrast2, 10%);
+  }
+}
+
+.home-page-item-tag {
+  display: inline-block;
+  margin-right: 5px;
+
+  &::after {
+    content: ','
+  }
+
+  &:last-child {
+    margin-right: 0;
+
+    &::after {
+      content: ''
+    }
   }
 }

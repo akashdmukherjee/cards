@@ -65,6 +65,7 @@ export function requestCMSAdd(values, cb) {
       values.tags,
       values.video,
       values.type,
+      values.defaultPostView,
       (error) => {
         if (!error) {
           if (cb && typeof cb === 'function') cb();
@@ -89,6 +90,7 @@ export function requestCMSEdit(values, cb) {
     values.tags,
     values.video,
     values.type,
+    values.defaultPostView,
     (error) => {
       if (!error) {
         if (cb && typeof cb === 'function') cb();

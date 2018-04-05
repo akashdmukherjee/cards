@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
 import { element, oneOfType, arrayOf, object } from 'prop-types';
 
-const PageLayout = ({ children }) => (
+const PostLayout = ({ children }) => (
   <Fragment>
     {children}
   </Fragment>
 );
 
-PageLayout.propTypes = {
+PostLayout.propTypes = {
   children: oneOfType([arrayOf(element), object]).isRequired,
 };
 
-export default PageLayout;
+export default PostLayout;

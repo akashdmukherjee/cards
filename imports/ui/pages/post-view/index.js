@@ -16,9 +16,7 @@ const PostView = ({ post }) => (
         <span dangerouslySetInnerHTML={{ __html: post.footer }} />
       </Fragment>
     ) : (
-      <DefaultPostLayout>
-        <span>{post.contents}</span>
-      </DefaultPostLayout>
+      <DefaultPostLayout {...post} />
     )}
   </Fragment>
 );

@@ -12,6 +12,10 @@
   font-weight: 300;
   text-transform: uppercase;
 
+  &.with-logo {
+    justify-content: space-between;
+  }
+
   a {
     color: lighten(@color-main-dark, 50%);
     display: inline-block;
@@ -23,4 +27,8 @@
       color: lighten(@color-main-dark, 10%);
     }
   }
+}
+
+.header-logo {
+  max-height: 68px;
 }

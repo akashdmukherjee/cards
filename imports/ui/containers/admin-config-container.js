@@ -26,6 +26,7 @@ class AdminConfigContainer extends React.Component {
       entity,
       requestEntityEdit,
     } = this.props;
+    if (isLoading) return null;
     return (
       <AdminConfiguration
         entity={entity}

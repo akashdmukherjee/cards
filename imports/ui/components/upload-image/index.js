@@ -39,7 +39,7 @@ class UploadImage extends React.Component {
       this.props.initialImageData.version,
       this.props.initialImageData.publicId,
       this.props.initialImageData.format,
-      'w_700,c_scale',
+      this.props.imageTransform,
     ) : '',
     loading: false,
   }

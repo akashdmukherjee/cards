@@ -17,33 +17,43 @@ export function receiveEntityGet(data) {
   };
 }
 
-export function requestEntityGet() {
+export function requestEntityGet(cb) {
   return (dispatch) => {
-    dispatch(receiveEntityGet({ isLoading: true, error: null, data: {} }));
+    dispatch(receiveEntityGet({ isLoading: true, data: {} }));
     Meteor.call(
       'entity.methods.get',
       (err, res) => {
         if (!err) {
+          if (cb && typeof cb === 'function') cb();
           return dispatch(receiveEntityGet({ isLoading: false, data: res }));
         }
-        return dispatch(receiveEntityGet({ isLoading: false, error: err, data: {} }));
+        if (cb && typeof cb === 'function') cb(err);
+        return dispatch(receiveEntityGet({ isLoading: false, data: {} }));
       },
     );
   };
 }
 
-export function requestEntityEdit(values) {
+export function requestEntityEdit(values, cb) {
   return (dispatch) => {
-    dispatch(receiveEntityEdit({ isLoading: true, error: null, data: {} }));
+    dispatch(receiveEntityEdit({ isLoading: true, data: {} }));
     Meteor.call(
       'entity.methods.edit',
       values.name,
       values.actionName,
+      values.websiteColor,
+      values.websiteColorEnabled,
+      values.websiteName,
+      values.websiteNameEnabled,
+      values.websiteLogo,
+      values.websiteLogoEnabled,
       (err) => {
         if (!err) {
+          if (cb && typeof cb === 'function') cb();
           return dispatch(requestEntityGet());
         }
-        return dispatch(receiveEntityEdit({ isLoading: false, error: err, data: {} }));
+        if (cb && typeof cb === 'function') cb(err);
+        return dispatch(receiveEntityEdit({ isLoading: false, data: {} }));
       },
     );
   };

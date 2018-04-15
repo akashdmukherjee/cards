@@ -1,6 +1,7 @@
 import React from 'react';
 import { string, object, array } from 'prop-types';
 import { Link } from 'react-router-dom';
+import Icon from 'antd/lib/icon';
 import imageUrlHelper from '../../utils/image-url-helper';
 import Video from '../../components/video';
 
@@ -17,7 +18,9 @@ const DefaultPostLayout = ({
     <div className="default-post-layout-header">
       <div className="default-post-header-nav">
         <div className="container">
-          <Link to="/">Home</Link>
+          <Link to="/">
+            <Icon type="left" /> Back
+          </Link>
         </div>
       </div>
       <div className="container default-post-header-container">

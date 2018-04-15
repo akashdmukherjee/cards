@@ -82,6 +82,7 @@
       "import/no-extraneous-dependencies": "off",
       "import/extensions": "off",
       "function-paren-newline": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
       "react/jsx-indent": [
         3,
         "spaces"

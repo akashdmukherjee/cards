@@ -8,6 +8,7 @@ import Home from '../pages/home';
 import Spinner from '../components/spinner';
 import { requestCMSListGet } from '../redux/cms/actions';
 import { requestTagsGet } from '../redux/tags/actions';
+import { requestEntityGet } from '../redux/entity/actions';
 
 class HomeContainer extends React.Component {
   static propTypes = {
@@ -17,14 +18,20 @@ class HomeContainer extends React.Component {
     requestCMSListGet: PropTypes.func.isRequired,
     requestTagsGet: PropTypes.func.isRequired,
     tagsList: PropTypes.array,
+    requestEntityGet: PropTypes.func.isRequired,
+    isEntityLoading: PropTypes.bool,
+    entity: PropTypes.object,
   }
   static defaultProps = {
     isLoading: false,
     isLoadingTags: false,
+    isEntityLoading: false,
     cmsList: [],
     tagsList: [],
+    entity: {},
   }
   componentDidMount() {
+    this.props.requestEntityGet();
     this.props.requestCMSListGet((error) => {
       if (error) {
         Alert.error(error.message);
@@ -42,10 +49,16 @@ class HomeContainer extends React.Component {
       cmsList,
       tagsList,
       isLoadingTags,
+      isEntityLoading,
+      entity,
     } = this.props;
-    if (isLoading || isLoadingTags) return <Spinner />;
+    if (isLoading || isLoadingTags || isEntityLoading) return <Spinner />;
     return (
-      <Home cmsList={cmsList} tagsList={tagsList} />
+      <Home
+        cmsList={cmsList}
+        tagsList={tagsList}
+        entity={entity}
+      />
     );
   }
 }
@@ -55,11 +68,14 @@ const mapStateToProps = state => ({
   cmsList: state.cmsListReducer.data,
   isLoadingTags: state.tagsReducer.isLoading,
   tagsList: state.tagsReducer.data,
+  entity: state.entityReducer.data,
+  isEntityLoading: state.entityReducer.isLoading,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestCMSListGet,
   requestTagsGet,
+  requestEntityGet,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

@@ -15,17 +15,13 @@ class Home extends React.Component {
   static propTypes = {
     cmsList: PropTypes.array.isRequired,
     tagsList: PropTypes.array.isRequired,
+    entity: PropTypes.object.isRequired,
   };
   state = {
     checkedTags: [],
     homeItemsList: this.props.cmsList || [],
   }
   initialState = this.props.cmsList
-  handleSort = () => {
-    this.setState(prevState => ({
-      homeItemsList: prevState.homeItemsList.reverse(),
-    }));
-  }
   handleCardClick = (slug) => {
     if (window) {
       window.location = `/post/${slug}`;
@@ -88,20 +84,29 @@ class Home extends React.Component {
       <div className="home-page">
         <MetaTags meta={metaData} />
         <div className="container">
-          <div className="home-page-title-wrapper">
-            <h1 className="home-page-title">Homepage title</h1>
-            <button className="home-page-sort" onClick={this.handleSort}>Sort</button>
-            <input ref={(input) => { this.searchInput = input; }} type="text" placeholder="Search..." onChange={this.handleSearch} className="home-page-search" />
+          {this.props.entity.websiteName && (
+            <div className="home-page-title-wrapper">
+              <h1 className="home-page-title">
+                {this.props.entity.websiteName}
+              </h1>
+            </div>
+          )}
+          <div className="home-page-filters-wrapper">
+            <div className="home-page-tags">
+              {this.props.tagsList && this.props.tagsList.map(tag => (
+                <CheckableTag
+                  key={tag._id}
+                  onChange={() => this.handleTagSearch(tag.name)}
+                  checked={this.state.checkedTags.slice().includes(tag.name)}
+                >
+                  {tag.name}
+                </CheckableTag>
+              ))}
+            </div>
+            <div className="home-page-search-wrapper">
+              <input ref={(input) => { this.searchInput = input; }} type="text" placeholder="Search..." onChange={this.handleSearch} className="home-page-search" />
+            </div>
           </div>
-          {this.props.tagsList && this.props.tagsList.map(tag => (
-            <CheckableTag
-              key={tag._id}
-              onChange={() => this.handleTagSearch(tag.name)}
-              checked={this.state.checkedTags.slice().includes(tag.name)}
-            >
-              {tag.name}
-            </CheckableTag>
-          ))}
           <FlipMove maintainContainerHeight easing="ease-out">
             {this.state.homeItemsList.map(item => (
               <List.Item key={item.slug} className="home-page-item">
@@ -136,7 +141,10 @@ class Home extends React.Component {
                         <span className="home-page-item-tag" key={tag}>{tag}</span>
                       ))}
                     </div>
-                    <div className="home-page-item-title">
+                    <div
+                      onClick={() => this.handleCardClick(item.slug)}
+                      className="home-page-item-title"
+                    >
                       {item.title}
                     </div>
                     <div className="home-page-item-description">

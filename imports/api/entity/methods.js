@@ -6,8 +6,12 @@ Meteor.methods({
   'entity.methods.edit': (
     name,
     actionName,
-    websiteColor,
-    websiteColorEnabled,
+    websiteThemeColor,
+    websiteThemeColorEnabled,
+    websiteBackgroundColor,
+    websiteBackgroundColorEnabled,
+    websiteNavBarBgColor,
+    websiteNavBarBgColorEnabled,
     websiteName,
     websiteNameEnabled,
     websiteLogo,
@@ -15,8 +19,12 @@ Meteor.methods({
   ) => {
     check(name, String);
     check(actionName, String);
-    check(websiteColor, Match.Maybe(String));
-    check(websiteColorEnabled, Match.Maybe(Boolean));
+    check(websiteThemeColor, Match.Maybe(String));
+    check(websiteThemeColorEnabled, Match.Maybe(Boolean));
+    check(websiteBackgroundColor, Match.Maybe(String));
+    check(websiteNavBarBgColor, Match.Maybe(String));
+    check(websiteBackgroundColorEnabled, Match.Maybe(Boolean));
+    check(websiteNavBarBgColorEnabled, Match.Maybe(Boolean));
     check(websiteName, Match.Maybe(String));
     check(websiteNameEnabled, Match.Maybe(Boolean));
     check(websiteLogo, Match.Maybe(Object));
@@ -26,8 +34,12 @@ Meteor.methods({
       Entity.insert({
         name,
         actionName,
-        websiteColor,
-        websiteColorEnabled,
+        websiteThemeColor,
+        websiteThemeColorEnabled,
+        websiteBackgroundColor,
+        websiteNavBarBgColor,
+        websiteBackgroundColorEnabled,
+        websiteNavBarBgColorEnabled,
         websiteName,
         websiteNameEnabled,
         websiteLogo,

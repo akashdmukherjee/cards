@@ -72,9 +72,19 @@ class AdminConfiguration extends React.Component {
               initialValue: entity.websiteName,
             })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Website name" />)}
           </FormItem>
-          <FormItem label="Website color">
-            {getFieldDecorator('websiteColor', {
-              initialValue: entity.websiteColor,
+          <FormItem label="Website theme color">
+            {getFieldDecorator('websiteThemeColor', {
+              initialValue: entity.websiteThemeColor,
+            })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="#ffffff" />)}
+          </FormItem>
+          <FormItem label="Website background color">
+            {getFieldDecorator('websiteBackgroundColor', {
+              initialValue: entity.websiteBackgroundColor,
+            })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="#ffffff" />)}
+          </FormItem>
+          <FormItem label="Website navigation bar background color">
+            {getFieldDecorator('websiteNavBarBgColor', {
+              initialValue: entity.websiteNavBarBgColor,
             })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="#ffffff" />)}
           </FormItem>
           <FormItem label="Website logo (click and choose or drop an image)">

@@ -1,22 +1,41 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
 import Card from 'antd/lib/card';
 import List from 'antd/lib/list';
 import { CheckableTag } from 'antd/lib/tag';
 import Icon from 'antd/lib/icon';
+import styled from 'styled-components';
 import MetaTags from '../../components/meta-tags';
 import Video from '../../components/video';
+import LandingPageHeader from '../../components/landing-page-header';
 import imageUrlHelper from '../../utils/image-url-helper';
 import isCommonArrElem from '../../utils/is-common-arr-elem';
+import includesWholeArray from '../../utils/includes-whole-array';
+import { defaultThemeColor } from '../../settings';
 import metaData from './meta.json';
+
+const StyledHomePageTags = styled.div`
+  & .ant-tag-checkable-checked {
+    background-color: ${({ entity }) => entity.websiteThemeColor || defaultThemeColor};
+  }
+`;
 
 class Home extends React.Component {
   static propTypes = {
     cmsList: PropTypes.array.isRequired,
     tagsList: PropTypes.array.isRequired,
     entity: PropTypes.object.isRequired,
-  };
+    isLogging: PropTypes.bool,
+    user: PropTypes.object,
+    requestLogout: PropTypes.func.isRequired,
+    isEntityLoading: PropTypes.bool,
+  }
+  static defaultProps = {
+    isEntityLoading: false,
+    isLogging: false,
+    user: {},
+  }
   state = {
     checkedTags: [],
     homeItemsList: this.props.cmsList || [],
@@ -45,7 +64,7 @@ class Home extends React.Component {
       return {
         checkedTags: newCheckedTags,
         homeItemsList: newCheckedTags.length ? currentState
-          .filter(item => isCommonArrElem(item.tags, newCheckedTags)) : currentState,
+          .filter(item => includesWholeArray(item.tags, newCheckedTags)) : currentState,
       };
     });
   }
@@ -80,92 +99,109 @@ class Home extends React.Component {
     });
   }
   render() {
+    const {
+      entity,
+      tagsList,
+      isLogging,
+      user,
+      requestLogout,
+      isEntityLoading,
+    } = this.props;
     return (
-      <div className="home-page">
-        <MetaTags meta={metaData} />
-        <div className="container">
-          {this.props.entity.websiteName && (
-            <div className="home-page-title-wrapper">
-              <h1 className="home-page-title">
-                {this.props.entity.websiteName}
-              </h1>
+      <Fragment>
+        <LandingPageHeader
+          isLogging={isLogging}
+          user={user}
+          requestLogout={requestLogout}
+          isEntityLoading={isEntityLoading}
+          entity={entity}
+          searchComponent={
+            <input ref={(input) => { this.searchInput = input; }} type="text" placeholder="Search..." onChange={this.handleSearch} className="home-page-search" />
+          }
+        />
+        <div className="home-page">
+          <MetaTags meta={metaData} />
+          <div className="container">
+            <div className="home-page-filters-wrapper">
+              <StyledHomePageTags entity={entity} className="home-page-tags">
+                {tagsList && tagsList.map(tag => (
+                  <CheckableTag
+                    key={tag._id}
+                    onChange={() => this.handleTagSearch(tag.name)}
+                    checked={this.state.checkedTags.slice().includes(tag.name)}
+                  >
+                    {tag.name}
+                  </CheckableTag>
+                ))}
+              </StyledHomePageTags>
             </div>
-          )}
-          <div className="home-page-filters-wrapper">
-            <div className="home-page-tags">
-              {this.props.tagsList && this.props.tagsList.map(tag => (
-                <CheckableTag
-                  key={tag._id}
-                  onChange={() => this.handleTagSearch(tag.name)}
-                  checked={this.state.checkedTags.slice().includes(tag.name)}
-                >
-                  {tag.name}
-                </CheckableTag>
-              ))}
-            </div>
-            <div className="home-page-search-wrapper">
-              <input ref={(input) => { this.searchInput = input; }} type="text" placeholder="Search..." onChange={this.handleSearch} className="home-page-search" />
-            </div>
-          </div>
-          <FlipMove maintainContainerHeight easing="ease-out">
-            {this.state.homeItemsList.map(item => (
-              <List.Item key={item.slug} className="home-page-item">
-                <Card
-                  hoverable
-                  bodyStyle={{ padding: 0, position: 'relative' }}
-                >
-                  <div className={`home-item-name-icon ${item.image || item.video ? 'absolute' : ''}`}>
-                    <div className="home-page-item-icon">
-                      {item.type === 'image' ? <Icon type="picture" /> : null}
-                      {item.type === 'video' ? <Icon type="video-camera" /> : null}
-                      {item.type === 'text' ? <Icon type="edit" /> : null}
+            <FlipMove maintainContainerHeight easing="ease-out">
+              {this.state.homeItemsList.map(item => (
+                <List.Item key={item.slug} className="home-page-item">
+                  <Card
+                    hoverable
+                    bodyStyle={{ padding: 0, position: 'relative' }}
+                  >
+                    <div className={`home-item-name-icon ${item.image || item.video ? 'absolute' : ''}`}>
+                      <div className="home-page-item-icon">
+                        {item.type === 'image' ? <Icon type="picture" /> : null}
+                        {item.type === 'video' ? <Icon type="video-camera" /> : null}
+                        {item.type === 'text' ? <Icon type="edit" /> : null}
+                      </div>
                     </div>
-                  </div>
-                  {(item.image || item.video) && (
-                    <div className="home-page-item-image-container">
-                      {item.type === 'image' ? <img
-                        src={imageUrlHelper(
-                          item.image.version,
-                          item.image.publicId,
-                          item.image.format,
-                          'w_400,c_limit',
-                        )}
-                        alt={item.title}
-                      /> : null}
-                      {item.type === 'video' ? <Video videoUrl={item.video} readOnly noMargin /> : null}
-                    </div>
-                  )}
-                  <div className="home-page-item-content">
-                    <div className="home-page-item-tags">
-                      {item.tags.map(tag => (
-                        <span className="home-page-item-tag" key={tag}>{tag}</span>
-                      ))}
-                    </div>
-                    <div
-                      onClick={() => this.handleCardClick(item.slug)}
-                      className="home-page-item-title"
-                    >
-                      {item.title}
-                    </div>
-                    <div className="home-page-item-description">
-                      {item.description}
-                    </div>
-                    <div>
-                      <button
-                        type="button"
-                        onClick={() => this.handleCardClick(item.slug)}
-                        className="home-page-item-button"
+                    {(item.image || item.video) && (
+                      <div className="home-page-item-image-container">
+                        {item.type === 'image' ? <img
+                          src={imageUrlHelper(
+                            item.image.version,
+                            item.image.publicId,
+                            item.image.format,
+                            'w_400,c_limit',
+                          )}
+                          alt={item.title}
+                        /> : null}
+                        {item.type === 'video' ? <Video videoUrl={item.video} readOnly noMargin /> : null}
+                      </div>
+                    )}
+                    <div className="home-page-item-content">
+                      <div
+                        className="home-page-item-tags"
+                        style={{ color: entity.websiteThemeColor || defaultThemeColor }}
                       >
-                        Read more
-                      </button>
+                        {item.tags.map(tag => (
+                          <span className="home-page-item-tag" key={tag}>{tag}</span>
+                        ))}
+                      </div>
+                      <div
+                        onClick={() => this.handleCardClick(item.slug)}
+                        className="home-page-item-title"
+                      >
+                        {item.title}
+                      </div>
+                      <div className="home-page-item-description">
+                        {item.description}
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => this.handleCardClick(item.slug)}
+                          className="home-page-item-button"
+                          style={{ backgroundColor: entity.websiteThemeColor || defaultThemeColor }}
+                        >
+                          Read more
+                        </button>
+                        <div className="home-page-item-like">
+                          <Icon type="like-o" /> <span>{entity.actionName}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </Card>
-              </List.Item>
-            ))}
-          </FlipMove>
+                  </Card>
+                </List.Item>
+              ))}
+            </FlipMove>
+          </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }

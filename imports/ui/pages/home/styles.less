@@ -83,43 +83,6 @@
   float: right;
 }
 
-.home-page-title-wrapper {
-  .clearfix;
-  margin-bottom: 20px;
-}
-
-.home-page-title {
-  font-size: 54px;
-  font-weight: 900;
-  font-family: @font-headers2;
-  text-align: center;
-  position: relative;
-  margin-bottom: 50px;
-  padding-top: 80px;
-  padding-bottom: 30px;
-  text-transform: uppercase;
-  line-height: 1.1;
-
-  &::after {
-    content: " ";
-    width: 120px;
-    height: 6px;
-    background-color: @color-main-contrast2;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 5px;
-  }
-
-  @media only screen and (max-width: 992px) {
-    font-size: 44px;
-  }
-
-  @media only screen and (max-width: 576px) {
-    font-size: 34px;
-  }
-}
-
 .home-page-sort {
   padding: 8px 15px;
   float: right;
@@ -135,13 +98,11 @@
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  color: @color-main-contrast2;
 }
 
 .home-page-item-button {
   cursor: pointer;
   border: 0;
-  background-color: @color-main-contrast2;
   color: #fff;
   text-transform: uppercase;
   font-size: 10px;
@@ -149,10 +110,6 @@
   padding: 10px 25px;
   transition: .3s background-color;
   outline: none;
-
-  &:hover {
-    background-color: darken(@color-main-contrast2, 10%);
-  }
 }
 
 .home-page-item-tag {
@@ -172,22 +129,13 @@
   }
 }
 
-.home-page-search-wrapper {
-  .clearfix;
-
-  @media only screen and (max-width: 992px) {
-    min-width: 100%;
-  }
-}
-
 .home-page-search {
   border: 0;
-  padding: 15px 25px;
-  width: 100%;
-  min-width: 300px;
-  margin: 0 auto;
+  padding: 5px 15px;
   outline: 0;
-  display: block;
+  border: 1px solid @color-main-background;
+  display: inline-block;
+  margin-right: 15px;
 }
 
 .home-page-filters-wrapper {
@@ -218,7 +166,6 @@
     }
 
     &.ant-tag-checkable-checked {
-      background-color: @color-main-contrast2;
       color: #fff;
     }
   }
@@ -229,5 +176,18 @@
     align-items: center;
     flex-wrap: wrap;
     margin-bottom: 20px;
+  }
+}
+
+.home-page-item-like {
+  font-size: 18px;
+  float: right;
+  cursor: pointer;
+  background-color: @color-main-background;
+  border-radius: 5px;
+  padding: 4px 10px;
+
+  > span {
+    font-size: 14px;
   }
 }

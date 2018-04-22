@@ -6,32 +6,8 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-top: 110px;
+  padding-top: 60px;
   padding-bottom: 60px;
-}
-
-.default-post-header-nav {
-  height: 60px;
-  background-color: lighten(#000, 20%);
-  color: #fff;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: left;
-  z-index: 2;
-
-  a {
-    color: #fff;
-
-    &:hover, &:active, &:focus {
-      text-decoration: none;
-      color: #fff;
-    }
-  }
 }
 
 .default-post-description,
@@ -44,7 +20,6 @@
 .default-post-primary-header {
   font-size: 42px;
   font-weight: 900;
-  text-transform: uppercase;
   position: relative;
   margin-bottom: 40px;
   font-family: @font-headers2;
@@ -56,7 +31,6 @@
     content: " ";
     width: 120px;
     height: 6px;
-    background-color: @color-main-contrast2;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -95,7 +69,6 @@
 .default-post-tag {
   padding: 5px 15px;
   color: #fff;
-  background-color: @color-main-contrast2;
   border-radius: 3px;
   text-transform: uppercase;
   font-size: 12px;

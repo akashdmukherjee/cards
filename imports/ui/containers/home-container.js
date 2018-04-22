@@ -9,6 +9,7 @@ import Spinner from '../components/spinner';
 import { requestCMSListGet } from '../redux/cms/actions';
 import { requestTagsGet } from '../redux/tags/actions';
 import { requestEntityGet } from '../redux/entity/actions';
+import { requestLogout } from '../redux/auth/actions';
 
 class HomeContainer extends React.Component {
   static propTypes = {
@@ -21,14 +22,19 @@ class HomeContainer extends React.Component {
     requestEntityGet: PropTypes.func.isRequired,
     isEntityLoading: PropTypes.bool,
     entity: PropTypes.object,
+    requestLogout: PropTypes.func.isRequired,
+    isLogging: PropTypes.bool,
+    user: PropTypes.object,
   }
   static defaultProps = {
     isLoading: false,
     isLoadingTags: false,
     isEntityLoading: false,
+    isLogging: false,
     cmsList: [],
     tagsList: [],
     entity: {},
+    user: {},
   }
   componentDidMount() {
     this.props.requestEntityGet();
@@ -51,6 +57,9 @@ class HomeContainer extends React.Component {
       isLoadingTags,
       isEntityLoading,
       entity,
+      requestLogout,
+      isLogging,
+      user,
     } = this.props;
     if (isLoading || isLoadingTags || isEntityLoading) return <Spinner />;
     return (
@@ -58,6 +67,9 @@ class HomeContainer extends React.Component {
         cmsList={cmsList}
         tagsList={tagsList}
         entity={entity}
+        requestLogout={requestLogout}
+        isLogging={isLogging}
+        user={user}
       />
     );
   }
@@ -70,12 +82,15 @@ const mapStateToProps = state => ({
   tagsList: state.tagsReducer.data,
   entity: state.entityReducer.data,
   isEntityLoading: state.entityReducer.isLoading,
+  isLogging: state.loginReducer.isLogging,
+  user: state.loginReducer.data,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestCMSListGet,
   requestTagsGet,
   requestEntityGet,
+  requestLogout,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

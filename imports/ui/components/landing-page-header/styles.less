@@ -1,6 +1,8 @@
 .header {
   background-color: #fff;
   box-shadow: -1px 4px 18px -3px rgba(0, 0, 0, 0.07);
+  position: relative;
+  z-index: 1;
 }
 
 .header-nav {
@@ -30,5 +32,19 @@
 }
 
 .header-logo {
-  max-height: 68px;
+  max-height: 50px;
+}
+
+.header-website-name {
+  font-weight: 900;
+  font-family: @font-headers2;
+  font-size: 20px;
+  margin-left: 20px;
+  line-height: 1;
+  text-transform: none;
+}
+
+.header-logo-container {
+  display: flex;
+  align-items: center;
 }

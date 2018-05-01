@@ -6,15 +6,16 @@ import Icon from 'antd/lib/icon';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import Alert from 'react-s-alert';
+import Select, { Option } from 'antd/lib/select';
 import UploadImage from '../../components/upload-image';
 
 const FormItem = Form.Item;
 
-class AdminConfiguration extends React.Component {
+class AdminWebsiteStyling extends React.Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
     entity: PropTypes.object.isRequired,
-    requestEntityEdit: PropTypes.func.isRequired,
+    requestEntityEditWebsite: PropTypes.func.isRequired,
     isLoading: PropTypes.bool,
   }
   static defaultProps = {
@@ -30,12 +31,12 @@ class AdminConfiguration extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.requestEntityEdit({
+        this.props.requestEntityEditWebsite({
           websiteLogo: this.state.imageFileData,
           ...values,
         }, (error) => {
           if (error) {
-            Alert.error(error);
+            Alert.error(error.message);
           } else {
             Alert.success('Successfully saved!');
           }
@@ -53,20 +54,8 @@ class AdminConfiguration extends React.Component {
       <Card title="Configuration">
         <Form onSubmit={this.handleSubmit} className="admin-layout-form">
           <div className="admin-layout-form-title">
-            Entity Settings
+            Website Styling
           </div>
-          <FormItem label="Entity name">
-            {getFieldDecorator('name', {
-              rules: [{ required: true, message: 'Please input the name for entity!' }],
-              initialValue: entity.name,
-            })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Name" />)}
-          </FormItem>
-          <FormItem label="Action name">
-            {getFieldDecorator('actionName', {
-              rules: [{ required: true, message: 'Please input the name for action!' }],
-              initialValue: entity.actionName,
-            })(<Input prefix={<Icon type="like-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Action" />)}
-          </FormItem>
           <FormItem label="Website name">
             {getFieldDecorator('websiteName', {
               initialValue: entity.websiteName,
@@ -87,6 +76,16 @@ class AdminConfiguration extends React.Component {
               initialValue: entity.websiteNavBarBgColor,
             })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="#ffffff" />)}
           </FormItem>
+          <FormItem label="Website font family">
+            {getFieldDecorator('websiteFontFamily', {
+              initialValue: entity.websiteFontFamily,
+            })(
+              <Select>
+                <Option value="'Roboto', sans-serif">Roboto</Option>
+                <Option value="'Open Sans', sans-serif">Open Sans</Option>
+              </Select>,
+            )}
+          </FormItem>
           <FormItem label="Website logo (click and choose or drop an image)">
             <UploadImage
               initialImageData={entity.websiteLogo}
@@ -105,4 +104,4 @@ class AdminConfiguration extends React.Component {
   }
 }
 
-export default Form.create()(AdminConfiguration);
+export default Form.create()(AdminWebsiteStyling);

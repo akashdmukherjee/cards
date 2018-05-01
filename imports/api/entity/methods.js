@@ -3,9 +3,48 @@ import { check, Match } from 'meteor/check';
 import { Entity } from './collection';
 
 Meteor.methods({
-  'entity.methods.edit': (
-    name,
-    actionName,
+  'entity.methods.editCard': (
+    cardActionName,
+    cardActionIcon,
+    cardActionEnabled,
+    cardHeaderEnabled,
+    cardTagsEnabled,
+    cardTextEnabled,
+    cardTypeIconEnabled,
+    cardBorderColor,
+    cardBorderShadow,
+  ) => {
+    check(cardActionName, Match.Maybe(String));
+    check(cardActionIcon, Match.Maybe(String));
+    check(cardActionEnabled, Match.Maybe(Boolean));
+    check(cardHeaderEnabled, Match.Maybe(Boolean));
+    check(cardTagsEnabled, Match.Maybe(Boolean));
+    check(cardTextEnabled, Match.Maybe(Boolean));
+    check(cardTypeIconEnabled, Match.Maybe(Boolean));
+    check(cardBorderColor, Match.Maybe(String));
+    check(cardBorderShadow, Match.Maybe(String));
+    if (Meteor.userId()) {
+      const entity = Entity.findOne();
+      const id = entity && entity._id;
+      Entity.upsert(
+        { _id: id },
+        {
+          $set: {
+            cardActionName,
+            cardActionIcon,
+            cardActionEnabled,
+            cardHeaderEnabled,
+            cardTagsEnabled,
+            cardTextEnabled,
+            cardTypeIconEnabled,
+            cardBorderColor,
+            cardBorderShadow,
+          },
+        },
+      );
+    }
+  },
+  'entity.methods.editWebsite': (
     websiteThemeColor,
     websiteThemeColorEnabled,
     websiteBackgroundColor,
@@ -16,9 +55,8 @@ Meteor.methods({
     websiteNameEnabled,
     websiteLogo,
     websiteLogoEnabled,
+    websiteFontFamily,
   ) => {
-    check(name, String);
-    check(actionName, String);
     check(websiteThemeColor, Match.Maybe(String));
     check(websiteThemeColorEnabled, Match.Maybe(Boolean));
     check(websiteBackgroundColor, Match.Maybe(String));
@@ -29,22 +67,28 @@ Meteor.methods({
     check(websiteNameEnabled, Match.Maybe(Boolean));
     check(websiteLogo, Match.Maybe(Object));
     check(websiteLogoEnabled, Match.Maybe(Boolean));
+    check(websiteFontFamily, Match.Maybe(String));
     if (Meteor.userId()) {
-      Entity.remove({});
-      Entity.insert({
-        name,
-        actionName,
-        websiteThemeColor,
-        websiteThemeColorEnabled,
-        websiteBackgroundColor,
-        websiteNavBarBgColor,
-        websiteBackgroundColorEnabled,
-        websiteNavBarBgColorEnabled,
-        websiteName,
-        websiteNameEnabled,
-        websiteLogo,
-        websiteLogoEnabled,
-      });
+      const entity = Entity.findOne();
+      const id = entity && entity._id;
+      Entity.upsert(
+        { _id: id },
+        {
+          $set: {
+            websiteThemeColor,
+            websiteThemeColorEnabled,
+            websiteBackgroundColor,
+            websiteNavBarBgColor,
+            websiteBackgroundColorEnabled,
+            websiteNavBarBgColorEnabled,
+            websiteName,
+            websiteNameEnabled,
+            websiteLogo,
+            websiteLogoEnabled,
+            websiteFontFamily,
+          },
+        },
+      );
     }
   },
   'entity.methods.get': () => Entity.findOne({}),

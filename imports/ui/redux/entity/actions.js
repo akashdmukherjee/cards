@@ -34,13 +34,11 @@ export function requestEntityGet(cb) {
   };
 }
 
-export function requestEntityEdit(values, cb) {
+export function requestEntityEditWebsite(values, cb) {
   return (dispatch) => {
     dispatch(receiveEntityEdit({ isLoading: true, data: {} }));
     Meteor.call(
-      'entity.methods.edit',
-      values.name,
-      values.actionName,
+      'entity.methods.editWebsite',
       values.websiteThemeColor,
       values.websiteThemeColorEnabled,
       values.websiteBackgroundColor,
@@ -51,6 +49,33 @@ export function requestEntityEdit(values, cb) {
       values.websiteNameEnabled,
       values.websiteLogo,
       values.websiteLogoEnabled,
+      values.websiteFontFamily,
+      (err) => {
+        if (!err) {
+          if (cb && typeof cb === 'function') cb();
+          return dispatch(requestEntityGet());
+        }
+        if (cb && typeof cb === 'function') cb(err);
+        return dispatch(receiveEntityEdit({ isLoading: false, data: {} }));
+      },
+    );
+  };
+}
+
+export function requestEntityEditCard(values, cb) {
+  return (dispatch) => {
+    dispatch(receiveEntityEdit({ isLoading: true, data: {} }));
+    Meteor.call(
+      'entity.methods.editCard',
+      values.cardActionName,
+      values.cardActionIcon,
+      values.cardActionEnabled,
+      values.cardHeaderEnabled,
+      values.cardTagsEnabled,
+      values.cardTextEnabled,
+      values.cardTypeIconEnabled,
+      values.cardBorderColor,
+      values.cardBorderShadow,
       (err) => {
         if (!err) {
           if (cb && typeof cb === 'function') cb();

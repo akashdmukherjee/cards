@@ -19,10 +19,11 @@ const AdminContainer = ({
   return (
     <Switch>
       <Redirect from={match.url} exact to={`${match.url}/cms`} />
+      <Redirect from={`${match.url}/configuration`} exact to={`${match.url}/configuration/website-styling`} />
       <Route path={`${match.url}/cms`} exact component={AdminCMSList} />
       <Route path={`${match.url}/cms/add`} exact component={AdminCMSAddEdit} />
       <Route path={`${match.url}/cms/edit/:slug`} exact component={AdminCMSAddEdit} />
-      <Route path={`${match.url}/configuration`} exact component={AdminConfiguration} />
+      <Route path={`${match.url}/configuration/:section`} exact component={AdminConfiguration} />
       <Route component={NotFound} />
     </Switch>
   );

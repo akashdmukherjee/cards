@@ -13,7 +13,9 @@ const { Header, Sider, Content } = Layout;
 const menuKeysRedirects = {
   1: '/',
   2: '/admin/cms',
-  3: '/admin/configuration',
+  3: '/admin/configuration/website-styling',
+  4: '/admin/configuration/card-styling',
+  5: '/admin/configuration/post-page-styling',
 };
 
 class AdminPanelLayout extends React.Component {
@@ -55,16 +57,24 @@ class AdminPanelLayout extends React.Component {
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={this.getSelectedMenuItem()} onClick={this.menuOnClick}>
             <Menu.Item key="1">
-              <Icon type="user" />
+              <Icon type="home" />
               <span>Home</span>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="video-camera" />
+              <Icon type="code-o" />
               <span>CMS</span>
             </Menu.Item>
             <Menu.Item key="3">
-              <Icon type="video-camera" />
-              <span>Config</span>
+              <Icon type="laptop" />
+              <span>Website Styling</span>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Icon type="idcard" />
+              <span>Card Styling</span>
+            </Menu.Item>
+            <Menu.Item key="5" disabled>
+              <Icon type="form" />
+              <span>Post Page Styling</span>
             </Menu.Item>
           </Menu>
         </Sider>

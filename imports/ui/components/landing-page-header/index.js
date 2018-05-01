@@ -19,7 +19,7 @@ const LandingPageHeader = ({
       className="header"
       style={{ backgroundColor: entity.websiteNavBarBgColor || defaultNavBarBgColor }}
     >
-      <nav className={`container header-nav ${entity && entity.websiteLogo ? 'with-logo' : ''}`}>
+      <nav className={`container header-nav ${entity && (entity.websiteLogo || entity.websiteName) ? 'with-logo-title' : ''}`}>
         <div className="header-logo-container">
           {entity && entity.websiteLogo ? (
             <Link to="/">

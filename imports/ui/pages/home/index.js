@@ -12,13 +12,20 @@ import LandingPageHeader from '../../components/landing-page-header';
 import imageUrlHelper from '../../utils/image-url-helper';
 import isCommonArrElem from '../../utils/is-common-arr-elem';
 import includesWholeArray from '../../utils/includes-whole-array';
-import { defaultThemeColor } from '../../settings';
+import { defaultThemeColor, defaultFontFamily } from '../../settings';
 import metaData from './meta.json';
 
 const StyledHomePageTags = styled.div`
+  & .ant-tag {
+    font-family: ${({ entity }) => entity.websiteFontFamily || defaultFontFamily};
+  }
   & .ant-tag-checkable-checked {
     background-color: ${({ entity }) => entity.websiteThemeColor || defaultThemeColor};
   }
+`;
+
+const StyledItemDescription = styled.div`
+  font-family: ${({ entity }) => entity.websiteFontFamily || defaultFontFamily};
 `;
 
 class Home extends React.Component {
@@ -142,13 +149,15 @@ class Home extends React.Component {
                     hoverable
                     bodyStyle={{ padding: 0, position: 'relative' }}
                   >
-                    <div className={`home-item-name-icon ${item.image || item.video ? 'absolute' : ''}`}>
-                      <div className="home-page-item-icon">
-                        {item.type === 'image' ? <Icon type="picture" /> : null}
-                        {item.type === 'video' ? <Icon type="video-camera" /> : null}
-                        {item.type === 'text' ? <Icon type="edit" /> : null}
+                    {entity.cardTypeIconEnabled && (
+                      <div className={`home-item-name-icon ${item.image || item.video ? 'absolute' : ''}`}>
+                        <div className="home-page-item-icon">
+                          {item.type === 'image' ? <Icon type="picture" /> : null}
+                          {item.type === 'video' ? <Icon type="video-camera" /> : null}
+                          {item.type === 'text' ? <Icon type="edit" /> : null}
+                        </div>
                       </div>
-                    </div>
+                    )}
                     {(item.image || item.video) && (
                       <div className="home-page-item-image-container">
                         {item.type === 'image' ? <img
@@ -164,23 +173,29 @@ class Home extends React.Component {
                       </div>
                     )}
                     <div className="home-page-item-content">
-                      <div
-                        className="home-page-item-tags"
-                        style={{ color: entity.websiteThemeColor || defaultThemeColor }}
-                      >
-                        {item.tags.map(tag => (
-                          <span className="home-page-item-tag" key={tag}>{tag}</span>
-                        ))}
-                      </div>
-                      <div
-                        onClick={() => this.handleCardClick(item.slug)}
-                        className="home-page-item-title"
-                      >
-                        {item.title}
-                      </div>
-                      <div className="home-page-item-description">
-                        {item.description}
-                      </div>
+                      {entity.cardTagsEnabled && (
+                        <div
+                          className="home-page-item-tags"
+                          style={{ color: entity.websiteThemeColor || defaultThemeColor }}
+                        >
+                          {item.tags.map(tag => (
+                            <span className="home-page-item-tag" key={tag}>{tag}</span>
+                          ))}
+                        </div>
+                      )}
+                      {entity.cardHeaderEnabled && (
+                        <div
+                          onClick={() => this.handleCardClick(item.slug)}
+                          className="home-page-item-title"
+                        >
+                          {item.title}
+                        </div>
+                      )}
+                      {entity.cardTextEnabled && (
+                        <StyledItemDescription entity={entity} className="home-page-item-description">
+                          {item.description}
+                        </StyledItemDescription>
+                      )}
                       <div>
                         <button
                           type="button"
@@ -190,9 +205,12 @@ class Home extends React.Component {
                         >
                           Read more
                         </button>
-                        <div className="home-page-item-like">
-                          <Icon type="like-o" /> <span>{entity.actionName}</span>
-                        </div>
+                        {entity.cardActionEnabled && (
+                          <div className="home-page-item-like">
+                            <Icon type={entity.cardActionIcon} />
+                            <span>{entity.cardActionName}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </Card>

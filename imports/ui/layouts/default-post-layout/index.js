@@ -9,12 +9,20 @@ import Video from '../../components/video';
 import { requestEntityGet } from '../../../ui/redux/entity/actions';
 import { requestLogout } from '../../../ui/redux/auth/actions';
 import LandingPageHeader from '../../components/landing-page-header';
-import { defaultThemeColor } from '../../settings';
+import { defaultThemeColor, defaultFontFamily } from '../../settings';
 
 const StyledHeaderTitle = styled.h1`
   &::after {
     background-color: ${({ entity }) => entity.websiteThemeColor || defaultThemeColor};
   }
+`;
+
+const StyledPostDescription = styled.h2`
+  font-family: ${({ entity }) => entity.websiteFontFamily || defaultFontFamily};
+`;
+
+const StyledPostContents = styled.div`
+  font-family: ${({ entity }) => entity.websiteFontFamily || defaultFontFamily};
 `;
 
 class DefaultPostLayout extends React.Component {
@@ -75,7 +83,9 @@ class DefaultPostLayout extends React.Component {
             <StyledHeaderTitle entity={entity} className="default-post-primary-header">
               {title}
             </StyledHeaderTitle>
-            <h2 className="default-post-description">{description}</h2>
+            <StyledPostDescription entity={entity} className="default-post-description">
+              {description}
+            </StyledPostDescription>
             {tags.length ? (
               <div className="default-post-tags">
                 {tags.map(tag => (
@@ -92,7 +102,7 @@ class DefaultPostLayout extends React.Component {
           </div>
         </div>
         <div className="container">
-          <div className="default-post-contents">
+          <StyledPostContents entity={entity} className="default-post-contents">
             {type === 'image' || type === 'video' ? (
               <div className="default-post-media-container">
                 {type === 'image' ? <img
@@ -110,7 +120,7 @@ class DefaultPostLayout extends React.Component {
             <div>
               {contents}
             </div>
-          </div>
+          </StyledPostContents>
         </div>
       </div>
     );

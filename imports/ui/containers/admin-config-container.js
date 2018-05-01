@@ -3,15 +3,24 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import AdminConfiguration from '../pages/admin-configuration';
-import { requestEntityEdit, requestEntityGet } from '../redux/entity/actions';
+import { withRouter, Redirect } from 'react-router-dom';
+import AdminWebsiteStyling from '../pages/admin-website-styling';
+import AdminCardStyling from '../pages/admin-card-styling';
+import AdminPostPageStyling from '../pages/admin-post-page-styling';
+import {
+  requestEntityEditWebsite,
+  requestEntityEditCard,
+  requestEntityGet,
+} from '../redux/entity/actions';
 
 class AdminConfigContainer extends React.Component {
   static propTypes = {
     isLoading: PropTypes.bool,
     entity: PropTypes.object,
-    requestEntityEdit: PropTypes.func.isRequired,
+    requestEntityEditWebsite: PropTypes.func.isRequired,
+    requestEntityEditCard: PropTypes.func.isRequired,
     requestEntityGet: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
   }
   static defaultProps = {
     isLoading: false,
@@ -24,16 +33,27 @@ class AdminConfigContainer extends React.Component {
     const {
       isLoading,
       entity,
-      requestEntityEdit,
+      requestEntityEditWebsite,
+      requestEntityEditCard,
+      match,
     } = this.props;
     if (isLoading) return null;
-    return (
-      <AdminConfiguration
-        entity={entity}
-        requestEntityEdit={requestEntityEdit}
-        isLoading={isLoading}
-      />
-    );
+    const props = {
+      entity,
+      requestEntityEditWebsite,
+      requestEntityEditCard,
+      isLoading,
+    };
+    if (match.params.section === 'website-styling') {
+      return <AdminWebsiteStyling requestEntityEditWebsite={requestEntityEditWebsite} {...props} />;
+    }
+    if (match.params.section === 'card-styling') {
+      return <AdminCardStyling requestEntityEditCard={requestEntityEditCard} {...props} />;
+    }
+    if (match.params.section === 'post-page-styling') {
+      return <AdminPostPageStyling {...props} />;
+    }
+    return <Redirect to="/configuration" />;
   }
 }
 
@@ -43,8 +63,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  requestEntityEdit,
+  requestEntityEditWebsite,
+  requestEntityEditCard,
   requestEntityGet,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminConfigContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AdminConfigContainer));

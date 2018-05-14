@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import AdminCMSList from './admin-cms-list-container';
 import AdminConfiguration from './admin-config-container';
 import AdminCMSAddEdit from './admin-cms-add-edit-container';
+import AdminProfileSettings from './admin-profile-settings-container';
 import Spinner from '../components/spinner';
 import NotFound from '../pages/not-found';
 
@@ -18,12 +19,14 @@ const AdminContainer = ({
   if (!user._id) return <Redirect to="/" />;
   return (
     <Switch>
-      <Redirect from={match.url} exact to={`${match.url}/cms`} />
+      <Redirect from={match.url} exact to={`${match.url}/profile/settings`} />
       <Redirect from={`${match.url}/configuration`} exact to={`${match.url}/configuration/website-styling`} />
+      <Redirect from={`${match.url}/profile`} exact to={`${match.url}/profile/settings`} />
+      <Route path={`${match.url}/profile/settings`} exact component={AdminProfileSettings} />
       <Route path={`${match.url}/cms`} exact component={AdminCMSList} />
       <Route path={`${match.url}/cms/add`} exact component={AdminCMSAddEdit} />
       <Route path={`${match.url}/cms/edit/:slug`} exact component={AdminCMSAddEdit} />
-      <Route path={`${match.url}/configuration/:section`} exact component={AdminConfiguration} />
+      {user.adminUser && <Route path={`${match.url}/configuration/:section`} exact component={AdminConfiguration} />}
       <Route component={NotFound} />
     </Switch>
   );

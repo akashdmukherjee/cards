@@ -12,10 +12,11 @@ const { Header, Sider, Content } = Layout;
 // Mappings for React Router and Ant Menu.Item
 const menuKeysRedirects = {
   1: '/',
-  2: '/admin/cms',
-  3: '/admin/configuration/website-styling',
-  4: '/admin/configuration/card-styling',
-  5: '/admin/configuration/post-page-styling',
+  2: '/admin/profile/settings',
+  3: '/admin/cms',
+  4: '/admin/configuration/website-styling',
+  5: '/admin/configuration/card-styling',
+  6: '/admin/configuration/post-page-styling',
 };
 
 class AdminPanelLayout extends React.Component {
@@ -61,21 +62,31 @@ class AdminPanelLayout extends React.Component {
               <span>Home</span>
             </Menu.Item>
             <Menu.Item key="2">
+              <Icon type="user" />
+              <span>Profile settings</span>
+            </Menu.Item>
+            <Menu.Item key="3">
               <Icon type="code-o" />
               <span>CMS</span>
             </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="laptop" />
-              <span>Website Styling</span>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Icon type="idcard" />
-              <span>Card Styling</span>
-            </Menu.Item>
-            <Menu.Item key="5" disabled>
-              <Icon type="form" />
-              <span>Post Page Styling</span>
-            </Menu.Item>
+            {user.adminUser && (
+              <Menu.Item key="4">
+                <Icon type="laptop" />
+                <span>Website Styling</span>
+              </Menu.Item>
+            )}
+            {user.adminUser && (
+              <Menu.Item key="5">
+                <Icon type="idcard" />
+                <span>Card Styling</span>
+              </Menu.Item>
+            )}
+            {user.adminUser && (
+              <Menu.Item key="6" disabled>
+                <Icon type="form" />
+                <span>Post Page Styling</span>
+              </Menu.Item>
+            )}
           </Menu>
         </Sider>
         <Layout>

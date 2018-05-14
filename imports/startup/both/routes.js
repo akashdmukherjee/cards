@@ -9,8 +9,10 @@ import Home from '../../ui/containers/home-container';
 import PostContainer from '../../ui/containers/post-container';
 import AdminContainer from '../../ui/containers/admin-container';
 import SignIn from '../../ui/containers/signin-container';
+import SignUp from '../../ui/containers/signup-container';
 import ForgotPass from '../../ui/containers/forgot-pass-container';
 import ResetPass from '../../ui/containers/reset-pass-container';
+import PublicProfileContainer from '../../ui/containers/public-profile-container';
 import NotFound from '../../ui/pages/not-found';
 
 const LandingPageRoute = ({ component: Component, ...rest }) => (
@@ -63,8 +65,10 @@ export default (
     <Switch>
       <LandingPageRoute exact path="/" component={Home} />
       <LandingPageRoute exact path="/signin" component={SignIn} />
+      <LandingPageRoute exact path="/signup" component={SignUp} />
       <LandingPageRoute exact path="/forgot-password" component={ForgotPass} />
       <LandingPageRoute exact path="/reset-password/:token" component={ResetPass} />
+      <LandingPageRoute exact path="/profile" component={PublicProfileContainer} />
       <AdminPanelRoute path="/admin" component={AdminContainer} />
       <PostRoute exact path="/post/:slug" component={PostContainer} />
       <Route component={NotFound} />

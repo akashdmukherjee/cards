@@ -2,23 +2,15 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Alert from 'react-s-alert';
-import Home from '../pages/home';
+import PublicProfile from '../pages/public-profile';
 import Spinner from '../components/spinner';
-import { requestCMSListGet } from '../redux/cms/actions';
-import { requestTagsGet } from '../redux/tags/actions';
 import { requestEntityGet } from '../redux/entity/actions';
 import { requestLogout } from '../redux/auth/actions';
 
-class HomeContainer extends React.Component {
+class PublicProfileContainer extends React.Component {
   static propTypes = {
-    isLoading: PropTypes.bool,
-    isLoadingTags: PropTypes.bool,
-    cmsList: PropTypes.array,
-    requestCMSListGet: PropTypes.func.isRequired,
-    requestTagsGet: PropTypes.func.isRequired,
-    tagsList: PropTypes.array,
     requestEntityGet: PropTypes.func.isRequired,
     isEntityLoading: PropTypes.bool,
     entity: PropTypes.object,
@@ -27,59 +19,37 @@ class HomeContainer extends React.Component {
     user: PropTypes.object,
   }
   static defaultProps = {
-    isLoading: false,
-    isLoadingTags: false,
     isEntityLoading: false,
     isLogging: false,
-    cmsList: [],
-    tagsList: [],
     entity: {},
     user: {},
   }
   componentDidMount() {
     this.props.requestEntityGet();
-    this.props.requestCMSListGet(true, (error) => {
-      if (error) {
-        Alert.error(error.message);
-      }
-    });
-    this.props.requestTagsGet((error) => {
-      if (error) {
-        Alert.error(error.message);
-      }
-    });
   }
   render() {
     const {
-      isLoading,
-      cmsList,
-      tagsList,
-      isLoadingTags,
       isEntityLoading,
       entity,
       requestLogout,
       isLogging,
       user,
     } = this.props;
-    if (isLoading || isLoadingTags || isEntityLoading) return <Spinner />;
+    if (isLogging || isEntityLoading) return <Spinner />;
+    if (!user._id) return <Redirect to="/" />;
     return (
-      <Home
-        cmsList={cmsList}
-        tagsList={tagsList}
+      <PublicProfile
         entity={entity}
         requestLogout={requestLogout}
         isLogging={isLogging}
         user={user}
+        isEntityLoading={isEntityLoading}
       />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.cmsListReducer.isLoading,
-  cmsList: state.cmsListReducer.data,
-  isLoadingTags: state.tagsReducer.isLoading,
-  tagsList: state.tagsReducer.data,
   entity: state.entityReducer.data,
   isEntityLoading: state.entityReducer.isLoading,
   isLogging: state.loginReducer.isLogging,
@@ -87,10 +57,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  requestCMSListGet,
-  requestTagsGet,
   requestEntityGet,
   requestLogout,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(PublicProfileContainer);

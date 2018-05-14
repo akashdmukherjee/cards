@@ -13,12 +13,36 @@ Accounts.emailTemplates.resetPassword.text = (user, url) => (
 );
 
 // Create admin account
-const admin = Meteor.settings.adminUser;
-const userExists = Accounts.findUserByEmail(admin.email);
+const adminSettings = Meteor.settings.adminUser;
+
+Accounts.onCreateUser((options, user) => {
+  if (options.email === adminSettings.email && options.username === adminSettings.username) {
+    user.adminUser = true;
+  }
+  if (user.services.google) {
+    user.username = user.services.google.email;
+    user.name = user.services.google.name;
+    user.emails = [];
+    user.emails.push({
+      address: user.services.google.email,
+      verified: true,
+    });
+    return user;
+  }
+  if (user.services.facebook) {
+    user.username = user.services.facebook.email;
+    user.name = user.services.facebook.name;
+    user.emails = [];
+    user.emails.push({
+      address: user.services.facebook.email,
+      verified: true,
+    });
+    return user;
+  }
+  return user;
+});
+
+const userExists = Accounts.findUserByEmail(adminSettings.email);
 if (!userExists) {
-  Accounts.createUser(admin);
+  Accounts.createUser(adminSettings);
 }
-
-// For now we don't need to create other accounts than admin
-Accounts.config({ forbidClientAccountCreation: true });
-

@@ -1,5 +1,6 @@
 import './security';
 import './ssr-init';
+import './services-config';
 import './accounts-config';
 import '../../api/users/methods';
 import '../../api/entity/methods';

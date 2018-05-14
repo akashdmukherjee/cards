@@ -41,18 +41,20 @@ class AdminCMSAddEdit extends React.Component {
     slug: PropTypes.string,
     requestTagsAdd: PropTypes.func.isRequired,
     tags: PropTypes.array,
+    user: PropTypes.object,
   }
   static defaultProps = {
     isLoading: false,
     page: {},
     tags: [],
     slug: '',
+    user: {},
   }
   state = {
     imageFileData: this.props.page.image || null,
     videoUrl: this.props.page.video || null,
     postType: this.props.page.type || 'text',
-    defaultPostView: this.props.page.defaultPostView || false,
+    defaultPostView: this.props.page.defaultPostView || true,
   }
   getFileData = (fileData) => {
     this.setState({ imageFileData: fileData });
@@ -68,23 +70,41 @@ class AdminCMSAddEdit extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      const {
+        user,
+        tags,
+        requestTagsAdd,
+        requestCMSEdit,
+        requestCMSAdd,
+        slug,
+      } = this.props;
       const onlyUniq = (value, index, self) => self.indexOf(value) === index;
-      const dbTagsNames = this.props.tags.map(tag => tag.name);
+      const dbTagsNames = tags.map(tag => tag.name);
       const allTags = dbTagsNames.concat(values.tags);
       const allUniqTags = allTags.filter(onlyUniq);
       const alllNewTags = allUniqTags.filter(tag => dbTagsNames.indexOf(tag) === -1);
       if (!err) {
-        this.props.requestTagsAdd(alllNewTags);
-        if (this.props.slug) {
-          const { slug } = this.props;
+        requestTagsAdd(alllNewTags);
+        if (slug) {
           const extendedValues = { slug, ...values };
-          this.props.requestCMSEdit(
-            { image: this.state.imageFileData, video: this.state.videoUrl, ...extendedValues },
+          requestCMSEdit(
+            {
+              ...(!user.adminUser ? { defaultPostView: true } : {}),
+              image: this.state.imageFileData,
+              video: this.state.videoUrl,
+              ...extendedValues,
+            },
             this.errorCallback,
           );
         } else {
-          this.props.requestCMSAdd(
-            { image: this.state.imageFileData, video: this.state.videoUrl, ...values },
+          requestCMSAdd(
+            {
+              ...(!user.adminUser ? { defaultPostView: true } : {}),
+              authorId: user._id,
+              image: this.state.imageFileData,
+              video: this.state.videoUrl,
+              ...values,
+            },
             this.errorCallback,
           );
         }
@@ -109,6 +129,7 @@ class AdminCMSAddEdit extends React.Component {
       isLoading,
       page,
       slug,
+      user,
     } = this.props;
     return (
       <Card title="CMS Add New Item">
@@ -127,16 +148,18 @@ class AdminCMSAddEdit extends React.Component {
               </RadioGroup>,
             )}
           </FormItem>
-          <FormItem label="Default post view?">
-            {getFieldDecorator('defaultPostView', {
-              ...(slug ? { initialValue: page.defaultPostView } : { initialValue: false }),
-            })(
-              <Switch
-                defaultChecked={slug ? page.defaultPostView : false}
-                onChange={this.handleSwitchDefaultView}
-              />,
-            )}
-          </FormItem>
+          {user.adminUser && (
+            <FormItem label="Default post view?">
+              {getFieldDecorator('defaultPostView', {
+                ...(slug ? { initialValue: page.defaultPostView } : { initialValue: false }),
+              })(
+                <Switch
+                  defaultChecked={slug ? page.defaultPostView : false}
+                  onChange={this.handleSwitchDefaultView}
+                />,
+              )}
+            </FormItem>
+          )}
           {this.state.postType === 'image' ? (
             <FormItem label="Image (click and choose or drop an image)">
               <UploadImage

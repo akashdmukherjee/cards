@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { bool, object, func, node } from 'prop-types';
 import imageUrlHelper from '../../utils/image-url-helper';
@@ -41,7 +41,15 @@ const LandingPageHeader = ({
         <div>
           {searchComponent}
           <span>
-            {loggedIn() ? <a href="#" onClick={requestLogout}>Sign Out</a> : null}
+            {!loggedIn()
+              ? <Link to="/signin">Sign In</Link>
+              : <Fragment>
+                  <Link to="/profile">Profile</Link>
+                  <Link to="/admin">
+                    {user.adminUser ? 'Admin Panel' : 'Settings'}
+                  </Link>
+                  <a href="#" onClick={requestLogout}>Sign Out</a>
+                </Fragment>}
           </span>
         </div>
       </nav>

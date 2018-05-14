@@ -1,7 +1,7 @@
 /* eslint-disable max-len, no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import Alert from 'react-s-alert';
 import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
@@ -10,36 +10,36 @@ import Button from 'antd/lib/button';
 
 const FormItem = Form.Item;
 
-const SignIn = ({
+const SignUp = ({
   form: { getFieldDecorator, validateFields },
-  handleLogin,
+  registerUser,
+  registerUserGoogle,
+  registerUserFacebook,
   history,
-  requestLoginFacebook,
-  requestLoginGoogle,
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        handleLogin(values, (error) => {
+        registerUser(values, (error) => {
           if (error) {
             Alert.error(error.message);
             history.push('/signup');
-          } else { history.push('/admin'); }
+          } else { history.push('/'); }
         });
       }
     });
   };
-  const handleLoginWithGoogle = () => {
-    requestLoginGoogle((error) => {
+  const handleRegisterWithGoogle = () => {
+    registerUserGoogle((error) => {
       if (error) {
         Alert.error(error.message);
         history.push('/signup');
       } else { history.push('/'); }
     });
   };
-  const handleLoginWithFacebook = () => {
-    requestLoginFacebook((error) => {
+  const handleRegisterWithFacebook = () => {
+    registerUserFacebook((error) => {
       if (error) {
         Alert.error(error.message);
         history.push('/signup');
@@ -47,18 +47,23 @@ const SignIn = ({
     });
   };
   return (
-    <div className="sign-in">
+    <div className="offer">
       <div className="landing-subpage-lead small" />
       <div className="landing-subpage-content small">
         <div className="container">
-          <Form onSubmit={handleSubmit} className="login-form account-form">
+          <Form onSubmit={handleSubmit} className="registrer-form account-form">
             <div className="account-form-title">
-              Sign In
+              Sign Up
             </div>
             <FormItem>
               {getFieldDecorator('username', {
                 rules: [{ required: true, message: 'Please input your username!' }],
               })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />)}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('email', {
+                rules: [{ required: true, message: 'Please input your email!' }, { type: 'email', message: 'The input is not valid E-mail!' }],
+              })(<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />)}
             </FormItem>
             <FormItem>
               {getFieldDecorator('password', {
@@ -67,20 +72,17 @@ const SignIn = ({
             </FormItem>
             <FormItem>
               <div>
-                <div className="float-left">
-                  <Link className="login-form-forgot" to="/signup">Sign Up</Link>
-                </div>
                 <div className="float-right">
-                  <Link className="login-form-forgot" to="/forgot-password">Forgot password?</Link>
+                  <Link className="login-form-forgot" to="/signin">Sign In</Link>
                 </div>
               </div>
               <Button type="primary" htmlType="submit" className="accounts-form-button">
-                Sign In
+                Sign Up
               </Button>
-              <Button type="primary" htmlType="button" className="accounts-form-button google" onClick={handleLoginWithGoogle}>
+              <Button type="primary" htmlType="button" className="accounts-form-button google" onClick={handleRegisterWithGoogle}>
                 Start with Google
               </Button>
-              <Button type="primary" htmlType="button" className="accounts-form-button facebook" onClick={handleLoginWithFacebook}>
+              <Button type="primary" htmlType="button" className="accounts-form-button facebook" onClick={handleRegisterWithFacebook}>
                 Start with Facebook
               </Button>
             </FormItem>
@@ -91,12 +93,12 @@ const SignIn = ({
   );
 };
 
-SignIn.propTypes = {
+SignUp.propTypes = {
   form: PropTypes.object.isRequired,
-  handleLogin: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
+  registerUserGoogle: PropTypes.func.isRequired,
+  registerUserFacebook: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  requestLoginFacebook: PropTypes.func.isRequired,
-  requestLoginGoogle: PropTypes.func.isRequired,
 };
 
-export default withRouter(Form.create()(SignIn));
+export default withRouter(Form.create()(SignUp));

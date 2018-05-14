@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 import { Entity } from '../../api/entity/collection';
+import { CMS } from '../../api/cms/collection';
+import { Tags } from '../../api/tags/collection';
 
 // Deny client side ingerention
 // We deny all because sChat uses only Methods calls
@@ -18,10 +20,22 @@ Entity.deny({
   remove() { return true; },
 });
 
+CMS.deny({
+  insert() { return true; },
+  update() { return true; },
+  remove() { return true; },
+});
+
+Tags.deny({
+  insert() { return true; },
+  update() { return true; },
+  remove() { return true; },
+});
+
 // We limit DDP calls here
 // http://docs.meteor.com/#/full/ddpratelimiter
 
-// all Method names TODO
+// TODO: all Method names
 const METHODS_NAMES = [
   'emailVerification',
 ];

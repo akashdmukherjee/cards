@@ -35,11 +35,12 @@ export function requestCMSGet(slug, cb) {
   };
 }
 
-export function requestCMSListGet(cb) {
+export function requestCMSListGet(landingPage = false, cb) {
   return (dispatch) => {
     dispatch(receiveCMSListGet({ isLoading: true, error: null, data: [] }));
     Meteor.call(
       'cms.methods.getList',
+      landingPage,
       (error, result) => {
         if (!error) {
           if (cb && typeof cb === 'function') cb();
@@ -66,6 +67,7 @@ export function requestCMSAdd(values, cb) {
       values.video,
       values.type,
       values.defaultPostView,
+      values.authorId,
       (error) => {
         if (!error) {
           if (cb && typeof cb === 'function') cb();

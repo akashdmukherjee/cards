@@ -5,12 +5,22 @@ import slugify from 'slugify';
 import { CMS } from './collection';
 import cloudinary from '../../startup/server/cloudinary-config';
 
+// TODO: escape all special chars if not admin
+
 Meteor.methods({
   'cms.methods.get': (slug) => {
     check(slug, String);
     return CMS.findOne({ slug });
   },
-  'cms.methods.getList': () => CMS.find({}).fetch().reverse(),
+  'cms.methods.getList': (landingPage) => {
+    check(landingPage, Match.Maybe(Boolean));
+    const userId = Meteor.userId();
+    const meteorUser = userId && Meteor.user();
+    if (landingPage || meteorUser.adminUser) {
+      return CMS.find({}).fetch().reverse();
+    }
+    return CMS.find({ authorId: userId }).fetch().reverse();
+  },
   'cms.methods.add': (
     image,
     title,
@@ -22,6 +32,7 @@ Meteor.methods({
     video,
     type,
     defaultPostView,
+    authorId,
   ) => {
     check(image, Match.Maybe(Object));
     check(title, String);
@@ -32,7 +43,8 @@ Meteor.methods({
     check(tags, Match.Maybe(Array));
     check(video, Match.Maybe(String));
     check(type, String);
-    check(defaultPostView, Boolean);
+    check(defaultPostView, Match.Maybe(Boolean));
+    check(authorId, String);
     if (Meteor.userId()) {
       const slug = `${slugify(title, { remove: /[$*_+~.()'"!\-:@]/g, lower: true })}-${shortid()}`;
       CMS.insert({
@@ -47,6 +59,7 @@ Meteor.methods({
         video,
         type,
         defaultPostView,
+        authorId,
       });
     }
   },
@@ -73,8 +86,10 @@ Meteor.methods({
     check(tags, Match.Maybe(Array));
     check(video, Match.Maybe(String));
     check(type, String);
-    check(defaultPostView, Boolean);
-    if (Meteor.userId()) {
+    check(defaultPostView, Match.Maybe(Boolean));
+    const userId = Meteor.userId();
+    const currentItem = CMS.findOne({ slug });
+    if ((userId && userId === currentItem.authorId) || Meteor.user().adminUser) {
       CMS.update(
         { slug },
         {
@@ -92,13 +107,15 @@ Meteor.methods({
           },
         },
       );
-    }
+    } else throw new Meteor.Error('You are not allowed to do that!');
   },
   'cms.methods.delete': (id) => {
     check(id, String);
-    if (Meteor.userId()) {
+    const userId = Meteor.userId();
+    const currentItem = CMS.findOne(id);
+    if ((userId && userId === currentItem.authorId) || Meteor.user().adminUser) {
       CMS.remove(id);
-    }
+    } else throw new Meteor.Error('You are not allowed to do that!');
   },
   'cms.methods.fileUpload': (payload) => {
     check(payload, Object);

@@ -18,12 +18,14 @@ class AdminCMSAddEditContainer extends React.Component {
     isTagsLoading: PropTypes.bool,
     requestCMSGet: PropTypes.func.isRequired,
     tags: PropTypes.array,
+    user: PropTypes.object,
     requestTagsAdd: PropTypes.func.isRequired,
     requestTagsGet: PropTypes.func.isRequired,
   }
   static defaultProps = {
     page: {},
     tags: [],
+    user: {},
     isLoading: false,
     isTagsLoading: false,
   }
@@ -40,6 +42,7 @@ class AdminCMSAddEditContainer extends React.Component {
       requestTagsAdd,
       isLoading,
       isTagsLoading,
+      user,
     } = this.props;
     if ((this.isCmsEdit() && isLoading) || isTagsLoading) return <Spinner />;
     return (
@@ -49,6 +52,7 @@ class AdminCMSAddEditContainer extends React.Component {
         page={page}
         slug={this.isCmsEdit() ? this.props.match.params.slug : ''}
         tags={tags}
+        user={user}
         requestTagsAdd={requestTagsAdd}
       />
     );
@@ -60,6 +64,7 @@ const mapStateToProps = state => ({
   isTagsLoading: state.tagsReducer.isLoading,
   page: state.cmsReducer.data,
   tags: state.tagsReducer.data,
+  user: state.loginReducer.data,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

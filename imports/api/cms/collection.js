@@ -15,12 +15,13 @@ CMS.schema = new SimpleSchema({
   'image.publicId': { type: String },
   'image.format': { type: String },
   video: { type: String, optional: true },
-  defaultPostView: { type: Boolean },
+  defaultPostView: { type: Boolean, optional: true, defaultValue: true },
   contents: { type: String },
   footer: { type: String, optional: true },
   tags: { type: Array, optional: true },
   'tags.$': { type: String },
   type: { type: String },
+  authorId: { type: String },
 }, { check });
 
 CMS.attachSchema(CMS.schema);

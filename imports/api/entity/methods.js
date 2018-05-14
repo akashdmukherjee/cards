@@ -23,7 +23,7 @@ Meteor.methods({
     check(cardTypeIconEnabled, Match.Maybe(Boolean));
     check(cardBorderColor, Match.Maybe(String));
     check(cardBorderShadow, Match.Maybe(String));
-    if (Meteor.userId()) {
+    if (Meteor.userId() && Meteor.user().adminUser) {
       const entity = Entity.findOne();
       const id = entity && entity._id;
       Entity.upsert(
@@ -68,7 +68,7 @@ Meteor.methods({
     check(websiteLogo, Match.Maybe(Object));
     check(websiteLogoEnabled, Match.Maybe(Boolean));
     check(websiteFontFamily, Match.Maybe(String));
-    if (Meteor.userId()) {
+    if (Meteor.userId() && Meteor.user().adminUser) {
       const entity = Entity.findOne();
       const id = entity && entity._id;
       Entity.upsert(

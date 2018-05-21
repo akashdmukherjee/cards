@@ -144,7 +144,7 @@ class Home extends React.Component {
             </div>
             <FlipMove maintainContainerHeight easing="ease-out">
               {this.state.homeItemsList.map(item => (
-                <List.Item key={item.slug} className="home-page-item">
+                <List.Item key={item.slug} className="home-page-item" onClick={() => this.handleCardClick(item.slug)}>
                   <Card
                     hoverable
                     bodyStyle={{ padding: 0, position: 'relative' }}
@@ -173,7 +173,7 @@ class Home extends React.Component {
                       </div>
                     )}
                     <div className="home-page-item-content">
-                      {entity.cardTagsEnabled && (
+                      {entity.cardTagsEnabled && item.tags && item.tags.length && (
                         <div
                           className="home-page-item-tags"
                           style={{ color: entity.websiteThemeColor || defaultThemeColor }}
@@ -196,15 +196,7 @@ class Home extends React.Component {
                           {item.description}
                         </StyledItemDescription>
                       )}
-                      <div>
-                        <button
-                          type="button"
-                          onClick={() => this.handleCardClick(item.slug)}
-                          className="home-page-item-button"
-                          style={{ backgroundColor: entity.websiteThemeColor || defaultThemeColor }}
-                        >
-                          Read more
-                        </button>
+                      <div className="clearfix">
                         {entity.cardActionEnabled && (
                           <div className="home-page-item-like">
                             <Icon type={entity.cardActionIcon} />

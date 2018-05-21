@@ -117,3 +117,14 @@ export function resetPass(token, password, cb) {
     }
   });
 }
+
+export function updateProfileSettings(values, cb) {
+  return dispatch => Meteor.call('user.methods.updateProfileSettings', values.userId, values.bio, (error) => {
+    if (!error) {
+      if (cb && typeof cb === 'function') cb();
+      return dispatch(receiveLogin({ isLogging: false, data: Meteor.user() }));
+    }
+    if (cb && typeof cb === 'function') cb(error);
+    return null;
+  });
+}

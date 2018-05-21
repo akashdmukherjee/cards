@@ -21,7 +21,8 @@ const PublicProfile = ({
         entity={entity}
       />
       <div className="public-profile">
-        User Name: {user.username}
+        User Name: {user.username} <br />
+        User Bio: {user.bio}
       </div>
     </Fragment>
   );

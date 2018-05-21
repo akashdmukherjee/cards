@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { check } from 'meteor/check';
+import { check, Match } from 'meteor/check';
 
 const validateUsername = (username) => {
   const min = 3;
@@ -55,14 +55,26 @@ Meteor.methods({
     this.unblock();
     Accounts.sendVerificationEmail(userId);
   },
+  'user.methods.updateProfileSettings': (userId, bio) => {
+    check(userId, String);
+    check(bio, Match.Maybe(String));
+    if (userId === Meteor.userId()) {
+      Meteor.users.update({ _id: userId }, { $set: { bio } });
+    }
+    return null;
+  },
 });
 
 // Publish additional field for admin user
+// TODO: make sure what fields are public and accessible for everyone
 Meteor.publish(null, () => {
   const userId = Meteor.userId();
   const meteorUser = userId && Meteor.user();
+  let additionalFields = {
+    bio: 1,
+  };
   if (userId && meteorUser && meteorUser.adminUser) {
-    return Meteor.users.find({}, { fields: { adminUser: 1 } });
+    additionalFields = { ...additionalFields, adminUser: 1 };
   }
-  return false;
+  return Meteor.users.find({}, { fields: additionalFields });
 });

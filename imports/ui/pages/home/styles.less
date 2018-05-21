@@ -10,9 +10,10 @@
   width: calc(~'33.333333333% - 20px');
   float: left;
   margin: 10px;
+  cursor: pointer;
 
-  .ant-card-hoverable {
-    cursor: initial;
+  .ant-card {
+    border-radius: 8px;
   }
 
   @media only screen and (max-width: 992px) {
@@ -26,9 +27,13 @@
 
 .home-page-item-image-container {
   text-align: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 
   img {
     max-width: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
   }
 }
 
@@ -99,18 +104,6 @@
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-}
-
-.home-page-item-button {
-  cursor: pointer;
-  border: 0;
-  color: #fff;
-  text-transform: uppercase;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 10px 25px;
-  transition: .3s background-color;
-  outline: none;
 }
 
 .home-page-item-tag {

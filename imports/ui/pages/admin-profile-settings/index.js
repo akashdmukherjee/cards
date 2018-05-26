@@ -5,6 +5,7 @@ import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
 import { TextArea } from 'antd/lib/input';
 import Alert from 'react-s-alert';
+import UploadImage from '../../components/upload-image';
 
 const FormItem = Form.Item;
 
@@ -15,13 +16,19 @@ class AdminProfileSettings extends React.Component {
     isLoading: PropTypes.bool.isRequired,
     updateProfileSettings: PropTypes.func.isRequired,
   }
-  state = {}
+  state = {
+    imageFileData: this.props.user.avatar || null,
+  }
+  getFileData = (fileData) => {
+    this.setState({ imageFileData: fileData });
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         this.props.updateProfileSettings({
           userId: this.props.user._id,
+          avatar: this.state.imageFileData,
           ...values,
         }, (error) => {
           if (error) {
@@ -45,6 +52,13 @@ class AdminProfileSettings extends React.Component {
           <div className="admin-layout-form-title">
             User Profile Settings
           </div>
+          <FormItem label="User avatar (click and choose or drop an image)">
+            <UploadImage
+              initialImageData={user.avatar}
+              getFileData={this.getFileData}
+              imageTransform="w_200,c_limit"
+            />
+          </FormItem>
           <FormItem label="User Bio">
             {getFieldDecorator('bio', {
               initialValue: user.bio,

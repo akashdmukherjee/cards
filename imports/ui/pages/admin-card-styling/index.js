@@ -76,39 +76,32 @@ class AdminCardStyling extends React.Component {
             )}
           </FormItem>
           <Row className="text-center">
-            <Col span={4}>
+            <Col span={6}>
               <FormItem label="Action enabled?">
                 {getFieldDecorator('cardActionEnabled', {
                   initialValue: entity.cardActionEnabled,
                 })(<Switch defaultChecked={entity.cardActionEnabled} />)}
               </FormItem>
             </Col>
-            <Col span={4}>
+            <Col span={6}>
               <FormItem label="Header enabled?">
                 {getFieldDecorator('cardHeaderEnabled', {
                   initialValue: entity.cardHeaderEnabled,
                 })(<Switch defaultChecked={entity.cardHeaderEnabled} />)}
               </FormItem>
             </Col>
-            <Col span={4}>
+            <Col span={6}>
               <FormItem label="Tags enabled?">
                 {getFieldDecorator('cardTagsEnabled', {
                   initialValue: entity.cardTagsEnabled,
                 })(<Switch defaultChecked={entity.cardTagsEnabled} />)}
               </FormItem>
             </Col>
-            <Col span={4}>
+            <Col span={6}>
               <FormItem label="Text enabled?">
                 {getFieldDecorator('cardTextEnabled', {
                   initialValue: entity.cardTextEnabled,
                 })(<Switch defaultChecked={entity.cardTextEnabled} />)}
-              </FormItem>
-            </Col>
-            <Col span={4}>
-              <FormItem label="Type icon enabled?">
-                {getFieldDecorator('cardTypeIconEnabled', {
-                  initialValue: entity.cardTypeIconEnabled,
-                })(<Switch defaultChecked={entity.cardTypeIconEnabled} />)}
               </FormItem>
             </Col>
           </Row>

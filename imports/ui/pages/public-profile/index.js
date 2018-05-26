@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import LandingPageHeader from '../../components/landing-page-header';
 import Spinner from '../../components/spinner';
+import imageUrlHelper from '../../utils/image-url-helper';
 
 const PublicProfile = ({
   user,
@@ -21,8 +22,21 @@ const PublicProfile = ({
         entity={entity}
       />
       <div className="public-profile">
-        User Name: {user.username} <br />
-        User Bio: {user.bio}
+        {user.avatar && (
+          <div>
+            <img
+              src={imageUrlHelper(
+                user.avatar.version,
+                user.avatar.publicId,
+                user.avatar.format,
+                'w_100,h_100,g_face,c_thumb,r_max',
+              )}
+              alt="user avatar"
+            />
+          </div>
+        )}
+        <strong>User Name:</strong> {user.username} <br />
+        <strong>User Bio:</strong> {user.bio}
       </div>
     </Fragment>
   );

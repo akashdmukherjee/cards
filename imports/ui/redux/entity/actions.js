@@ -73,7 +73,6 @@ export function requestEntityEditCard(values, cb) {
       values.cardHeaderEnabled,
       values.cardTagsEnabled,
       values.cardTextEnabled,
-      values.cardTypeIconEnabled,
       values.cardBorderColor,
       values.cardBorderShadow,
       (err) => {

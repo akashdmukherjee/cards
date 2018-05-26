@@ -10,7 +10,6 @@ Meteor.methods({
     cardHeaderEnabled,
     cardTagsEnabled,
     cardTextEnabled,
-    cardTypeIconEnabled,
     cardBorderColor,
     cardBorderShadow,
   ) => {
@@ -20,7 +19,6 @@ Meteor.methods({
     check(cardHeaderEnabled, Match.Maybe(Boolean));
     check(cardTagsEnabled, Match.Maybe(Boolean));
     check(cardTextEnabled, Match.Maybe(Boolean));
-    check(cardTypeIconEnabled, Match.Maybe(Boolean));
     check(cardBorderColor, Match.Maybe(String));
     check(cardBorderShadow, Match.Maybe(String));
     if (Meteor.userId() && Meteor.user().adminUser) {
@@ -36,7 +34,6 @@ Meteor.methods({
             cardHeaderEnabled,
             cardTagsEnabled,
             cardTextEnabled,
-            cardTypeIconEnabled,
             cardBorderColor,
             cardBorderShadow,
           },

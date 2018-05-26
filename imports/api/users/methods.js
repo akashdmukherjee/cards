@@ -55,13 +55,18 @@ Meteor.methods({
     this.unblock();
     Accounts.sendVerificationEmail(userId);
   },
-  'user.methods.updateProfileSettings': (userId, bio) => {
+  'user.methods.updateProfileSettings': (userId, bio, avatar) => {
     check(userId, String);
     check(bio, Match.Maybe(String));
+    check(avatar, Match.Maybe(Object));
     if (userId === Meteor.userId()) {
-      Meteor.users.update({ _id: userId }, { $set: { bio } });
+      Meteor.users.update({ _id: userId }, { $set: { bio, avatar } });
     }
     return null;
+  },
+  'user.methods.getPublicUserData': (userId) => {
+    check(userId, String);
+    return Meteor.users.findOne({ _id: userId }, { fields: { username: 1, avatar: 1 } });
   },
 });
 
@@ -72,6 +77,7 @@ Meteor.publish(null, () => {
   const meteorUser = userId && Meteor.user();
   let additionalFields = {
     bio: 1,
+    avatar: 1,
   };
   if (userId && meteorUser && meteorUser.adminUser) {
     additionalFields = { ...additionalFields, adminUser: 1 };

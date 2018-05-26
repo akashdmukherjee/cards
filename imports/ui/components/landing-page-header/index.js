@@ -37,9 +37,9 @@ const LandingPageHeader = ({
           ) : null}
           {entity && entity.websiteName
             && <span className="header-website-name">{entity.websiteName}</span>}
+          {searchComponent}
         </div>
         <div>
-          {searchComponent}
           <span>
             {!loggedIn()
               ? <Link to="/signin">Sign In</Link>

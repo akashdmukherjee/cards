@@ -26,7 +26,6 @@ Entity.schema = new SimpleSchema({
   cardHeaderEnabled: { type: Boolean, optional: true, defaultValue: true },
   cardTagsEnabled: { type: Boolean, optional: true, defaultValue: true },
   cardTextEnabled: { type: Boolean, optional: true, defaultValue: true },
-  cardTypeIconEnabled: { type: Boolean, optional: true, defaultValue: true },
   cardBorderColor: { type: String, optional: true, defaultValue: 'auto' },
   cardBorderShadow: { type: String, optional: true, defaultValue: 'auto' },
 }, { check });

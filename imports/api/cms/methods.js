@@ -17,7 +17,16 @@ Meteor.methods({
     const userId = Meteor.userId();
     const meteorUser = userId && Meteor.user();
     if (landingPage || meteorUser.adminUser) {
-      return CMS.find({}).fetch().reverse();
+      const list = CMS.find({}).fetch().reverse();
+      const listWithUserData = list.map((l) => {
+        const userData = Meteor.call('user.methods.getPublicUserData', l.authorId);
+        return {
+          ...l,
+          authorUserName: userData.username,
+          authorAvatar: userData.avatar,
+        };
+      });
+      return listWithUserData;
     }
     return CMS.find({ authorId: userId }).fetch().reverse();
   },

@@ -149,15 +149,6 @@ class Home extends React.Component {
                     hoverable
                     bodyStyle={{ padding: 0, position: 'relative' }}
                   >
-                    {entity.cardTypeIconEnabled && (
-                      <div className={`home-item-name-icon ${item.image || item.video ? 'absolute' : ''}`}>
-                        <div className="home-page-item-icon">
-                          {item.type === 'image' ? <Icon type="picture" /> : null}
-                          {item.type === 'video' ? <Icon type="video-camera" /> : null}
-                          {item.type === 'text' ? <Icon type="edit" /> : null}
-                        </div>
-                      </div>
-                    )}
                     {(item.image || item.video) && (
                       <div className="home-page-item-image-container">
                         {item.type === 'image' ? <img
@@ -197,6 +188,18 @@ class Home extends React.Component {
                         </StyledItemDescription>
                       )}
                       <div className="clearfix">
+                        <div className="home-page-item-author">
+                          {item.authorAvatar && <img
+                            src={imageUrlHelper(
+                              item.authorAvatar.version,
+                              item.authorAvatar.publicId,
+                              item.authorAvatar.format,
+                              'w_35,h_35,g_face,c_thumb,r_max',
+                            )}
+                            alt="user avatar"
+                          />}
+                          <span>{item.authorUserName}</span>
+                        </div>
                         {entity.cardActionEnabled && (
                           <div className="home-page-item-like">
                             <Icon type={entity.cardActionIcon} />

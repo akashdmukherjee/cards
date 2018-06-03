@@ -42,6 +42,8 @@ class AdminCMSAddEdit extends React.Component {
     requestTagsAdd: PropTypes.func.isRequired,
     tags: PropTypes.array,
     user: PropTypes.object,
+    inModal: PropTypes.bool,
+    closeModal: PropTypes.func,
   }
   static defaultProps = {
     isLoading: false,
@@ -49,6 +51,8 @@ class AdminCMSAddEdit extends React.Component {
     tags: [],
     slug: '',
     user: {},
+    inModal: false,
+    closeModal: () => {},
   }
   state = {
     imageFileData: this.props.page.image || null,
@@ -65,7 +69,11 @@ class AdminCMSAddEdit extends React.Component {
   errorCallback = (error) => {
     if (error) {
       Alert.error(error.message);
-    } else { this.props.history.push('/admin/cms'); }
+    } else if (!this.props.inModal) {
+      this.props.history.push('/admin/cms');
+    } else {
+      this.props.closeModal();
+    }
   }
   handleSubmit = (e) => {
     e.preventDefault();

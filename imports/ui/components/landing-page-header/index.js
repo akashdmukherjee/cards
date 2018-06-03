@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { bool, object, func, node } from 'prop-types';
 import imageUrlHelper from '../../utils/image-url-helper';
-import { defaultNavBarBgColor } from '../../settings';
+import { defaultNavBarBgColor, defaultFontFamily } from '../../settings';
 
 const LandingPageHeader = ({
   isLogging,
@@ -36,7 +36,7 @@ const LandingPageHeader = ({
             </Link>
           ) : null}
           {entity && entity.websiteName
-            && <span className="header-website-name">{entity.websiteName}</span>}
+            && <span style={{ fontFamily: entity.websiteFontFamily || defaultFontFamily }} className="header-website-name">{entity.websiteName}</span>}
           {searchComponent}
         </div>
         <div>

@@ -21,6 +21,8 @@ class AdminCMSAddEditContainer extends React.Component {
     user: PropTypes.object,
     requestTagsAdd: PropTypes.func.isRequired,
     requestTagsGet: PropTypes.func.isRequired,
+    inModal: PropTypes.bool,
+    closeModal: PropTypes.func,
   }
   static defaultProps = {
     page: {},
@@ -28,6 +30,8 @@ class AdminCMSAddEditContainer extends React.Component {
     user: {},
     isLoading: false,
     isTagsLoading: false,
+    inModal: false,
+    closeModal: () => {},
   }
   componentDidMount() {
     this.props.requestTagsGet();
@@ -43,6 +47,7 @@ class AdminCMSAddEditContainer extends React.Component {
       isLoading,
       isTagsLoading,
       user,
+      inModal,
     } = this.props;
     if ((this.isCmsEdit() && isLoading) || isTagsLoading) return <Spinner />;
     return (
@@ -54,6 +59,8 @@ class AdminCMSAddEditContainer extends React.Component {
         tags={tags}
         user={user}
         requestTagsAdd={requestTagsAdd}
+        inModal={inModal}
+        closeModal={this.props.closeModal}
       />
     );
   }

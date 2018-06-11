@@ -16,12 +16,14 @@ Accounts.emailTemplates.resetPassword.text = (user, url) => (
 const adminSettings = Meteor.settings.adminUser;
 
 Accounts.onCreateUser((options, user) => {
-  if (options.email === adminSettings.email && options.username === adminSettings.username) {
+  if (options.email === adminSettings.email
+    && options.firstName === adminSettings.firstName
+    && options.lastName === adminSettings.lastName) {
     user.adminUser = true;
   }
   if (user.services.google) {
-    user.username = user.services.google.email;
-    user.name = user.services.google.name;
+    user.firstName = user.services.google.given_name;
+    user.lastName = user.services.google.family_name;
     user.emails = [];
     user.emails.push({
       address: user.services.google.email,
@@ -30,8 +32,8 @@ Accounts.onCreateUser((options, user) => {
     return user;
   }
   if (user.services.facebook) {
-    user.username = user.services.facebook.email;
-    user.name = user.services.facebook.name;
+    user.firstName = user.services.facebook.first_name;
+    user.lastName = user.services.facebook.last_name;
     user.emails = [];
     user.emails.push({
       address: user.services.facebook.email,

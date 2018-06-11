@@ -12,7 +12,7 @@ export function receiveLogin(data) {
 }
 
 export function requestLogin(values, cb) {
-  return dispatch => Meteor.loginWithPassword(values.username, values.password, (error) => {
+  return dispatch => Meteor.loginWithPassword(values.email, values.password, (error) => {
     if (!error) {
       if (cb && typeof cb === 'function') cb();
       return dispatch(receiveLogin({ isLogging: false, data: Meteor.user() }));
@@ -62,7 +62,7 @@ export function requestLogout() {
 }
 
 export function registerUser(values, cb) {
-  return dispatch => Meteor.call('createNewUser', values.username, values.email, values.password, () => {
+  return dispatch => Meteor.call('createNewUser', values.email, values.password, () => {
     Meteor.loginWithPassword(values.email, values.password, (error) => {
       if (!error) {
         if (cb && typeof cb === 'function') cb();
@@ -124,6 +124,8 @@ export function updateProfileSettings(values, cb) {
     values.userId,
     values.bio,
     values.avatar,
+    values.firstName,
+    values.lastName,
     (error) => {
       if (!error) {
         if (cb && typeof cb === 'function') cb();

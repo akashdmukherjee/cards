@@ -56,11 +56,6 @@ const SignUp = ({
               Sign Up
             </div>
             <FormItem>
-              {getFieldDecorator('username', {
-                rules: [{ required: true, message: 'Please input your username!' }],
-              })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />)}
-            </FormItem>
-            <FormItem>
               {getFieldDecorator('email', {
                 rules: [{ required: true, message: 'Please input your email!' }, { type: 'email', message: 'The input is not valid E-mail!' }],
               })(<Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />)}

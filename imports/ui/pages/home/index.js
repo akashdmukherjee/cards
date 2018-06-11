@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import FlipMove from 'react-flip-move';
 import Card from 'antd/lib/card';
 import List from 'antd/lib/list';
@@ -37,6 +38,7 @@ class Home extends React.Component {
     user: PropTypes.object,
     requestLogout: PropTypes.func.isRequired,
     isEntityLoading: PropTypes.bool,
+    history: PropTypes.object.isRequired,
   }
   static defaultProps = {
     isEntityLoading: false,
@@ -70,8 +72,9 @@ class Home extends React.Component {
       }
       return {
         checkedTags: newCheckedTags,
-        homeItemsList: newCheckedTags.length ? currentState
-          .filter(item => includesWholeArray(item.tags, newCheckedTags)) : currentState,
+        homeItemsList: newCheckedTags.length
+          ? currentState.filter(item => includesWholeArray(item.tags, newCheckedTags))
+          : currentState,
       };
     });
   }
@@ -104,6 +107,11 @@ class Home extends React.Component {
       }
       return newState;
     });
+  }
+  goToUserProfile = (userId, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.history.push(`/profile/${userId}`);
   }
   render() {
     const {
@@ -188,7 +196,7 @@ class Home extends React.Component {
                         </StyledItemDescription>
                       )}
                       <div className="clearfix">
-                        <div className="home-page-item-author">
+                        <div className="home-page-item-author" onClick={e => this.goToUserProfile(item.authorId, e)}>
                           {item.authorAvatar && <img
                             src={imageUrlHelper(
                               item.authorAvatar.version,
@@ -198,7 +206,7 @@ class Home extends React.Component {
                             )}
                             alt="user avatar"
                           />}
-                          <span>{item.authorUserName}</span>
+                          <span>{item.authorFirstName} {item.authorLastName}</span>
                         </div>
                         {entity.cardActionEnabled && (
                           <div className="home-page-item-like">
@@ -219,4 +227,4 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+export default withRouter(Home);

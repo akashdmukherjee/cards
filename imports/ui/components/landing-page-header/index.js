@@ -36,7 +36,7 @@ const LandingPageHeader = ({
             </Link>
           ) : null}
           {entity && entity.websiteName
-            && <span style={{ fontFamily: entity.websiteFontFamily || defaultFontFamily }} className="header-website-name">{entity.websiteName}</span>}
+            && <Link to="/"><span style={{ fontFamily: entity.websiteFontFamily || defaultFontFamily }} className="header-website-name">{entity.websiteName}</span></Link>}
           {searchComponent}
         </div>
         <div>

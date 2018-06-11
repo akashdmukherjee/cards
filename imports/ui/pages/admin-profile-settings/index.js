@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Card from 'antd/lib/card';
 import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
-import { TextArea } from 'antd/lib/input';
+import Input, { TextArea } from 'antd/lib/input';
+import Icon from 'antd/lib/icon';
 import Alert from 'react-s-alert';
 import UploadImage from '../../components/upload-image';
 
@@ -63,6 +64,16 @@ class AdminProfileSettings extends React.Component {
             {getFieldDecorator('bio', {
               initialValue: user.bio,
             })(<TextArea autosize={{ minRows: 6, maxRows: 10 }} placeholder="Bio" />)}
+          </FormItem>
+          <FormItem label="First Name">
+            {getFieldDecorator('firstName', {
+              initialValue: user.firstName,
+            })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="First Name" />)}
+          </FormItem>
+          <FormItem label="Last Name">
+            {getFieldDecorator('lastName', {
+              initialValue: user.lastName,
+            })(<Input prefix={<Icon type="appstore-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Last Name" />)}
           </FormItem>
           <FormItem className="admin-layout-form-actions">
             <Button loading={isLoading} type="primary" htmlType="submit" className="admin-layout-form-button">

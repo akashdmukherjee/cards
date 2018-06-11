@@ -2,15 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { check, Match } from 'meteor/check';
 
-const validateUsername = (username) => {
-  const min = 3;
-  const max = 12;
-  if (username && username.length >= min && username.length <= max) {
-    return true;
-  }
-  return false;
-};
 const validatePassword = (password) => { // eslint-disable-line
+  // TODO:
   // const r = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
   // if (password && r.test(password)) {
   //   return true;
@@ -27,26 +20,14 @@ const validateEmail = (email) => {
 };
 
 Meteor.methods({
-  createNewUser(username, email, password) {
-    check(username, String);
+  createNewUser(email, password) {
     check(email, String);
     check(password, String);
-    let userQuery;
-    if (username === 'nousername' && validateEmail(email) && validatePassword(password)) {
-      userQuery = {
+    if (validateEmail(email) && validatePassword(password)) {
+      return Accounts.createUser({
         email,
         password,
-      };
-    }
-    if (validateUsername(username) && validateEmail(email) && validatePassword(password)) {
-      userQuery = {
-        username,
-        email,
-        password,
-      };
-    }
-    if (userQuery) {
-      return Accounts.createUser(userQuery);
+      });
     }
     return null;
   },
@@ -55,18 +36,40 @@ Meteor.methods({
     this.unblock();
     Accounts.sendVerificationEmail(userId);
   },
-  'user.methods.updateProfileSettings': (userId, bio, avatar) => {
+  'user.methods.updateProfileSettings': (userId, bio, avatar, firstName, lastName) => {
     check(userId, String);
     check(bio, Match.Maybe(String));
     check(avatar, Match.Maybe(Object));
+    check(firstName, Match.Maybe(String));
+    check(lastName, Match.Maybe(String));
     if (userId === Meteor.userId()) {
-      Meteor.users.update({ _id: userId }, { $set: { bio, avatar } });
+      Meteor.users.update(
+        { _id: userId },
+        {
+          $set: {
+            bio,
+            avatar,
+            firstName,
+            lastName,
+          },
+        },
+      );
     }
     return null;
   },
   'user.methods.getPublicUserData': (userId) => {
     check(userId, String);
-    return Meteor.users.findOne({ _id: userId }, { fields: { username: 1, avatar: 1 } });
+    return Meteor.users.findOne(
+      { _id: userId },
+      {
+        fields: {
+          firstName: 1,
+          lastName: 1,
+          avatar: 1,
+          bio: 1,
+        },
+      },
+    );
   },
 });
 
@@ -76,6 +79,8 @@ Meteor.publish(null, () => {
   const userId = Meteor.userId();
   const meteorUser = userId && Meteor.user();
   let additionalFields = {
+    firstName: 1,
+    lastName: 1,
     bio: 1,
     avatar: 1,
   };

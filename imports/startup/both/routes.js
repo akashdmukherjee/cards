@@ -68,7 +68,7 @@ export default (
       <LandingPageRoute exact path="/signup" component={SignUp} />
       <LandingPageRoute exact path="/forgot-password" component={ForgotPass} />
       <LandingPageRoute exact path="/reset-password/:token" component={ResetPass} />
-      <LandingPageRoute exact path="/profile" component={PublicProfileContainer} />
+      <LandingPageRoute exact path="/profile/:userId?" component={PublicProfileContainer} />
       <AdminPanelRoute path="/admin" component={AdminContainer} />
       <PostRoute exact path="/post/:slug" component={PostContainer} />
       <Route component={NotFound} />

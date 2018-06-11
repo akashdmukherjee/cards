@@ -22,7 +22,8 @@ Meteor.methods({
         const userData = Meteor.call('user.methods.getPublicUserData', l.authorId);
         return {
           ...l,
-          authorUserName: userData.username,
+          authorFirstName: userData.firstName,
+          authorLastName: userData.lastName,
           authorAvatar: userData.avatar,
         };
       });

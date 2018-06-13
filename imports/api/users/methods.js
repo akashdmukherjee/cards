@@ -71,6 +71,21 @@ Meteor.methods({
       },
     );
   },
+  'user.methods.addAvatar': (avatar, email) => {
+    check(avatar, Object);
+    check(email, String);
+    const user = Accounts.findUserByEmail(email);
+    if (user) {
+      Meteor.users.update(
+        { _id: user._id },
+        {
+          $set: {
+            avatar,
+          },
+        },
+      );
+    }
+  },
 });
 
 // Publish additional field for admin user

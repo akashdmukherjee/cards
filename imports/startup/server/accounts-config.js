@@ -1,6 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { Meteor } from 'meteor/meteor';
+import { HTTP } from 'meteor/http';
 import { Accounts } from 'meteor/accounts-base';
+import cloudinary from './cloudinary-config';
 
 // TODO email templates config:
 // https://docs.meteor.com/api/passwords.html#Accounts-emailTemplates
@@ -11,6 +13,21 @@ Accounts.emailTemplates.resetPassword.text = (user, url) => (
     ${Meteor.absoluteUrl(url.split('#/')[1])}
   `
 );
+
+// Get the avatar from sociall service and save it as other images
+const avatarUpload = (token, email) => {
+  const imageData = HTTP.get(`https://graph.facebook.com/v3.0/me?access_token=${token}&fields=picture.type(large)&format=json&method=get`);
+  cloudinary.uploader.upload(
+    imageData.data.picture.data.url,
+    Meteor.bindEnvironment((result) => {
+      const image = {
+        publicId: result.public_id,
+        version: result.version,
+        format: result.format,
+      };
+      Meteor.call('user.methods.addAvatar', image, email);
+    }));
+};
 
 // Create admin account
 const adminSettings = Meteor.settings.adminUser;
@@ -39,6 +56,7 @@ Accounts.onCreateUser((options, user) => {
       address: user.services.facebook.email,
       verified: true,
     });
+    avatarUpload(user.services.facebook.accessToken, user.services.facebook.email);
     return user;
   }
   return user;

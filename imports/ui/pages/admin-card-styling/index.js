@@ -61,7 +61,17 @@ class AdminCardStyling extends React.Component {
           <FormItem label="Action name">
             {getFieldDecorator('cardActionName', {
               initialValue: entity.cardActionName,
-            })(<Input prefix={<Icon type="like-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Action" />)}
+            })(<Input prefix={<Icon type="like-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Action name" />)}
+          </FormItem>
+          <FormItem label="Action type">
+            {getFieldDecorator('cardActionType', {
+              initialValue: entity.cardActionType,
+            })(
+              <Select>
+                <Option value="ratings"><Icon type="star-o" /> Ratings</Option>
+                <Option value="likes"><Icon type="like-o" /> Likes</Option>
+              </Select>,
+            )}
           </FormItem>
           <FormItem label="Action icon">
             {getFieldDecorator('cardActionIcon', {

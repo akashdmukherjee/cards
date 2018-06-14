@@ -68,6 +68,7 @@ export function requestEntityEditCard(values, cb) {
     Meteor.call(
       'entity.methods.editCard',
       values.cardActionName,
+      values.cardActionType,
       values.cardActionIcon,
       values.cardActionEnabled,
       values.cardHeaderEnabled,

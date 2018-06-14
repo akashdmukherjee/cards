@@ -6,6 +6,7 @@ import Card from 'antd/lib/card';
 import List from 'antd/lib/list';
 import { CheckableTag } from 'antd/lib/tag';
 import Icon from 'antd/lib/icon';
+import Rate from 'antd/lib/rate';
 import styled from 'styled-components';
 import MetaTags from '../../components/meta-tags';
 import Video from '../../components/video';
@@ -113,6 +114,31 @@ class Home extends React.Component {
     e.stopPropagation();
     this.props.history.push(`/profile/${userId}`);
   }
+  handleStopPropagation = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  renderRatingSystem = (entity) => {
+    if (entity.cardActionType === 'likes') {
+      return (
+        <div className="home-page-item-like">
+          <Icon type={entity.cardActionIcon} />
+          <span>{entity.cardActionName}</span>
+        </div>
+      );
+    }
+    if (entity.cardActionType === 'ratings') {
+      return (
+        <div className="home-page-item-like" onClick={e => this.handleStopPropagation(e)}>
+          <Rate
+            character={<Icon type={entity.cardActionIcon} />}
+          />
+          <span>{entity.cardActionName}</span>
+        </div>
+      );
+    }
+    return null;
+  }
   render() {
     const {
       entity,
@@ -208,12 +234,7 @@ class Home extends React.Component {
                           />}
                           <span>{item.authorFirstName} {item.authorLastName}</span>
                         </div>
-                        {entity.cardActionEnabled && (
-                          <div className="home-page-item-like">
-                            <Icon type={entity.cardActionIcon} />
-                            <span>{entity.cardActionName}</span>
-                          </div>
-                        )}
+                        {entity.cardActionEnabled && this.renderRatingSystem(entity)}
                       </div>
                     </div>
                   </Card>

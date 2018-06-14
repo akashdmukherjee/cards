@@ -21,6 +21,7 @@ Entity.schema = new SimpleSchema({
   websiteLogoEnabled: { type: Boolean, defaultValue: false, optional: true },
   websiteFontFamily: { type: String, defaultValue: '\'Roboto\', sans-serif', optional: true },
   cardActionName: { type: String, optional: true, defaultValue: 'Like' },
+  cardActionType: { type: String, optional: true, defaultValue: 'likes' },
   cardActionIcon: { type: String, optional: true, defaultValue: 'like-o' },
   cardActionEnabled: { type: Boolean, optional: true, defaultValue: true },
   cardHeaderEnabled: { type: Boolean, optional: true, defaultValue: true },

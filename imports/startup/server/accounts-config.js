@@ -2,6 +2,7 @@
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';
 import { Accounts } from 'meteor/accounts-base';
+import get from 'lodash.get';
 import cloudinary from './cloudinary-config';
 
 // TODO email templates config:
@@ -15,10 +16,9 @@ Accounts.emailTemplates.resetPassword.text = (user, url) => (
 );
 
 // Get the avatar from sociall service and save it as other images
-const avatarUpload = (token, email) => {
-  const imageData = HTTP.get(`https://graph.facebook.com/v3.0/me?access_token=${token}&fields=picture.type(large)&format=json&method=get`);
+const uploadAvatar = (url, email) => {
   cloudinary.uploader.upload(
-    imageData.data.picture.data.url,
+    url,
     Meteor.bindEnvironment((result) => {
       const image = {
         publicId: result.public_id,
@@ -26,7 +26,13 @@ const avatarUpload = (token, email) => {
         format: result.format,
       };
       Meteor.call('user.methods.addAvatar', image, email);
-    }));
+    }),
+  );
+};
+
+const getFBAvatar = (token, email) => {
+  const imageData = HTTP.get(`https://graph.facebook.com/v3.0/me?access_token=${token}&fields=picture.type(large)&format=json&method=get`);
+  uploadAvatar(get(imageData, 'data.picture.data.url', ''), email);
 };
 
 // Create admin account
@@ -46,6 +52,7 @@ Accounts.onCreateUser((options, user) => {
       address: user.services.google.email,
       verified: true,
     });
+    uploadAvatar(get(user, 'services.google.picture', ''), user.services.google.email);
     return user;
   }
   if (user.services.facebook) {
@@ -56,7 +63,7 @@ Accounts.onCreateUser((options, user) => {
       address: user.services.facebook.email,
       verified: true,
     });
-    avatarUpload(user.services.facebook.accessToken, user.services.facebook.email);
+    getFBAvatar(user.services.facebook.accessToken, user.services.facebook.email);
     return user;
   }
   return user;

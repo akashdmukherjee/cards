@@ -5,6 +5,7 @@ import { Entity } from './collection';
 Meteor.methods({
   'entity.methods.editCard': (
     cardActionName,
+    cardActionType,
     cardActionIcon,
     cardActionEnabled,
     cardHeaderEnabled,
@@ -14,6 +15,7 @@ Meteor.methods({
     cardBorderShadow,
   ) => {
     check(cardActionName, Match.Maybe(String));
+    check(cardActionType, Match.Maybe(String));
     check(cardActionIcon, Match.Maybe(String));
     check(cardActionEnabled, Match.Maybe(Boolean));
     check(cardHeaderEnabled, Match.Maybe(Boolean));
@@ -29,6 +31,7 @@ Meteor.methods({
         {
           $set: {
             cardActionName,
+            cardActionType,
             cardActionIcon,
             cardActionEnabled,
             cardHeaderEnabled,

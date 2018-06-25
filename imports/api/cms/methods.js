@@ -142,4 +142,28 @@ Meteor.methods({
     }
     return null;
   },
+  'cms.methods.updateRatings': (type, postId, value) => {
+    check(type, String);
+    check(postId, String);
+    check(value, Number);
+    const userId = Meteor.userId();
+    const post = CMS.findOne({ _id: postId });
+    let val;
+    if (post && type === 'likes') val = (post.likes + value);
+    if (post && type === 'ratings') {
+      const count = (post.ratings && post.ratings.count) || 0;
+      const votes = (post.ratings && post.ratings.votes) || 0;
+      val = { count: (count + value), votes: (votes + 1) };
+    }
+    if (userId && post && post._id) {
+      CMS.update(
+        { _id: postId },
+        {
+          $set: {
+            [type]: val,
+          },
+        },
+      );
+    }
+  },
 });

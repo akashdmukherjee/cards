@@ -40,6 +40,7 @@ class Home extends React.Component {
     requestLogout: PropTypes.func.isRequired,
     isEntityLoading: PropTypes.bool,
     history: PropTypes.object.isRequired,
+    updateRatings: PropTypes.func.isRequired,
   }
   static defaultProps = {
     isEntityLoading: false,
@@ -118,7 +119,7 @@ class Home extends React.Component {
     e.preventDefault();
     e.stopPropagation();
   }
-  renderRatingSystem = (entity) => {
+  renderRatingSystem = (entity, post) => {
     if (entity.cardActionType === 'likes') {
       return (
         <div className="home-page-item-like">
@@ -128,9 +129,14 @@ class Home extends React.Component {
       );
     }
     if (entity.cardActionType === 'ratings') {
+      const starsCount = (post.ratings && post.ratings.count) || 0;
+      const starsVotes = (post.ratings && post.ratings.votes) || 0;
+      const startsValue = starsVotes !== 0 ? (starsCount / starsVotes) : starsCount;
       return (
         <div className="home-page-item-like" onClick={e => this.handleStopPropagation(e)}>
           <Rate
+            value={startsValue}
+            onChange={value => this.props.updateRatings('ratings', post._id, value)}
             character={<Icon type={entity.cardActionIcon} />}
           />
           <span>{entity.cardActionName}</span>
@@ -234,7 +240,7 @@ class Home extends React.Component {
                           />}
                           <span>{item.authorFirstName} {item.authorLastName}</span>
                         </div>
-                        {entity.cardActionEnabled && this.renderRatingSystem(entity)}
+                        {entity.cardActionEnabled && this.renderRatingSystem(entity, item)}
                       </div>
                     </div>
                   </Card>

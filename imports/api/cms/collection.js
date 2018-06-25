@@ -21,6 +21,10 @@ CMS.schema = new SimpleSchema({
   tags: { type: Array, optional: true },
   'tags.$': { type: String },
   type: { type: String },
+  ratings: { type: Object, optional: true },
+  'ratings.votes': { type: Number, defaultValue: 0 },
+  'ratings.count': { type: Number, defaultValue: 0 },
+  likes: { type: Number, optional: true, defaultValue: 0 },
   authorId: { type: String },
 }, { check });
 

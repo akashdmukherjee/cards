@@ -86,6 +86,24 @@ Meteor.methods({
       );
     }
   },
+  'user.methods.updateRatings': (type, postId, value) => {
+    check(type, String);
+    check(postId, String);
+    check(value, Number);
+    const userId = Meteor.userId();
+    const obj = {};
+    obj[postId] = value;
+    if (userId) {
+      Meteor.users.update(
+        { _id: userId },
+        {
+          $set: {
+            [type]: obj,
+          },
+        },
+      );
+    }
+  },
 });
 
 // Publish additional field for admin user
@@ -98,6 +116,8 @@ Meteor.publish(null, () => {
     lastName: 1,
     bio: 1,
     avatar: 1,
+    likes: 1,
+    ratings: 1,
   };
   if (userId && meteorUser && meteorUser.adminUser) {
     additionalFields = { ...additionalFields, adminUser: 1 };

@@ -90,12 +90,16 @@ Meteor.methods({
     check(type, String);
     check(postId, String);
     check(value, Number);
-    const userId = Meteor.userId();
-    const obj = {};
-    obj[postId] = value;
-    if (userId) {
+    const user = Meteor.user();
+    const obj = user.ratings || user.likes || {};
+    if (type === 'likes' && user.likes && user.likes[postId] !== undefined) {
+      delete obj[postId];
+    } else {
+      obj[postId] = value;
+    }
+    if (user) {
       Meteor.users.update(
-        { _id: userId },
+        { _id: user._id },
         {
           $set: {
             [type]: obj,

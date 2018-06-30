@@ -119,3 +119,20 @@ export function requestCMSDelete(id, cb) {
     );
   };
 }
+
+export function requestRatings(type, postId, cb) {
+  return () => {
+    Meteor.call(
+      'cms.methods.getRatings',
+      type,
+      postId,
+      (error, result) => {
+        if (!error) {
+          if (cb && typeof cb === 'function') cb(result);
+        }
+        if (cb && typeof cb === 'function') cb(error);
+        return error;
+      },
+    );
+  };
+}

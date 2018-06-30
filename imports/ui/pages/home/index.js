@@ -41,6 +41,7 @@ class Home extends React.Component {
     isEntityLoading: PropTypes.bool,
     history: PropTypes.object.isRequired,
     updateRatings: PropTypes.func.isRequired,
+    requestRatings: PropTypes.func.isRequired,
   }
   static defaultProps = {
     isEntityLoading: false,
@@ -50,6 +51,8 @@ class Home extends React.Component {
   state = {
     checkedTags: [],
     homeItemsList: this.props.cmsList || [],
+    updatedRatings: null,
+    updatedLikes: null,
   }
   initialState = this.props.cmsList
   handleCardClick = (slug) => {
@@ -119,24 +122,73 @@ class Home extends React.Component {
     e.preventDefault();
     e.stopPropagation();
   }
-  renderRatingSystem = (entity, post) => {
+  handleLikesVote = (e, postId, value) => {
+    this.handleStopPropagation(e);
+    this.props.updateRatings('likes', postId, value, () => {
+      this.props.requestRatings('likes', postId, (result) => {
+        if (result !== undefined) {
+          this.setState((prevState) => {
+            const newLikes = { ...prevState.updatedLikes };
+            newLikes[postId] = result;
+            return {
+              updatedLikes: newLikes,
+            };
+          });
+        }
+      });
+    });
+  }
+  handleRatingsVote = (postId, value) => {
+    this.props.updateRatings('ratings', postId, value, () => {
+      this.props.requestRatings('ratings', postId, (result) => {
+        if (result) {
+          this.setState((prevState) => {
+            const newRatings = { ...prevState.updatedRatings };
+            newRatings[postId] = result;
+            return {
+              updatedRatings: newRatings,
+            };
+          });
+        }
+      });
+    });
+  }
+  renderRatingSystem = (entity, post, user) => {
     if (entity.cardActionType === 'likes') {
+      const likes = (
+        this.state.updatedLikes && this.state.updatedLikes[post._id] !== undefined
+          ? this.state.updatedLikes[post._id]
+          : post.likes
+      );
+      const isLikedByUser = user.likes && user.likes[post._id];
       return (
-        <div className="home-page-item-like">
-          <Icon type={entity.cardActionIcon} />
-          <span>{entity.cardActionName}</span>
+        <div className="home-page-item-like" onClick={e => this.handleLikesVote(e, post._id, 1)}>
+          <span
+            className={isLikedByUser ? 'liked' : ''}
+            style={{ color: isLikedByUser ? (entity.websiteThemeColor || defaultThemeColor) : 'inherit' }}
+          >
+            <Icon type={entity.cardActionIcon} />
+          </span>
+          <span>
+            {entity.cardActionName}: {likes}
+          </span>
         </div>
       );
     }
     if (entity.cardActionType === 'ratings') {
-      const starsCount = (post.ratings && post.ratings.count) || 0;
-      const starsVotes = (post.ratings && post.ratings.votes) || 0;
+      const ratings = (
+        this.state.updatedRatings && this.state.updatedRatings[post._id] !== undefined
+          ? this.state.updatedRatings[post._id]
+          : post.ratings
+      );
+      const starsCount = (ratings && ratings.count) || 0;
+      const starsVotes = (ratings && ratings.votes) || 0;
       const startsValue = starsVotes !== 0 ? (starsCount / starsVotes) : starsCount;
       return (
         <div className="home-page-item-like" onClick={e => this.handleStopPropagation(e)}>
           <Rate
             value={startsValue}
-            onChange={value => this.props.updateRatings('ratings', post._id, value)}
+            onChange={value => this.handleRatingsVote(post._id, value)}
             character={<Icon type={entity.cardActionIcon} />}
           />
           <span>{entity.cardActionName}</span>
@@ -240,7 +292,7 @@ class Home extends React.Component {
                           />}
                           <span>{item.authorFirstName} {item.authorLastName}</span>
                         </div>
-                        {entity.cardActionEnabled && this.renderRatingSystem(entity, item)}
+                        {entity.cardActionEnabled && this.renderRatingSystem(entity, item, user)}
                       </div>
                     </div>
                   </Card>

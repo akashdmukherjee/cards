@@ -142,20 +142,43 @@ Meteor.methods({
     }
     return null;
   },
+  'cms.methods.getRatings': (type, postId) => {
+    check(type, String);
+    check(postId, String);
+    const post = CMS.findOne({ _id: postId });
+    if (post && type === 'ratings') {
+      return post.ratings;
+    }
+    if (post && type === 'likes') {
+      return post.likes;
+    }
+    return null;
+  },
   'cms.methods.updateRatings': (type, postId, value) => {
     check(type, String);
     check(postId, String);
     check(value, Number);
-    const userId = Meteor.userId();
+    const user = Meteor.user();
     const post = CMS.findOne({ _id: postId });
     let val;
-    if (post && type === 'likes') val = (post.likes + value);
-    if (post && type === 'ratings') {
+    if (post && type === 'likes' && user.likes && user.likes[postId] !== undefined) {
+      val = post.likes - user.likes[postId];
+    } else if (post && type === 'likes') {
+      val = post.likes + value;
+    }
+    if (post && type === 'ratings' && user.ratings) {
+      const count = (post.ratings && post.ratings.count) || 0;
+      const votes = (post.ratings && post.ratings.votes) || 0;
+      val = {
+        count: ((count - (user.ratings[postId] || 0)) + value),
+        votes: (votes === 0 ? votes + 1 : votes),
+      };
+    } else if (post && type === 'ratings') {
       const count = (post.ratings && post.ratings.count) || 0;
       const votes = (post.ratings && post.ratings.votes) || 0;
       val = { count: (count + value), votes: (votes + 1) };
     }
-    if (userId && post && post._id) {
+    if (user && user._id && post && post._id) {
       CMS.update(
         { _id: postId },
         {

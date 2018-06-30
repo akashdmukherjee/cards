@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Alert from 'react-s-alert';
 import Home from '../pages/home';
 import Spinner from '../components/spinner';
-import { requestCMSListGet } from '../redux/cms/actions';
+import { requestCMSListGet, requestRatings } from '../redux/cms/actions';
 import { requestTagsGet } from '../redux/tags/actions';
 import { requestEntityGet } from '../redux/entity/actions';
 import { requestLogout } from '../redux/auth/actions';
@@ -25,6 +25,7 @@ class HomeContainer extends React.Component {
     entity: PropTypes.object,
     requestLogout: PropTypes.func.isRequired,
     updateRatings: PropTypes.func.isRequired,
+    requestRatings: PropTypes.func.isRequired,
     isLogging: PropTypes.bool,
     user: PropTypes.object,
   }
@@ -63,6 +64,7 @@ class HomeContainer extends React.Component {
       isLogging,
       user,
       updateRatings,
+      requestRatings,
     } = this.props;
     if (isLoading || isLoadingTags || isEntityLoading) return <Spinner />;
     return (
@@ -74,6 +76,7 @@ class HomeContainer extends React.Component {
         isLogging={isLogging}
         user={user}
         updateRatings={updateRatings}
+        requestRatings={requestRatings}
       />
     );
   }
@@ -96,6 +99,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   requestEntityGet,
   requestLogout,
   updateRatings,
+  requestRatings,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

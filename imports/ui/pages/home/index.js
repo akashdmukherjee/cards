@@ -5,8 +5,10 @@ import FlipMove from 'react-flip-move';
 import Card from 'antd/lib/card';
 import List from 'antd/lib/list';
 import { CheckableTag } from 'antd/lib/tag';
+import Button from 'antd/lib/button';
 import Icon from 'antd/lib/icon';
 import Rate from 'antd/lib/rate';
+import Modal from 'antd/lib/modal';
 import styled from 'styled-components';
 import MetaTags from '../../components/meta-tags';
 import Video from '../../components/video';
@@ -53,6 +55,8 @@ class Home extends React.Component {
     homeItemsList: this.props.cmsList || [],
     updatedRatings: null,
     updatedLikes: null,
+    shareModalVisible: false,
+    shareModalLink: '',
   }
   initialState = this.props.cmsList
   handleCardClick = (slug) => {
@@ -152,6 +156,18 @@ class Home extends React.Component {
         }
       });
     });
+  }
+  shareModalOn = (e, slug) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const fullHostname = `${window.location.protocol}//${window.location.hostname}${(window.location.port ? `:${window.location.port}` : '')}`;
+    this.setState({
+      shareModalVisible: true,
+      shareModalLink: `${fullHostname}/post/${slug}`,
+    });
+  }
+  shareModalOff = () => {
+    this.setState({ shareModalVisible: false });
   }
   renderRatingSystem = (entity, post, user) => {
     if (entity.cardActionType === 'likes') {
@@ -256,6 +272,9 @@ class Home extends React.Component {
                       </div>
                     )}
                     <div className="home-page-item-content">
+                      <div className="home-page-share-button">
+                        <Button icon="share-alt" onClick={e => this.shareModalOn(e, item.slug)} />
+                      </div>
                       {entity.cardTagsEnabled && item.tags && item.tags.length && (
                         <div
                           className="home-page-item-tags"
@@ -300,7 +319,26 @@ class Home extends React.Component {
               ))}
             </FlipMove>
           </div>
+          <Modal
+            title="Share post"
+            visible={this.state.shareModalVisible}
+            footer={[
+              <Button onClick={e => this.shareModalOff(e)}>Ok</Button>,
+            ]}
+          >
+            {this.state.shareModalLink}
+          </Modal>
         </div>
+        <Modal
+          title="Share post"
+          visible={this.state.shareModalVisible}
+          onCancel={e => this.shareModalOff(e)}
+          footer={[
+            <Button onClick={e => this.shareModalOff(e)}>Ok</Button>,
+          ]}
+        >
+          {this.state.shareModalLink}
+        </Modal>
       </Fragment>
     );
   }

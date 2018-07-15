@@ -56,3 +56,22 @@ export function updateRatings(type, postId, value, cb) {
     );
   };
 }
+
+export function updateFavourites(postId, cb) {
+  return () => {
+    Meteor.call(
+      'user.methods.updateFavourites',
+      postId,
+      (error) => {
+        if (!error) {
+          if (!error) {
+            if (cb && typeof cb === 'function') cb();
+          }
+          if (cb && typeof cb === 'function') cb(error);
+          return null;
+        }
+        return null;
+      },
+    );
+  };
+}

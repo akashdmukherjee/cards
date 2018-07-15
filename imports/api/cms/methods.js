@@ -166,7 +166,7 @@ Meteor.methods({
     } else if (post && type === 'likes') {
       val = post.likes + value;
     }
-    if (post && type === 'ratings' && user.ratings) {
+    if (post && type === 'ratings' && user.ratings && user.ratings[postId]) {
       const count = (post.ratings && post.ratings.count) || 0;
       const votes = (post.ratings && post.ratings.votes) || 0;
       val = {

@@ -108,6 +108,25 @@ Meteor.methods({
       );
     }
   },
+  'user.methods.updateFavourites': (postId) => {
+    check(postId, String);
+    const user = Meteor.user();
+    if (user && postId) {
+      const isInFaves = user && user.favourites && user.favourites.includes(postId);
+      const operation = isInFaves
+        ? {
+          $pull: {
+            favourites: postId,
+          },
+        }
+        : {
+          $addToSet: {
+            favourites: postId,
+          },
+        };
+      Meteor.users.update({ _id: user._id }, operation);
+    }
+  },
 });
 
 // Publish additional field for admin user
@@ -122,6 +141,7 @@ Meteor.publish(null, () => {
     avatar: 1,
     likes: 1,
     ratings: 1,
+    favourites: 1,
   };
   if (userId && meteorUser && meteorUser.adminUser) {
     additionalFields = { ...additionalFields, adminUser: 1 };

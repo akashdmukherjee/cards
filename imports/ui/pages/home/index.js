@@ -8,6 +8,7 @@ import { CheckableTag } from 'antd/lib/tag';
 import Button from 'antd/lib/button';
 import Icon from 'antd/lib/icon';
 import Rate from 'antd/lib/rate';
+import Tooltip from 'antd/lib/tooltip';
 import Modal from 'antd/lib/modal';
 import styled from 'styled-components';
 import MetaTags from '../../components/meta-tags';
@@ -17,6 +18,8 @@ import imageUrlHelper from '../../utils/image-url-helper';
 import isCommonArrElem from '../../utils/is-common-arr-elem';
 import includesWholeArray from '../../utils/includes-whole-array';
 import { defaultThemeColor, defaultFontFamily } from '../../settings';
+import addToSet from '../../utils/add-to-set';
+import removeFromSet from '../../utils/remove-from-set';
 import metaData from './meta.json';
 
 const StyledHomePageTags = styled.div`
@@ -44,6 +47,7 @@ class Home extends React.Component {
     history: PropTypes.object.isRequired,
     updateRatings: PropTypes.func.isRequired,
     requestRatings: PropTypes.func.isRequired,
+    updateFavourites: PropTypes.func.isRequired,
   }
   static defaultProps = {
     isEntityLoading: false,
@@ -57,6 +61,7 @@ class Home extends React.Component {
     updatedLikes: null,
     shareModalVisible: false,
     shareModalLink: '',
+    addToFavLoading: [],
   }
   initialState = this.props.cmsList
   handleCardClick = (slug) => {
@@ -157,6 +162,17 @@ class Home extends React.Component {
       });
     });
   }
+  handleUpdateFavourites = (e, postId) => {
+    this.handleStopPropagation(e);
+    this.setState(prevState => (
+      { addToFavLoading: addToSet(prevState.addToFavLoading, postId) }
+    ));
+    this.props.updateFavourites(postId, () => {
+      this.setState(prevState => (
+        { addToFavLoading: removeFromSet(prevState.addToFavLoading, postId) }
+      ));
+    });
+  }
   shareModalOn = (e, slug) => {
     e.preventDefault();
     e.stopPropagation();
@@ -168,6 +184,13 @@ class Home extends React.Component {
   }
   shareModalOff = () => {
     this.setState({ shareModalVisible: false });
+  }
+  isPostInFav = (postId) => {
+    const faves = this.props.user && this.props.user.favourites;
+    if (faves && faves.length) {
+      return faves.includes(postId);
+    }
+    return false;
   }
   renderRatingSystem = (entity, post, user) => {
     if (entity.cardActionType === 'likes') {
@@ -272,8 +295,20 @@ class Home extends React.Component {
                       </div>
                     )}
                     <div className="home-page-item-content">
-                      <div className="home-page-share-button">
-                        <Button icon="share-alt" onClick={e => this.shareModalOn(e, item.slug)} />
+                      <div className="home-page-tools-button">
+                        <Tooltip title="Save it!">
+                          <Button
+                            icon={this.isPostInFav(item._id) ? 'heart' : 'heart-o'}
+                            onClick={e => this.handleUpdateFavourites(e, item._id)}
+                            loading={this.state.addToFavLoading.includes(item._id)}
+                          />
+                        </Tooltip>
+                        <Tooltip title="Share it!">
+                          <Button
+                            icon="share-alt"
+                            onClick={e => this.shareModalOn(e, item.slug)}
+                          />
+                        </Tooltip>
                       </div>
                       {entity.cardTagsEnabled && item.tags && item.tags.length && (
                         <div
@@ -319,15 +354,6 @@ class Home extends React.Component {
               ))}
             </FlipMove>
           </div>
-          <Modal
-            title="Share post"
-            visible={this.state.shareModalVisible}
-            footer={[
-              <Button onClick={e => this.shareModalOff(e)}>Ok</Button>,
-            ]}
-          >
-            {this.state.shareModalLink}
-          </Modal>
         </div>
         <Modal
           title="Share post"
@@ -337,7 +363,7 @@ class Home extends React.Component {
             <Button onClick={e => this.shareModalOff(e)}>Ok</Button>,
           ]}
         >
-          {this.state.shareModalLink}
+          <span>{this.state.shareModalLink}</span>
         </Modal>
       </Fragment>
     );

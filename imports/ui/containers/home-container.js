@@ -11,6 +11,7 @@ import { requestTagsGet } from '../redux/tags/actions';
 import { requestEntityGet } from '../redux/entity/actions';
 import { requestLogout } from '../redux/auth/actions';
 import { updateRatings, updateFavourites } from '../redux/users/actions';
+import { requestNotificationsGet } from '../redux/notifications/actions';
 
 class HomeContainer extends React.Component {
   static propTypes = {
@@ -29,16 +30,22 @@ class HomeContainer extends React.Component {
     isLogging: PropTypes.bool,
     user: PropTypes.object,
     updateFavourites: PropTypes.func.isRequired,
+    notifications: PropTypes.array,
+    requestNotificationsGet: PropTypes.func,
+    isNotificationLoading: PropTypes.bool,
   }
   static defaultProps = {
     isLoading: false,
     isLoadingTags: false,
     isEntityLoading: false,
+    isNotificationLoading: false,
     isLogging: false,
     cmsList: [],
     tagsList: [],
     entity: {},
     user: {},
+    notifications: [],
+    requestNotificationsGet: () => {},
   }
   componentDidMount() {
     this.props.requestEntityGet();
@@ -52,6 +59,7 @@ class HomeContainer extends React.Component {
         Alert.error(error.message);
       }
     });
+    this.props.requestNotificationsGet();
   }
   render() {
     const {
@@ -67,8 +75,10 @@ class HomeContainer extends React.Component {
       updateRatings,
       requestRatings,
       updateFavourites,
+      notifications,
+      isNotificationLoading,
     } = this.props;
-    if (isLoading || isLoadingTags || isEntityLoading) return <Spinner />;
+    if (isLoading || isLoadingTags || isEntityLoading || isNotificationLoading) return <Spinner />;
     return (
       <Home
         cmsList={cmsList}
@@ -80,6 +90,7 @@ class HomeContainer extends React.Component {
         updateRatings={updateRatings}
         requestRatings={requestRatings}
         updateFavourites={updateFavourites}
+        notifications={notifications}
       />
     );
   }
@@ -94,6 +105,8 @@ const mapStateToProps = state => ({
   isEntityLoading: state.entityReducer.isLoading,
   isLogging: state.loginReducer.isLogging,
   user: state.loginReducer.data,
+  notifications: state.notificationsReducer.data,
+  isNotificationsLoading: state.notificationsReducer.isLoading,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -104,6 +117,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   updateRatings,
   requestRatings,
   updateFavourites,
+  requestNotificationsGet,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

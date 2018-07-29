@@ -1,8 +1,11 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { bool, object, func, node } from 'prop-types';
+import PropTypes from 'prop-types';
+import Dropdown from 'antd/lib/dropdown';
+import Icon from 'antd/lib/icon';
 import imageUrlHelper from '../../utils/image-url-helper';
 import { defaultNavBarBgColor, defaultFontFamily } from '../../settings';
+import Notifications from '../notifications';
 
 const LandingPageHeader = ({
   isLogging,
@@ -11,6 +14,7 @@ const LandingPageHeader = ({
   entity,
   isEntityLoading,
   searchComponent,
+  notifications,
 }) => {
   const loggedIn = () => !isLogging && user && user._id;
   if (isEntityLoading) return null;
@@ -49,6 +53,14 @@ const LandingPageHeader = ({
                     {user.adminUser ? 'Admin Panel' : 'Settings'}
                   </Link>
                   <a href="#" onClick={requestLogout}>Sign Out</a>
+                  <Dropdown
+                    overlay={<Notifications notifications={notifications} />}
+                    trigger={['click']}
+                  >
+                    <a className="ant-dropdown-link" href="#">
+                      <Icon type="bell" />
+                    </a>
+                  </Dropdown>
                 </Fragment>}
           </span>
         </div>
@@ -58,12 +70,13 @@ const LandingPageHeader = ({
 };
 
 LandingPageHeader.propTypes = {
-  isLogging: bool,
-  user: object,
-  requestLogout: func.isRequired,
-  entity: object,
-  isEntityLoading: bool.isRequired,
-  searchComponent: node,
+  isLogging: PropTypes.bool,
+  user: PropTypes.object,
+  requestLogout: PropTypes.func.isRequired,
+  entity: PropTypes.object,
+  isEntityLoading: PropTypes.bool.isRequired,
+  searchComponent: PropTypes.node,
+  notifications: PropTypes.array,
 };
 
 LandingPageHeader.defaultProps = {
@@ -71,6 +84,7 @@ LandingPageHeader.defaultProps = {
   user: {},
   searchComponent: null,
   isLogging: false,
+  notifications: [],
 };
 
 export default LandingPageHeader;

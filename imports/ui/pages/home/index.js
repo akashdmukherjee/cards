@@ -48,11 +48,13 @@ class Home extends React.Component {
     updateRatings: PropTypes.func.isRequired,
     requestRatings: PropTypes.func.isRequired,
     updateFavourites: PropTypes.func.isRequired,
+    notifications: PropTypes.array,
   }
   static defaultProps = {
     isEntityLoading: false,
     isLogging: false,
     user: {},
+    notifications: [],
   }
   state = {
     checkedTags: [],
@@ -244,6 +246,7 @@ class Home extends React.Component {
       user,
       requestLogout,
       isEntityLoading,
+      notifications,
     } = this.props;
     return (
       <Fragment>
@@ -253,6 +256,7 @@ class Home extends React.Component {
           requestLogout={requestLogout}
           isEntityLoading={isEntityLoading}
           entity={entity}
+          notifications={notifications}
           searchComponent={
             <input ref={(input) => { this.searchInput = input; }} type="text" placeholder="Search..." onChange={this.handleSearch} className="home-page-search" />
           }

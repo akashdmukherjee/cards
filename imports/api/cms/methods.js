@@ -3,6 +3,7 @@ import { check, Match } from 'meteor/check';
 import shortid from 'shortid';
 import slugify from 'slugify';
 import { CMS } from './collection';
+import { Notifications } from '../notifications/collection';
 import cloudinary from '../../startup/server/cloudinary-config';
 
 // TODO: escape all special chars if not admin
@@ -187,6 +188,13 @@ Meteor.methods({
           },
         },
       );
+      Notifications.insert({
+        userId: post.authorId,
+        action: type,
+        message: type === 'like'
+          ? `User ${user.firstName || ''} ${user.lastName || ''} liked your post!`
+          : `User ${user.firstName || ''} ${user.lastName || ''} rated your post!`,
+      });
     }
   },
 });

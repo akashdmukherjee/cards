@@ -191,6 +191,7 @@ Meteor.methods({
       Notifications.insert({
         userId: post.authorId,
         action: type,
+        itemSlug: post.slug,
         message: type === 'like'
           ? `User ${user.firstName || ''} ${user.lastName || ''} liked your post!`
           : `User ${user.firstName || ''} ${user.lastName || ''} rated your post!`,

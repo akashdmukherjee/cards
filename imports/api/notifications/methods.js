@@ -12,14 +12,31 @@ Meteor.methods({
     }
     return null;
   },
-  'notifications.methods.add': (userId, action, message) => {
+  'notifications.methods.add': (userId, action, message, itemId) => {
     check(userId, String);
     check(action, String);
     check(message, String);
-    return Notifications.insert({ userId, action, message });
+    check(itemId, String);
+    return Notifications.insert({
+      userId,
+      action,
+      message,
+      itemId,
+    });
   },
   'notifications.methods.markAsRead': (notificationId) => {
     check(notificationId, String);
-    return Notifications.update({ _id: notificationId }, { $set: { read: true } });
+    const userId = Meteor.userId();
+    if (userId) {
+      Notifications.update({ _id: notificationId }, { $set: { read: true } });
+      return Notifications.find({ userId }).fetch();
+    }
+    return null;
+  },
+  'notifications.methods.remove': (notificationId) => {
+    check(notificationId, String);
+    Notifications.remove({ _id: notificationId });
+    const userId = Meteor.userId();
+    return Notifications.find({ userId }).fetch();
   },
 });

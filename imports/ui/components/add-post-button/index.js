@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from 'antd/lib/button';
 
-const AddPostButton = ({ onClick }) => (
+const AddPostButton = ({ onClick, shape }) => (
   <Button
     className="add-post-button"
     type="primary"
-    shape="circle"
-    icon="file-add"
+    shape={shape}
+    icon="plus"
     size="large"
     onClick={onClick}
   />
@@ -15,6 +15,11 @@ const AddPostButton = ({ onClick }) => (
 
 AddPostButton.propTypes = {
   onClick: PropTypes.func.isRequired,
+  shape: PropTypes.string,
+};
+
+AddPostButton.defaultProps = {
+  shape: 'circle',
 };
 
 export default AddPostButton;

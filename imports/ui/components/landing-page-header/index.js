@@ -58,7 +58,7 @@ const LandingPageHeader = ({
                     trigger={['click']}
                   >
                     <a className="ant-dropdown-link" href="#">
-                      <Icon type="bell" />
+                      <Icon type="bell" style={{ color: notifications.length ? 'red' : 'auto' }} />
                     </a>
                   </Dropdown>
                 </Fragment>}

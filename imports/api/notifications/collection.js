@@ -8,6 +8,7 @@ Notifications.schema = new SimpleSchema({
   userId: { type: String },
   action: { type: String },
   message: { type: String },
+  itemSlug: { type: String },
   read: { type: Boolean, defaultValue: false },
 }, { check });
 

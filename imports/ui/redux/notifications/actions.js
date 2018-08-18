@@ -25,3 +25,39 @@ export function requestNotificationsGet(cb) {
     );
   };
 }
+
+export function requestNotificationsMarkAsRead(notificationId, cb) {
+  return (dispatch) => {
+    dispatch(receiveNotificationsyGet({ isLoading: true, data: [] }));
+    Meteor.call(
+      'notifications.methods.markAsRead',
+      notificationId,
+      (err, res) => {
+        if (!err) {
+          if (cb && typeof cb === 'function') cb();
+          return dispatch(receiveNotificationsyGet({ isLoading: false, data: res }));
+        }
+        if (cb && typeof cb === 'function') cb(err);
+        return dispatch(receiveNotificationsyGet({ isLoading: false, data: [] }));
+      },
+    );
+  };
+}
+
+export function requestNotificationsRemove(notificationId, cb) {
+  return (dispatch) => {
+    dispatch(receiveNotificationsyGet({ isLoading: true, data: [] }));
+    Meteor.call(
+      'notifications.methods.remove',
+      notificationId,
+      (err, res) => {
+        if (!err) {
+          if (cb && typeof cb === 'function') cb();
+          return dispatch(receiveNotificationsyGet({ isLoading: false, data: res }));
+        }
+        if (cb && typeof cb === 'function') cb(err);
+        return dispatch(receiveNotificationsyGet({ isLoading: false, data: [] }));
+      },
+    );
+  };
+}
